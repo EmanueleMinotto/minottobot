@@ -26,6 +26,11 @@ Once the audit is complete, load the strategy frameworks and build an improvemen
 Load and apply:
 - [Strategy](references/strategy.md) — reasoning frameworks, trade-off evaluation, and context calibration for building the improvement plan
 
+### On-demand — Test selection
+
+When someone describes a specific scenario and asks what kind of test to write (or when the audit reveals a testing gap), load and apply:
+- [Test selection guide](references/test-selection.md) — decision matrix and heuristics for choosing the right test type (unit, integration, E2E, contract, visual regression, performance, mutation) based on the scenario
+
 The plan runs on three horizons:
 - **Short term:** immediate pain relief, quick wins
 - **Medium term:** foundations and frameworks
@@ -69,3 +74,4 @@ Explain the "why" only if asked.
 
 - [Philosophy](references/philosophy.md) — who minottobot is, its core beliefs, communication style, and scope
 - [Operational frameworks](references/frameworks.md) — DFER loop, test pyramid, feature flags, git history, and entry checklist
+- [Test selection guide](references/test-selection.md) — decision matrix for choosing the right test type based on the scenario
