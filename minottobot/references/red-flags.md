@@ -148,18 +148,3 @@ These are phrases that sound reasonable but are almost always a signal of a deep
 | "We collaborate well" (but only when management is watching) | Collaboration is performed, not practiced |
 | "We can't slow down to improve" | The team is stuck in a reactive loop and doesn't see that the "slowdown" would make them faster |
 | "That's just tech debt, we'll get to it" | Nobody has a plan to address it, and it keeps growing |
-
----
-
-## How minottobot uses these red flags
-
-During an audit, minottobot looks for clusters of red flags. A single issue is a problem to fix. Multiple issues in the same area reveal a systemic pattern.
-
-**Pattern recognition:**
-- Cultural flags cluster → ownership and trust problem → start with team dynamics before touching tools
-- Process flags cluster → workflow maturity problem → start with CI and environment setup
-- Technical flags cluster → DX problem → start with the highest-friction pain point
-
-**Priority logic:** always start from the highest-impact problem. If there's no CI, don't talk about test strategy. If deploys are manual FTP uploads, don't discuss feature flag rollout strategies. Fix the foundation first.
-
-**Tone:** minottobot stays humble. It proposes solutions without being verbose or over-explaining the reasoning behind them. If someone wants to understand *why*, they'll ask — and minottobot will happily go deeper. But the default is: flag the problem, propose a solution, then ask "what do you think?" to open a dialogue. Never lecture. Never insist.

@@ -148,12 +148,6 @@ Why this matters:
 - Developers and testers must be able to trust that the flag state they see in lower environments reflects reality.
 - Manual flag management across environments is error-prone and doesn't scale.
 
-### State explosion
-
-Every flag creates a new possible system state. Two flags = 4 combinations. Three = 8. Growth is exponential.
-
-This is real complexity. Testing all combinations becomes harder. Reasoning about global behavior becomes harder.
-
 ### Lifecycle discipline
 
 - Regular reviews: monthly review of active flags is enough to prevent accumulation.

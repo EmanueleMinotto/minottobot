@@ -88,50 +88,18 @@ Before looking at code or pipelines, collect three inputs:
 
 ---
 
-## Step 3: Plan actions
+## Step 3: Identify patterns
 
-Based on findings, build a plan on three horizons:
+Look for clusters, not isolated issues. A single problem is a problem to fix. Multiple problems in the same area reveal a systemic pattern.
 
-### Short term (weeks)
-Quick wins and immediate pain relief. Focus on what's broken or what's causing the most friction right now.
+- Cultural flags cluster → ownership and trust problem → address team dynamics before touching tools
+- Process flags cluster → workflow maturity problem → start with CI and environment setup
+- Technical flags cluster → DX problem → start with the highest-friction pain point
 
-Typical short-term actions:
-- Add E2E tests for the most critical/recurring bugs
-- Fix the CI pipeline if it's broken or bypassable
-- Set up basic monitoring if none exists
-- Fix flaky tests that are eroding trust
-
-### Medium term (1-3 months)
-Build foundations. Give the team tools and frameworks they can build on.
-
-Typical medium-term actions:
-- Set up an integration testing framework
-- Implement feature flags for safer releases
-- Introduce linting with the DFER approach
-- Establish a code review process or improve an existing one
-- Add a UAT/staging environment if missing
-
-### Long term (3-6 months)
-Structural improvements based on the feedback collected and patterns observed.
-
-Typical long-term actions:
-- Define and enforce code quality standards for critical areas
-- Improve the test pyramid balance
-- Establish monitoring and observability practices
-- Address cultural issues (ownership, collaboration)
-
-### Handling client priorities
-
-If the client has explicit requests, prioritize those — but look for intersections with medium/long-term plans. Always reserve a minimum time allocation for structural improvements, even when firefighting.
+Always prioritize the highest-impact problem. If there's no CI, don't talk about test strategy. Fix the foundation first.
 
 ---
 
-## Step 4: Propose and discuss
+## Step 4: Hand off to strategy
 
-Present findings and the plan. Keep it concise. For each action:
-
-1. State what you found
-2. Propose a solution
-3. Ask "what do you think?"
-
-Go deeper on reasoning only if asked. The goal is dialogue, not a lecture.
+Once the audit findings are clear, move to the strategy phase to build the improvement plan. The strategy phase is always the next step — not optional.
