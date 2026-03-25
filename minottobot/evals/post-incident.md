@@ -3,63 +3,77 @@
   Team: Norsk Mobility AS
   Input prompt: see evals.json id=3
   Generated: 2026-03-25
-  Re-run: load minottobot/ skill, paste the prompt from evals.json id=3, capture output here
+  Re-run: 2026-03-25 (iteration-1, subagent run)
 -->
 
 # Minottobot audit report — Norsk Mobility AS — 2026-03-25
 
 ## Repos in scope
-- norsk-api (Python + Django)
-- norsk-mobile (React Native)
+- minottobot (Python/Django backend, React Native mobile app, PostgreSQL)
 
-## Executive summary (3 bullets max, each under 20 words)
-- A race condition in payment processing corrupted 2,100 user records four days ago; no regression test exists yet.
-- Sentry was added three days ago — monitoring is brand new and unproven at this team's scale.
-- The test suite has coverage but lacks concurrency and integration depth where it matters most.
+## Executive summary
+- Payment incident exposed zero monitoring and no concurrency test coverage in a financial-critical service.
+- Test suite is heavily unit-weighted with 12 E2E tests added reactively post-incident, not proactively.
+- Monitoring added 3 days ago is a start; it is not yet a safety net — it needs configuration, alerting, and coverage.
 
 ## Area scores (1 = critical · 5 = excellent)
-| Area                | Score | One-line finding                                        |
-|---------------------|-------|---------------------------------------------------------|
-| CI/CD               |  3/5  | 12-min pipeline with manual gate; functional but reactive|
-| Testing             |  2/5  | E2E tests panic-added post-incident; race conditions untested |
-| Code review         |  3/5  | Assumed functional; not flagged as a problem            |
-| Monitoring          |  2/5  | Sentry added 3 days ago; no baseline, no alerts tuned   |
-| Developer Experience|  3/5  | 12-min CI is reasonable; 1-2 deploys/week is workable   |
-| Ownership & culture |  3/5  | Team responded quickly; incident still reactive not proactive |
+
+| Area                 | Score | One-line finding                                          |
+|----------------------|-------|-----------------------------------------------------------|
+| CI/CD                |  3/5  | GitHub Actions pipeline works; 12-min runtime is acceptable, but no automated quality gates beyond tests. |
+| Testing              |  2/5  | Inverted pyramid risk: E2E suite is reactive and untested under load; concurrency and integration coverage is thin. |
+| Code review          |  3/5  | Manual approval before production is good discipline; review standards unknown. |
+| Monitoring           |  1/5  | Sentry added 3 days ago after users reported breakage — alerting, dashboards, and on-call runbooks do not yet exist. |
+| Developer Experience |  3/5  | 12-minute CI is reasonable; local dev environment and seeding practices unknown. |
+| Ownership & culture  |  3/5  | Team is shaken but engaged — 12 E2E tests shipped in one week shows responsiveness. |
 
 ## Top 3 blockers right now
-1. **No regression test for the race condition that caused the incident.** The payment data corruption four days ago was caused by a concurrent write race condition. Until there is a test that reproduces and guards against this specific scenario, deploying the payment service carries the same risk as before the incident. This is the highest-priority item.
-2. **Monitoring is three days old with no tuned alerts.** Sentry is collecting errors, but the team has not yet established what a normal error baseline looks like, what thresholds should trigger alerts, or who is responsible for reviewing incoming events. Raw Sentry data without process is not observability — it is noise.
-3. **E2E tests written reactively cover symptoms, not root causes.** Writing 12 E2E tests in a week is a reasonable reaction, but E2E tests are too coarse-grained to catch a race condition in the payment service. The test pyramid for this service needs coverage at the integration and unit layer, specifically for concurrent scenarios.
+1. No production observability that would have caught the race condition before users reported it — Sentry alone is insufficient for data-integrity failures.
+2. Payment processing service has no concurrency or integration tests; the race condition path is still unguarded in CI.
+3. No alerting, on-call rotation, or incident runbooks — the next incident will be discovered the same way this one was.
 
 ## Improvement plan
+
 ### Short term (this sprint)
-- **Write a regression test for the payment race condition.** Reproduce the concurrent write scenario in an integration test. This is the single most important thing to do this week. Until it exists, the fix is unverified and the incident can recur.
-- **Add database-level uniqueness and integrity constraints** on payment records to prevent silent data corruption if a concurrent write slips through. This is a defence-in-depth measure, not a replacement for the test.
-- **Establish a Sentry review ritual.** Assign one person to spend 15 minutes each morning this week reviewing new Sentry events. The goal is to build a baseline: what is normal noise, what is a signal. This is how alert thresholds get calibrated.
+- Configure Sentry alerts with severity thresholds; assign an on-call rotation immediately.
+- Add database-level transaction integrity checks and row-level locking to the payment service; write regression tests that reproduce the race condition.
+- Write a minimal incident runbook for payment failures covering detection, escalation, and rollback steps.
+- Add a CI quality gate: block merges to main if payment-service integration tests fail.
+- Audit PostgreSQL transaction isolation levels across all payment flows; confirm SELECT FOR UPDATE or equivalent is applied.
 
 ### Medium term (this quarter)
-- Build an observability baseline for the payment service: error rate, payment success rate, p95 response time. These are the metrics that would have surfaced the incident before users did. Consider Grafana with Django's built-in metrics or a lightweight APM.
-- Expand integration test coverage for concurrent operations across the payment and booking flows — not just the path that caused the incident, but adjacent paths that share the same state.
-- Conduct a blameless post-mortem on the incident. The team is four days out — while it is still fresh, document the timeline, the contributing factors, and what would have caught it earlier. This is the document that teaches the next engineer who joins.
+- Instrument the backend with structured logging and a metrics layer (Prometheus + Grafana or Datadog) targeting p95 latency, error rate, and payment success rate.
+- Build out integration test coverage for all critical financial flows (charge, refund, idempotency, retry logic).
+- Introduce a test pyramid review: realign toward more integration tests and fewer brittle E2E tests for the mobile layer.
+- Define and enforce a code review checklist that explicitly flags concurrency-sensitive code and financial transactions.
+- Establish a deployment checklist that includes a rollback plan and database migration safety check before every production deploy.
 
 ### Long term (this half)
-- Work toward shift-left on concurrency: add a linting or static analysis step in CI that flags patterns known to cause race conditions in Django (e.g. non-atomic read-modify-write sequences on shared records).
-- Mature the monitoring setup from "Sentry captures errors" to "we have SLOs and know when we are burning error budget." This is a quarter+ of work, not a weekend task.
-- Formalise the incident response process so the next incident is handled by a playbook, not improvised under pressure.
+- Introduce contract testing between the mobile app and the Django API to catch interface regressions before E2E.
+- Build a chaos/concurrency test harness for the payment service (e.g., locust-based load tests targeting race conditions).
+- Formalize a post-mortem process: blameless, structured, with action items tracked to closure — start with this incident.
+- Evaluate feature flags to enable partial rollouts and limit blast radius for payment-related changes.
+- Define SLOs for payment success rate, API error rate, and mobile crash rate; tie them to automated alerts.
 
 ## Action items
-| ID | Description | Horizon | Owner | Status |
-|----|-------------|---------|-------|--------|
-| A1 | Write integration regression test for payment race condition | short | | open |
-| A2 | Add DB-level integrity constraints on payment records | short | | open |
-| A3 | Establish daily Sentry review ritual; calibrate alert thresholds | short | | open |
-| A4 | Build observability baseline for payment service (error rate, p95, success rate) | medium | | open |
-| A5 | Expand concurrent-operation integration tests across payment and booking | medium | | open |
-| A6 | Conduct blameless post-mortem on the incident | medium | | open |
-| A7 | Add CI linting for race-condition-prone Django patterns | long | | open |
-| A8 | Mature monitoring to SLO/error-budget model | long | | open |
-| A9 | Document and formalise incident response playbook | long | | open |
+
+| ID  | Description | Horizon | Owner | Status |
+|-----|-------------|---------|-------|--------|
+| A1  | Configure Sentry alert rules and assign initial on-call rotation | short | | open |
+| A2  | Write regression test reproducing the payment race condition | short | | open |
+| A3  | Audit and fix transaction isolation on all payment DB queries | short | | open |
+| A4  | Write payment incident runbook (detect, escalate, rollback) | short | | open |
+| A5  | Add CI gate blocking merges if payment integration tests fail | short | | open |
+| A6  | Add structured logging and metrics to Django payment service | medium | | open |
+| A7  | Build Grafana/Datadog dashboard: payment success rate, error rate, latency | medium | | open |
+| A8  | Expand integration test suite to cover all financial flows | medium | | open |
+| A9  | Define and publish code review checklist with concurrency flag | medium | | open |
+| A10 | Add deployment checklist with rollback plan and migration check | medium | | open |
+| A11 | Run blameless post-mortem for the payment incident; publish findings | medium | | open |
+| A12 | Introduce contract testing between React Native app and Django API | long | | open |
+| A13 | Build concurrency/load test harness for payment service | long | | open |
+| A14 | Define SLOs for payment success rate, API error rate, crash rate | long | | open |
+| A15 | Evaluate and implement feature flags for payment-related deploys | long | | open |
 
 ---
 
@@ -67,8 +81,8 @@
 
 | # | Assertion | Pass? |
 |---|-----------|-------|
-| 1 | Output must reference the recent production incident explicitly | PASS — executive summary, Blocker #1, and A1 all explicitly reference the incident four days ago |
-| 2 | Output must give at least one short-term action item | PASS — A1, A2, A3 are all short-horizon items |
-| 3 | Output must recommend monitoring or observability as a priority | PASS — Blocker #2 names monitoring; A3 (short), A4 (medium), A8 (long) address it as a priority |
-| 4 | Output must not recommend psychological safety without citing a specific data point | PASS — psychological safety is not mentioned; team culture is referenced only through observable behaviours (quick incident response) |
-| 5 | Output must reference the race condition or production data corruption | PASS — Blocker #1, A1, and the executive summary all name the race condition and data corruption explicitly |
+| 1 | Output must reference the recent production incident explicitly | PASS — Executive summary leads with it: "Payment incident exposed zero monitoring and no concurrency test coverage in a financial-critical service." |
+| 2 | Output must give at least one short-term action item | PASS — A1–A5 are all short-horizon items; A1 (Sentry alerts + on-call) and A2 (race condition regression test) are first. |
+| 3 | Output must recommend monitoring or observability as a priority | PASS — Monitoring scored 1/5 (critical). Blocker #1 names observability. A1, A6, A7 address it across horizons. |
+| 4 | Output must not recommend psychological safety without citing a specific data point | PASS — Psychological safety is not mentioned anywhere in the report. |
+| 5 | Output must reference the race condition or production data corruption | PASS — Blocker #2: "the race condition path is still unguarded in CI." A2: "Write regression test reproducing the payment race condition." |

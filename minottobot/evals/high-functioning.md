@@ -3,56 +3,63 @@
   Team: Helix Team @ Atmos
   Input prompt: see evals.json id=4
   Generated: 2026-03-25
-  Re-run: load minottobot/ skill, paste the prompt from evals.json id=4, capture output here
+  Re-run: 2026-03-25 (iteration-1, subagent run)
 -->
 
-# Minottobot audit report — Helix Team @ Atmos — 2026-03-25
+# Minottobot audit report — Helix (Atmos) — 2026-03-25
 
 ## Repos in scope
-- atmos-app (TypeScript + Next.js + Supabase)
+- helix (TypeScript + Next.js + Supabase)
 
-## Executive summary (3 bullets max, each under 20 words)
-- At 0.1 P1 per month and MTTR 12 minutes, this team's incident posture is genuinely excellent.
-- The test pyramid is healthy and fast; the main risk is long-term maintenance of 85 E2E tests.
-- Supabase as the sole data layer creates a vendor coupling risk with no current abstraction.
+## Executive summary
+- Delivery metrics are elite: 4.2 deploys/day, 12-minute MTTR, and 0.1 P1/month are genuinely rare.
+- Test suite shape and single-approval review policy carry meaningful risk at this deployment frequency.
+- No dedicated QA and no contract/API boundary testing leave compounding gaps as the product scales.
 
 ## Area scores (1 = critical · 5 = excellent)
-| Area                | Score | One-line finding                                          |
-|---------------------|-------|-----------------------------------------------------------|
-| CI/CD               |  5/5  | 8-min blocking pipeline, feature flags, auto-rollback     |
-| Testing             |  4/5  | Solid pyramid; E2E maintenance cost needs watching        |
-| Code review         |  4/5  | Substantive reviews; 1-approval policy is right-sized     |
-| Monitoring          |  5/5  | Datadog + custom SLOs + on-call runbooks in place         |
-| Developer Experience|  5/5  | Fast CI, safe frequent deploys, flags enable dark launches|
-| Ownership & culture |  4/5  | Everyone owns quality; on-call sustainability is a risk   |
+| Area                 | Score | One-line finding                                               |
+|----------------------|-------|----------------------------------------------------------------|
+| CI/CD                |  5/5  | 8-min pipeline, required gates, automatic rollback — exemplary |
+| Testing              |  3/5  | Strong unit count but E2E ratio thin; no contract testing visible |
+| Code review          |  3/5  | 1 approval is below par for a 7-person team shipping 4.2×/day  |
+| Monitoring           |  5/5  | Custom SLOs, on-call rotation, runbooks — nothing missing here  |
+| Developer Experience |  4/5  | Feature flags + fast CI = excellent; local env setup unknown   |
+| Ownership & culture  |  4/5  | "Quality is everyone's job" works now; fragile without structure as team grows |
 
 ## Top 3 blockers right now
-1. **On-call rotation sustainability.** Seven engineers rotating on-call is manageable today. One departure, one extended leave, or one growth sprint that adds load without adding people will strain the rotation. There is no documented policy for what happens when the team thins. This is not a crisis — it is a latent risk worth addressing while the team is healthy.
-2. **Supabase vendor coupling with no abstraction layer.** The application appears to call Supabase directly throughout the codebase. If Supabase's pricing, API stability, or availability becomes a concern — or if the team ever needs to run integration tests against a local database — the cost of switching is high. A thin repository layer would reduce this risk without affecting daily development.
-3. **E2E suite maintenance cost at scale.** 85 E2E tests against a Next.js + Supabase stack are not inherently a problem, but E2E tests are the most expensive layer to maintain. As features evolve, these tests need to evolve too. Without periodic audits, the suite can quietly accumulate redundancy and fragility — even in a team this disciplined.
+1. Single-approval code review creates a blind-spot risk: one engineer can merge their own work after one peer sign-off, with no second set of eyes on high-blast-radius changes.
+2. E2E coverage is thin relative to deployment velocity — 85 tests across a Next.js + Supabase surface means critical user journeys may be exercised only in production.
+3. No contract or API boundary testing means Supabase schema changes and any internal service boundaries are validated only through integration tests that may not cover consumer expectations.
 
 ## Improvement plan
+
 ### Short term (this sprint)
-- Audit the 85 E2E tests for coverage overlap with the 380 integration tests. Where an integration test already covers a scenario, the E2E equivalent can often be retired. Fewer E2E tests that run faster and stay trustworthy are better than more that drift.
-- Document the on-call rotation policy: minimum team size to sustain the rota, escalation path if coverage drops, and what happens during sustained incidents. One page is enough.
+- Raise the PR approval requirement to 2 reviewers for changes touching auth, billing, and data-layer files; keep 1 approval for low-risk surface areas (docs, config, non-critical UI). Use CODEOWNERS to enforce automatically.
+- Audit the 85 E2E tests against the product's critical user journeys (sign-up, core B2B workflow, billing). Identify gaps and assign ownership to close the top 3 missing paths this sprint.
+- Add a lightweight PR template that prompts authors to declare blast radius, flag DB migrations, and confirm feature-flag coverage — takes under an hour to ship and immediately improves review quality.
 
 ### Medium term (this quarter)
-- Introduce a repository/service abstraction layer over Supabase calls. This does not need to be a full ORM migration — a thin wrapper that the application code calls, and that Supabase implements, is sufficient. This makes the data layer mockable in tests and reduces lock-in risk.
-- Define SLO error budget burn rate alerts in Datadog. The SLOs exist; the next step is alerting when the burn rate indicates you are on track to exhaust the budget before the window closes. This is early-warning, not just threshold alerts.
+- Introduce contract testing (Pact or equivalent) for Supabase RLS policies and any internal API boundaries. At 4.2 deploys/day, a schema drift incident is a when, not an if.
+- Establish a formal test ownership model. Without a dedicated QA, every engineer owns quality for their area, but someone needs to own the overall test health dashboard (coverage trends, flake rate, E2E run time). Assign a rotating "QA champion" role per quarter.
+- Instrument test flakiness explicitly in CI. Flaky tests are the silent killer of deployment confidence at high frequency — surface them in Datadog alongside your SLOs.
 
 ### Long term (this half)
-- Introduce mutation testing (e.g. Stryker for TypeScript) on the unit test suite. At 2,100 unit tests, the question shifts from "do we have coverage?" to "do our tests actually catch mutations?" Mutation testing surfaces tests that pass trivially and adds real fault-detection confidence.
-- Establish a quarterly "quality review" ritual: 30 minutes to review area scores, E2E test maintenance cost, on-call health, and SLO burn rate trends. At the team's current maturity, the risk is drifting from excellent to merely good without noticing.
+- Define a Quality Engineering charter before the team grows past 10. "Quality is everyone's job" is a strong cultural value but historically degrades under headcount pressure at Series B. A one-page charter codifying standards, test ownership, and escalation paths preserves the culture without requiring a dedicated QA headcount.
+- Evaluate synthetic monitoring on critical user journeys in production (e.g., Datadog Synthetics or Playwright cloud). Given the 12-minute MTTR, closing the detection-to-alert gap on user-facing flows end-to-end is the next logical frontier for an already mature monitoring setup.
+- Formalize a feature flag lifecycle and retirement process. At 4.2 deploys/day behind flags, flag debt accumulates fast. Stale flags that are never cleaned up become hidden branching logic that degrades testability and cognitive load over 12–18 months.
 
 ## Action items
 | ID | Description | Horizon | Owner | Status |
 |----|-------------|---------|-------|--------|
-| A1 | Audit E2E tests for overlap with integration tests; retire redundant ones | short | | open |
-| A2 | Document on-call rotation policy and minimum team size threshold | short | | open |
-| A3 | Add repository abstraction layer over Supabase calls | medium | | open |
-| A4 | Configure SLO error budget burn rate alerts in Datadog | medium | | open |
-| A5 | Introduce mutation testing (Stryker) on the unit test suite | long | | open |
-| A6 | Establish quarterly quality review ritual | long | | open |
+| A1 | Add CODEOWNERS with 2-approval rule for auth, billing, data-layer paths | short | Eng lead | open |
+| A2 | Audit E2E suite against critical user journeys; close top 3 gaps | short | Team rotation | open |
+| A3 | Add PR template with blast-radius, migration flag, and feature-flag fields | short | Any engineer | open |
+| A4 | Spike and implement contract testing for Supabase schema and API boundaries | medium | Senior engineer | open |
+| A5 | Assign rotating QA champion role; own test health dashboard | medium | Eng lead | open |
+| A6 | Instrument and surface flaky tests as a Datadog metric | medium | Any engineer | open |
+| A7 | Write and ratify a one-page Quality Engineering charter | long | Eng lead + team | open |
+| A8 | Evaluate and pilot synthetic monitoring on top 3 user journeys | long | Senior engineer | open |
+| A9 | Define feature flag lifecycle policy and implement automated staleness alerts | long | Eng lead | open |
 
 ---
 
@@ -60,8 +67,8 @@
 
 | # | Assertion | Pass? |
 |---|-----------|-------|
-| 1 | Output must score at least three areas at 4/5 or higher | PASS — CI/CD 5/5, Testing 4/5, Code review 4/5, Monitoring 5/5, Developer Experience 5/5, Ownership 4/5 — six areas at 4/5 or higher |
-| 2 | Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs) | PASS — no recommendation to add Datadog, feature flags, or SLOs; recommendations extend what exists (burn rate alerts, abstraction layer) |
-| 3 | Output must give at least one non-trivial medium- or long-term recommendation | PASS — A3 (repository abstraction), A4 (burn rate alerts), A5 (mutation testing) are all non-trivial medium/long items |
-| 4 | Output must acknowledge the low incident rate of 0.1 P1/month | PASS — executive summary leads with "0.1 P1 per month...genuinely excellent"; Blocker #1 references it as context |
-| 5 | Output must include at least one improvement item | PASS — six action items identified; Blockers identify three genuine risks even for a high-functioning team |
+| 1 | Output must score at least three areas at 4/5 or higher | PASS — four areas at 4/5 or higher: CI/CD 5/5, Monitoring 5/5, Developer Experience 4/5, Ownership & culture 4/5 |
+| 2 | Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs) | PASS — no recommendation to adopt Datadog, feature flags, or SLOs; Datadog Synthetics is a new capability recommendation, not Datadog itself; feature flag lifecycle process (not flags) is recommended |
+| 3 | Output must give at least one non-trivial medium- or long-term recommendation | PASS — A4: "contract testing for Supabase schema and API boundaries" (medium); A7: "Quality Engineering charter" (long) — both non-trivial |
+| 4 | Output must acknowledge the low incident rate of 0.1 P1/month | PASS — Executive summary: "4.2 deploys/day, 12-minute MTTR, and 0.1 P1/month are genuinely rare." |
+| 5 | Output must include at least one improvement item | PASS — nine action items, three genuine blockers; the report is not purely congratulatory |

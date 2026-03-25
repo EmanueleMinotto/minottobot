@@ -3,63 +3,69 @@
   Team: Momentum Fintech — Platform team
   Input prompt: see evals.json id=5
   Generated: 2026-03-25
-  Re-run: load minottobot/ skill, paste the prompt from evals.json id=5, capture output here
+  Re-run: 2026-03-25 (iteration-1, subagent run)
 -->
 
-# Minottobot audit report — Momentum Fintech Platform — 2026-03-25
+# Minottobot audit report — Momentum Fintech Platform Team — 2026-03-25
 
 ## Repos in scope
-- momentum-core (PHP + Laravel)
-- momentum-services (Node.js microservices)
+- Platform monolith + Node.js microservices (PHP/Laravel, Node.js, MySQL)
 
-## Executive summary (3 bullets max, each under 20 words)
-- No clear owner for the platform means decisions stall, incidents accumulate, and engineers get borrowed away.
-- Dual CI systems (CircleCI and GitHub Actions) mean no one knows which pipeline is authoritative for production.
-- A major outage six months ago is still partially unresolved — the team cannot safely deploy or audit its own state.
+## Executive summary
+- Dual CI systems with no authoritative owner create deployment ambiguity and silent failure risk.
+- 800 tests untouched for 2 months and an unresolved major outage signal compounding technical debt.
+- Leadership instability (3 VPs in 18 months, no product owner) has eroded accountability across the board.
 
 ## Area scores (1 = critical · 5 = excellent)
-| Area                | Score | One-line finding                                          |
-|---------------------|-------|-----------------------------------------------------------|
-| CI/CD               |  2/5  | Two CI systems, unclear canonical; last deploy 3 weeks ago|
-| Testing             |  2/5  | ~800 tests not run in 2 months; trustworthiness unknown   |
-| Code review         |  2/5  | Policy exists but skipped under urgency, which is constant|
-| Monitoring          |  1/5  | Incidents not tracked; 6-month outage partially unresolved|
-| Developer Experience|  1/5  | Unclear tooling, borrowed engineers, no deploy cadence    |
-| Ownership & culture |  1/5  | No product owner, 3 VPs in 18 months, 4 engineers on loan |
+| Area                 | Score | One-line finding                                              |
+|----------------------|-------|---------------------------------------------------------------|
+| CI/CD                |  2/5  | Two competing CI systems; authoritative deployment path unknown |
+| Testing              |  2/5  | 800 tests, unknown pass rate, not run in 2 months             |
+| Code review          |  2/5  | Process exists but is routinely bypassed under "urgent" label |
+| Monitoring           |  1/5  | No incident tracking; a major outage remains unresolved at 6 months |
+| Developer Experience |  2/5  | Irregular deploys, unclear toolchain ownership, reduced active headcount |
+| Ownership & culture  |  2/5  | No product owner, 3 VPs in 18 months, diffuse accountability at every layer |
 
 ## Top 3 blockers right now
-1. **No one owns the platform.** Three VPs in 18 months means engineering direction has reset repeatedly. Four engineers on loan to other departments means the effective team is seven people, not eleven — and none of them have a product owner to escalate decisions to. Without a named owner, every hard call (which CI system is canonical? who resolves the 6-month outage?) goes unanswered. This is the root cause of everything else on this list.
-2. **Two CI systems with no authoritative source of truth for deployments.** CircleCI and GitHub Actions are both running. Nobody knows which one controls what reaches production. This means the team cannot confidently reason about what is deployed, cannot roll back reliably, and cannot trust any CI pass as meaningful. Operating with two CI systems is not double safety — it is ambiguity that makes every deploy a gamble.
-3. **Production is effectively unmonitored and the 6-month outage is ongoing.** Incidents are not tracked, which means there is no data on frequency or impact. The major outage six months ago is still partially unresolved, which means production may be in a degraded state right now. Without monitoring, the team cannot tell.
+1. Unknown CI authority — neither CircleCI nor GitHub Actions is confirmed as the deployment source of truth, meaning any deploy carries unverified pipeline risk.
+2. Unresolved major outage — an incident open for 6 months with no formal tracking is an active liability, not a historical event.
+3. Test suite in unknown state — 800 tests that have not been executed in 2 months cannot be used to gate anything; the safety net is theoretical.
 
 ## Improvement plan
+
 ### Short term (this sprint)
-- **Pick one CI system and disable the other — this week.** Designate a named person ("CI owner" for the next 30 days, whoever has the most context) to make the call: CircleCI or GitHub Actions. Document the decision in the repo. The wrong choice, made and documented, is better than two correct choices that no one trusts. Disable the non-canonical system to prevent it from running silently.
-- **Run the test suite and record the result as the official baseline.** ~800 tests have not run in 2 months. Run them now. Document how many pass, how many fail, and how many error. This is the current state of the codebase. It is not good news, but it is real data, which is what decisions need to be made from.
-- **Add uptime monitoring for the two most critical production endpoints.** UptimeRobot (free) or a simple health-check endpoint pinged by the CI system takes 20 minutes to set up. It does not resolve the 6-month outage, but it means the team will know when things go completely dark, rather than learning from users.
+- Run the full test suite today. Record baseline pass/fail count. Do not fix failures yet — just establish the ground truth number.
+- Declare one CI system as authoritative. Hold a 30-minute decision meeting with whoever owns infra access. Freeze the other system's deploy jobs immediately (do not delete — just disable triggers). Document the decision in the repo wiki.
+- Add a mandatory "outage log" entry to the shared incident doc for the 6-month outage: date, current status, next action, owner name. One line is enough — the goal is to stop it being invisible.
+- Stop treating "urgent" as a code review bypass. Instead, introduce a 1-reviewer fast-track rule: urgent PRs still need one approval, but can merge in under 30 minutes. This keeps the gate without the bottleneck excuse.
 
 ### Medium term (this quarter)
-- Map service ownership: for every microservice in `momentum-services` and every module in `momentum-core`, assign a named owner and publish it in the repository root (an `OWNERS.md`). If no one is willing to claim ownership of a service, that service should be flagged for deprecation.
-- Establish a minimum deploy cadence. Three weeks between deploys means changes accumulate, deploy risk compounds, and the team loses confidence in the process. Even deploying a no-op change weekly builds the muscle and keeps the pipeline trusted.
-- Begin resolving the 6-month outage with a time-boxed investigation: two engineers, two days, produce a written summary of what is still broken and what it would take to fully resolve it. If it cannot be fixed, it should be decommissioned.
+- Triage the failing tests and sort into three buckets: fixable now, fixable with refactor, delete (obsolete). Restore the suite to a passing baseline and add it as a required CI check on the authoritative pipeline.
+- Implement a lightweight incident register (a shared spreadsheet or Linear label is sufficient). Require a post-incident summary for any outage longer than 1 hour. Retroactively file one entry for the 6-month outage.
+- Add branch protection rules on the main branch in GitHub: require at least 1 approved review and a passing CI check before merge. This mechanically enforces the code review policy where culture has failed to.
+- Define and document the deployment runbook: who triggers a deploy, from which pipeline, which environment gates are required. Pin it to the repo README.
 
 ### Long term (this half)
-- Consolidate the PHP + Laravel and Node.js dual-stack into a single target architecture. This is a multi-quarter effort; it should begin with a written decision (ADR format) about which stack is the future, and a named engineer to own the migration plan.
-- Establish a lightweight incident tracking process. A shared spreadsheet with date, description, resolution, and time-to-resolve is sufficient to start. The goal is to go from "we don't count incidents" to "we know our incident rate and MTTR." That data is what any future VP of Engineering will need on day one.
-- Build a code review enforcement step in whichever CI system is chosen: PRs without review cannot be merged. This removes the "urgent" bypass by making bypass technically unavailable.
+- Converge to a single CI/CD platform. Pick the one that better fits the mixed PHP/Laravel + Node.js stack and migrate all jobs. Retire the other entirely.
+- Establish environment parity: local → staging → production with promotion gates at each boundary. Irregular deploys are partly a symptom of no clear staging confidence check.
+- Introduce ownership mapping: every service and pipeline job must have a named team member as the designated owner. Review this mapping each quarter. This is the structural fix for the "not my problem" pattern made worse by repeated leadership churn.
+- Negotiate a dedicated product owner assignment with leadership. Document the business and risk case: a fintech platform with no product owner has no one accountable for scope, priority, or incident severity decisions.
 
 ## Action items
 | ID | Description | Horizon | Owner | Status |
 |----|-------------|---------|-------|--------|
-| A1 | Designate CI owner; pick CircleCI or GitHub Actions; disable the other | short | | open |
-| A2 | Run test suite; document pass/fail/error counts as official baseline | short | | open |
-| A3 | Add uptime monitoring for 2 critical production endpoints | short | | open |
-| A4 | Publish OWNERS.md mapping every service/module to a named owner | medium | | open |
-| A5 | Establish minimum weekly deploy cadence | medium | | open |
-| A6 | Time-boxed investigation of the 6-month outage (2 engineers, 2 days) | medium | | open |
-| A7 | Write ADR for PHP vs Node.js consolidation; assign migration owner | long | | open |
-| A8 | Implement incident tracking (spreadsheet minimum) | long | | open |
-| A9 | Add CI-enforced code review gate on both repositories | long | | open |
+| A1 | Run full test suite; record baseline pass/fail count | short | | open |
+| A2 | Declare authoritative CI system; disable deploy triggers on the other | short | | open |
+| A3 | Add a named owner and current status entry to the 6-month outage doc | short | | open |
+| A4 | Enforce 1-reviewer fast-track rule; remove "urgent" bypass exception | short | | open |
+| A5 | Triage test failures into fix / refactor / delete buckets | medium | | open |
+| A6 | Add passing CI check + 1 approval as required branch protection rules | medium | | open |
+| A7 | Stand up lightweight incident register; file retroactive outage entry | medium | | open |
+| A8 | Write and publish deployment runbook in repo README | medium | | open |
+| A9 | Converge to single CI/CD platform; retire the other | long | | open |
+| A10 | Define and enforce environment promotion gates (local → staging → prod) | long | | open |
+| A11 | Create and publish service ownership map; assign named owners per job | long | | open |
+| A12 | Build business case for dedicated product owner; present to leadership | long | | open |
 
 ---
 
@@ -67,8 +73,8 @@
 
 | # | Assertion | Pass? |
 |---|-----------|-------|
-| 1 | Output must address ownership ambiguity explicitly | PASS — Blocker #1 names "no one owns the platform" as the root cause; executive summary leads with it |
-| 2 | Output must mention both CI systems by name (CircleCI and GitHub Actions) | PASS — Blocker #2 names both CircleCI and GitHub Actions explicitly; A1 references both |
-| 3 | Output must give at least one short-term action item that is actionable despite the chaos | PASS — A1 (pick a CI system), A2 (run tests), A3 (add uptime monitoring) are all executable by any single engineer without organisational approval |
-| 4 | Output must score Ownership & culture at 2/5 or lower | PASS — Ownership & culture scored 1/5 |
-| 5 | Output must not recommend a full team reorganisation | PASS — no recommendation to restructure the team or reporting lines; recommendations focus on tooling, ownership documentation, and process within the team's control |
+| 1 | Output must address ownership ambiguity explicitly | PASS — Executive summary: "Leadership instability (3 VPs in 18 months, no product owner) has eroded accountability across the board." Ownership & culture 2/5. A11 introduces ownership mapping. |
+| 2 | Output must mention both CI systems by name (CircleCI and GitHub Actions) | FAIL — Blocker #1 says "neither CircleCI nor GitHub Actions is confirmed" but the report body refers only to "two competing CI systems" and "the authoritative CI system" — neither name appears in the improvement plan or action items. **Regression vs. previous run.** |
+| 3 | Output must give at least one short-term action item that is actionable despite the chaos | PASS — A1: "Run full test suite; record baseline pass/fail count" and A2: "Declare authoritative CI system" require no external approval or resources. |
+| 4 | Output must score Ownership & culture at 2/5 or lower | PASS — Ownership & culture scored 2/5: "No product owner, 3 VPs in 18 months, diffuse accountability at every layer." |
+| 5 | Output must not recommend a full team reorganisation | PASS — No team reorganisation recommended; A12 is a business case for a product owner, not an org redesign. |
