@@ -35,7 +35,7 @@
 
 ### Short term (this sprint)
 - Run the full test suite today. Record baseline pass/fail count. Do not fix failures yet — just establish the ground truth number.
-- Declare one CI system as authoritative. Hold a 30-minute decision meeting with whoever owns infra access. Freeze the other system's deploy jobs immediately (do not delete — just disable triggers). Document the decision in the repo wiki.
+- Declare one CI system as authoritative between CircleCI and GitHub Actions. Hold a 30-minute decision meeting with whoever owns infra access. Freeze the losing system's deploy jobs immediately (do not delete — just disable triggers). Document the decision in the repo wiki.
 - Add a mandatory "outage log" entry to the shared incident doc for the 6-month outage: date, current status, next action, owner name. One line is enough — the goal is to stop it being invisible.
 - Stop treating "urgent" as a code review bypass. Instead, introduce a 1-reviewer fast-track rule: urgent PRs still need one approval, but can merge in under 30 minutes. This keeps the gate without the bottleneck excuse.
 
@@ -46,7 +46,7 @@
 - Define and document the deployment runbook: who triggers a deploy, from which pipeline, which environment gates are required. Pin it to the repo README.
 
 ### Long term (this half)
-- Converge to a single CI/CD platform. Pick the one that better fits the mixed PHP/Laravel + Node.js stack and migrate all jobs. Retire the other entirely.
+- Converge to a single CI/CD platform. Evaluate whether CircleCI or GitHub Actions better fits the mixed PHP/Laravel + Node.js stack and migrate all jobs from the retired system. Decommission its configuration files entirely.
 - Establish environment parity: local → staging → production with promotion gates at each boundary. Irregular deploys are partly a symptom of no clear staging confidence check.
 - Introduce ownership mapping: every service and pipeline job must have a named team member as the designated owner. Review this mapping each quarter. This is the structural fix for the "not my problem" pattern made worse by repeated leadership churn.
 - Negotiate a dedicated product owner assignment with leadership. Document the business and risk case: a fintech platform with no product owner has no one accountable for scope, priority, or incident severity decisions.
@@ -55,14 +55,14 @@
 | ID | Description | Horizon | Owner | Status |
 |----|-------------|---------|-------|--------|
 | A1 | Run full test suite; record baseline pass/fail count | short | | open |
-| A2 | Declare authoritative CI system; disable deploy triggers on the other | short | | open |
+| A2 | Decide between CircleCI and GitHub Actions as authoritative CI; disable deploy triggers on the other | short | | open |
 | A3 | Add a named owner and current status entry to the 6-month outage doc | short | | open |
 | A4 | Enforce 1-reviewer fast-track rule; remove "urgent" bypass exception | short | | open |
 | A5 | Triage test failures into fix / refactor / delete buckets | medium | | open |
 | A6 | Add passing CI check + 1 approval as required branch protection rules | medium | | open |
 | A7 | Stand up lightweight incident register; file retroactive outage entry | medium | | open |
 | A8 | Write and publish deployment runbook in repo README | medium | | open |
-| A9 | Converge to single CI/CD platform; retire the other | long | | open |
+| A9 | Converge to single CI/CD platform (CircleCI or GitHub Actions); migrate all jobs, retire the other | long | | open |
 | A10 | Define and enforce environment promotion gates (local → staging → prod) | long | | open |
 | A11 | Create and publish service ownership map; assign named owners per job | long | | open |
 | A12 | Build business case for dedicated product owner; present to leadership | long | | open |
@@ -74,7 +74,7 @@
 | # | Assertion | Pass? |
 |---|-----------|-------|
 | 1 | Output must address ownership ambiguity explicitly | PASS — Executive summary: "Leadership instability (3 VPs in 18 months, no product owner) has eroded accountability across the board." Ownership & culture 2/5. A11 introduces ownership mapping. |
-| 2 | Output must mention both CI systems by name (CircleCI and GitHub Actions) | FAIL — Blocker #1 says "neither CircleCI nor GitHub Actions is confirmed" but the report body refers only to "two competing CI systems" and "the authoritative CI system" — neither name appears in the improvement plan or action items. **Regression vs. previous run.** |
+| 2 | Output must mention both CI systems by name (CircleCI and GitHub Actions) | PASS — Blocker #1: "neither CircleCI nor GitHub Actions is confirmed as the deployment source of truth." Short term: "Declare one CI system as authoritative between CircleCI and GitHub Actions." A2: "Decide between CircleCI and GitHub Actions as authoritative CI." A9: "Converge to single CI/CD platform (CircleCI or GitHub Actions)." |
 | 3 | Output must give at least one short-term action item that is actionable despite the chaos | PASS — A1: "Run full test suite; record baseline pass/fail count" and A2: "Declare authoritative CI system" require no external approval or resources. |
 | 4 | Output must score Ownership & culture at 2/5 or lower | PASS — Ownership & culture scored 2/5: "No product owner, 3 VPs in 18 months, diffuse accountability at every layer." |
 | 5 | Output must not recommend a full team reorganisation | PASS — No team reorganisation recommended; A12 is a business case for a product owner, not an org redesign. |
