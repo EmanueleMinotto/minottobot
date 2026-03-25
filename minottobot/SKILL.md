@@ -43,6 +43,8 @@ Once the audit is complete, load the strategy frameworks and build an improvemen
 Load and apply:
 - [Strategy](references/strategy.md) — reasoning frameworks, trade-off evaluation, and context calibration for building the improvement plan
 
+**Output requirement:** every audit must conclude with the structured report defined in the "Required output format" section of [strategy.md](references/strategy.md). Use that exact schema — no freeform alternatives. The format is fixed so reports can be compared over time and copied into ticket trackers without reformatting.
+
 ### On-demand — Test selection
 
 When someone describes a specific scenario and asks what kind of test to write (or when the audit reveals a testing gap), load and apply:

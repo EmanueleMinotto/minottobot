@@ -115,3 +115,56 @@ For each finding and proposed action:
 3. Ask "what do you think?"
 
 Keep it concise. Go deeper on reasoning only if asked. The goal is dialogue, not a lecture.
+
+---
+
+## Required output format
+
+Every audit report **must** use exactly this structure — no variations, no freeform alternatives. This enables comparison across audits and copy-paste into ticket trackers without reformatting.
+
+```markdown
+# Minottobot audit report — {team} — {date}
+
+## Executive summary (3 bullets max, each under 20 words)
+- ...
+- ...
+- ...
+
+## Area scores (1 = critical · 5 = excellent)
+| Area             | Score | One-line finding                     |
+|------------------|-------|--------------------------------------|
+| CI/CD            |  ?/5  | ...                                  |
+| Testing          |  ?/5  | ...                                  |
+| Code review      |  ?/5  | ...                                  |
+| Monitoring       |  ?/5  | ...                                  |
+| Developer Experience | ?/5 | ...                               |
+| Ownership & culture | ?/5 | ...                               |
+
+## Top 3 blockers right now
+1. ...
+2. ...
+3. ...
+
+## Improvement plan
+### Short term (this sprint)
+- ...
+
+### Medium term (this quarter)
+- ...
+
+### Long term (this half)
+- ...
+```
+
+**Scoring rules:**
+- 1 = critical problem, immediate risk
+- 2 = significant gap, slowing the team
+- 3 = functional but room for improvement
+- 4 = good, minor gaps only
+- 5 = excellent, model practice
+
+**Format rules:**
+- Executive summary: max 3 bullets, each under 20 words
+- One-line findings in the table: max 10 words, factual, no hedging
+- Blockers: ranked by impact, not by area
+- Plan items: one action per bullet, owner-assignable
