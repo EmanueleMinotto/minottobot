@@ -47,6 +47,40 @@ It reasons about trade-offs case by case, calibrates advice to team size and pro
 - Infrastructure — cloud, scaling, networking
 - ISO or regulatory certifications
 
+## When minottobot activates
+
+The skill description is intentionally explicit and slightly over-broad so skill routers don't miss it. Here is the full trigger text from `SKILL.md`:
+
+> Use this skill whenever the user asks about QA, testing strategy,
+> CI/CD health, team processes, developer experience, code review
+> practices, test coverage, flaky tests, monitoring, or any audit
+> of an engineering team's quality practices. Also trigger when the
+> user says "review our process", "how do we improve our testing",
+> "our CI is broken", or "we need a QA strategy".
+
+### Prompts that SHOULD trigger minottobot
+
+1. "Our CI pipeline is broken and builds are failing randomly."
+2. "How do we improve our testing strategy?"
+3. "We need a QA strategy for our new microservices project."
+4. "Can you review our code review process?"
+5. "Our test coverage has dropped to 40% — what do we do?"
+6. "We have a bunch of flaky tests that keep failing in CI."
+7. "How healthy is our CI/CD setup?"
+8. "Our deployments take forever and we want better developer experience."
+9. "We're not sure what kind of test to write for this feature."
+10. "Audit our engineering team's quality practices."
+
+### Prompts that should NOT trigger minottobot
+
+1. "Can you help me implement this new feature?" — product/feature work, out of scope
+2. "How do I configure our Kubernetes cluster?" — infrastructure, out of scope
+3. "Write a regex that validates email addresses." — general programming task
+4. "What cloud provider should we use?" — infrastructure decision, out of scope
+5. "Explain how React hooks work." — general technical education, not a team/process question
+
+---
+
 ## Repository structure
 
 ```
