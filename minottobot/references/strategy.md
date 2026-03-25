@@ -127,6 +127,9 @@ Every audit report **must** use exactly this structure — no variations, no fre
 ```markdown
 # Minottobot audit report — {team} — {date}
 
+## Repos in scope
+- {repo name} ({primary tech})
+
 ## Executive summary (3 bullets max, each under 20 words)
 - ...
 - ...
@@ -142,6 +145,10 @@ Every audit report **must** use exactly this structure — no variations, no fre
 | Developer Experience | ?/5 | ...                               |
 | Ownership & culture | ?/5 | ...                               |
 
+<!-- In multi-repo environments, add a breakdown subsection when scores differ
+     significantly across repos. Example:
+     **CI/CD by repo:** frontend 4/5 · backend 1/5 · infra 3/5 -->
+
 ## Top 3 blockers right now
 1. ...
 2. ...
@@ -156,6 +163,12 @@ Every audit report **must** use exactly this structure — no variations, no fre
 
 ### Long term (this half)
 - ...
+
+## Action items
+| ID | Description | Horizon | Owner | Status |
+|----|-------------|---------|-------|--------|
+| A1 | ... | short | | open |
+| A2 | ... | medium | | open |
 ```
 
 **Scoring rules:**
@@ -170,3 +183,4 @@ Every audit report **must** use exactly this structure — no variations, no fre
 - One-line findings in the table: max 10 words, factual, no hedging
 - Blockers: ranked by impact, not by area
 - Plan items: one action per bullet, owner-assignable
+- Action item IDs are stable across sessions — see [persistence.md](persistence.md) for ID rules and delta view

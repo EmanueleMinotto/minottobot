@@ -41,6 +41,33 @@ Once the audit is complete, minottobot builds an improvement plan on three horiz
 
 It reasons about trade-offs case by case, calibrates advice to team size and product context, and always evaluates options against a single golden rule: does this serve the user?
 
+## Code inspection
+
+When running inside a repository (Claude Code or any environment with file-system access), minottobot reads the codebase before asking questions.
+
+It starts by mapping which repositories are in scope — a single repo, multiple separate repos, or a monorepo with distinct sub-projects. It detects the primary technology of each from manifest files (`package.json`, `go.mod`, `pyproject.toml`, etc.) and adapts its scanning patterns accordingly.
+
+For each repo it scans: CI/CD configs, test files and test config, build scripts, lint/format configs, monitoring integrations, git history (last 20 commits), and onboarding documentation.
+
+After scanning all repos it produces an evidence map and flags cross-repo gaps — discrepancies between repositories (e.g., one has CI and the other doesn't) are often the most significant findings. If a Phase 0 answer contradicts what the code shows, minottobot flags it explicitly. The contradiction is itself a finding.
+
+Code inspection does not replace the Phase 0 questionnaire. Operational metrics (MTTR, incident count, deployment frequency) can't be read from code — those still require the team's input.
+
+## Multi-session tracking
+
+minottobot can track progress across sessions using a snapshot file stored in the repository.
+
+At the end of every audit, minottobot produces a snapshot and asks you to save it as `.minottobot/audit-YYYY-MM-DD.md` in your workspace root. The snapshot uses a fixed schema (area scores, top blockers, action items with stable IDs) so audits can be compared over time.
+
+When you start a new session and a previous snapshot exists, minottobot enters **returning engagement mode**: it shows a summary of the last audit (date, repos, scores, blockers) and asks what has changed. At the end of the new audit it appends a **delta view** to the report:
+
+- Score changes per area (`CI/CD: 2/5 → 3/5 ↑`)
+- Blockers resolved, still open, or new
+- Action item status changes (open → done)
+- Repo scope changes (repos added or removed between sessions)
+
+Action items have stable IDs (`A1`, `A2`, ...) that persist across sessions, so progress is traceable without manual cross-referencing.
+
 ## What minottobot doesn't do
 
 - Product features and roadmap — only *how* to build, never *what* to build
