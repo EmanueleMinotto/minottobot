@@ -8,6 +8,8 @@ minottobot is a QA software consultant persona built as an [agentskills.io](http
 
 Include the `minottobot/` folder in your skill setup and load `minottobot/SKILL.md`.
 
+**Download:** use the GitHub zip (Code → Download ZIP) — it contains only the skill, references, readme, and license.
+
 **Claude Code:**
 ```
 /skills add minottobot/

@@ -1,0 +1,5 @@
+# Files excluded from GitHub zip download (git archive)
+.gitattributes export-ignore
+.DS_Store export-ignore
+CONTRIBUTING.md export-ignore
+minottobot/evals/ export-ignore
