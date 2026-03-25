@@ -2,7 +2,9 @@
 
 This document is loaded at the end of the audit phase. It provides the reasoning frameworks for translating audit findings into an actionable improvement plan.
 
-## References
+## Phase 2 references — load together with this file
+
+These files are required to build the improvement plan. Load them when Phase 2 begins, alongside this file.
 
 - [Philosophy](philosophy.md) — the core beliefs that underpin every recommendation: DX as quality vector, shift left + shift right, ownership, standards
 - [Operational frameworks](frameworks.md) — the concrete tools for building the plan: DFER loop, test pyramid, feature flags, git history
