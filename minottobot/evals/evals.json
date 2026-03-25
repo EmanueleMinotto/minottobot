@@ -1,0 +1,70 @@
+{
+  "skill_name": "minottobot",
+  "evals": [
+    {
+      "id": 1,
+      "name": "startup-chaos",
+      "prompt": "Hi! Here's our Phase 0 baseline:\n\n- Team: 4 engineers (3 backend, 1 frontend), no dedicated QA\n- Tests: 0 — we keep saying we'll write them, but we haven't\n- CI: GitHub Actions, runs ESLint only, finishes in about 2 minutes\n- Deployment frequency: 2-3 times per day via `git push heroku main` — manual\n- Environments: local and production only, no staging\n- Incidents: roughly 1 per day, almost always reported by users before we notice. MTTR around 1 hour once we know about it\n- Code review: happens sometimes, no formal policy, whoever is around takes a look\n- Stack: Node.js API + React frontend + PostgreSQL\n- Company: Swiftly Inc, 2 years old, seed-stage SaaS",
+      "expected_output": "A structured audit report that acknowledges the zero-test baseline without shaming the team, scores CI/CD and Testing at 2/5 or lower, calls out the missing staging environment, recommends a specific test type to start with (not just 'add tests'), and avoids recommending a full test rewrite as the first step. Short-term action items must be actionable in a single sprint.",
+      "assertions": [
+        "Output must give at least one short-term action item related to testing",
+        "Output must mention the absence of a staging environment",
+        "Output must score CI/CD at 2/5 or lower",
+        "Output must recommend a specific test type to adopt first, not just 'add tests'",
+        "Output must not recommend a full test suite rewrite as the first step"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "enterprise-legacy",
+      "prompt": "Here is our Phase 0 data:\n\n- Team: 85 engineers across 8 product teams, no dedicated QA per team (central QA guild of 6)\n- Tests: approximately 12,000 — but around 30% are flaky and frequently ignored\n- CI: Jenkins, set up in 2011, maintained by a dedicated 'CI team'. Full build takes 47 minutes\n- Deployment frequency: biweekly release window, 6-hour deployment process with manual sign-offs\n- Incidents: 2 P1/month, 1 P2/month, MTTR approximately 4 hours\n- Code review: 3 required approvals, formal policy, but some teams skip it for 'hotfixes'\n- Stack: Java Spring Boot microservices, Oracle DB, React frontend\n- Company: FinanceCore Ltd, 20 years old, financial services, ~500 total employees",
+      "expected_output": "A structured audit report that explicitly names the 47-minute CI run time as a problem, addresses flaky tests as a trust issue rather than just a coverage issue, scores CI/CD at 2/5 or lower, gives at least one short-term action item, and does not recommend replacing Jenkins without acknowledging the migration cost and risk.",
+      "assertions": [
+        "Output must mention CI run time of 47 minutes",
+        "Output must address flaky tests specifically (not just 'tests exist')",
+        "Output must give at least one short-term action item",
+        "Output must score CI/CD at 2/5 or lower",
+        "Output must not recommend replacing Jenkins without acknowledging migration cost"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "post-incident",
+      "prompt": "Phase 0 — and yes, we're a bit shaken right now:\n\n- Team: 14 engineers + 2 dedicated QA\n- Tests: 340 unit, 45 integration, 12 E2E. The E2E tests were all written in the last week — before that we had none\n- CI: GitHub Actions, ~12 minutes, manual approval gate before production deploy\n- Deployment frequency: 1-2 times per week\n- Incident: 4 days ago a race condition in our payment processing service corrupted payment records for 2,100 users. Data partially recovered, investigation ongoing\n- Monitoring: We just added Sentry 3 days ago. Before that we had nothing. Users were telling us things were broken\n- Stack: Python + Django backend, React Native mobile app, PostgreSQL\n- Company: Norsk Mobility AS, 3 years old, B2C mobility platform",
+      "expected_output": "A structured audit report that explicitly references the recent incident and the race condition, recommends monitoring/observability as a priority, gives at least one short-term action item, and does not recommend 'psychological safety' as an action unless it is directly supported by a specific data point from the team's description.",
+      "assertions": [
+        "Output must reference the recent production incident explicitly",
+        "Output must give at least one short-term action item",
+        "Output must recommend monitoring or observability as a priority",
+        "Output must not recommend psychological safety without citing a specific data point",
+        "Output must reference the race condition or production data corruption"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "high-functioning",
+      "prompt": "Phase 0 for Helix team:\n\n- Team: 7 engineers, no dedicated QA — quality is everyone's job\n- Tests: 2,100 unit, 380 integration, 85 E2E\n- CI: GitHub Actions, 8 minutes, required to pass before merge — no exceptions\n- Deployment frequency: 4.2 deploys per day on average, all behind feature flags, automatic rollback on error spike\n- Incidents: 0.1 P1 per month, 0.5 P2 per month, MTTR 12 minutes\n- Monitoring: Datadog with custom SLOs per service, full on-call rotation with runbooks\n- Code review: 1 approval required, PRs consistently have substantive discussion\n- Stack: TypeScript + Next.js + Supabase\n- Company: Atmos (Helix team), 4 years old, B2B SaaS, Series B",
+      "expected_output": "A structured audit report that scores at least three areas at 4/5 or higher, acknowledges the genuinely low incident rate (0.1 P1/month), does not recommend tools the team already has (e.g. Datadog, feature flags), includes at least one non-trivial medium or long-term recommendation, and still surfaces at least one genuine improvement opportunity rather than being purely congratulatory.",
+      "assertions": [
+        "Output must score at least three areas at 4/5 or higher",
+        "Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs)",
+        "Output must give at least one non-trivial medium- or long-term recommendation",
+        "Output must acknowledge the low incident rate of 0.1 P1/month",
+        "Output must include at least one improvement item"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "org-chaos",
+      "prompt": "Phase 0 — honestly, this is going to be messy:\n\n- Team: 11 engineers on paper, but 4 are currently on loan to other departments. So effectively 7 active on this platform\n- Tests: around 800, but nobody has run them in about 2 months. We're not sure how many still pass\n- CI: we actually have two CI systems — CircleCI (set up originally) and GitHub Actions (added by someone 6 months ago). We're not sure which one is the authoritative one for deployments\n- Deployment frequency: irregular. Last deploy was 3 weeks ago\n- Incidents: we don't formally track them. We had a major outage 6 months ago that is still not fully resolved\n- Code review: officially required, but skipped whenever something is 'urgent' — which is often\n- Stack: PHP + Laravel (original codebase), Node.js microservices (newer parts), MySQL\n- Company: Momentum Fintech, Platform team. We've had 3 VPs of Engineering in the last 18 months. No product owner is currently assigned to this team",
+      "expected_output": "A structured audit report that explicitly addresses ownership ambiguity as a root cause, names both CI systems (CircleCI and GitHub Actions) as a concrete problem, gives at least one actionable short-term item that can be done despite the organisational chaos, scores Ownership & culture at 2/5 or lower, and does not recommend a full team reorganisation (which is outside minottobot's scope).",
+      "assertions": [
+        "Output must address ownership ambiguity explicitly",
+        "Output must mention both CI systems by name (CircleCI and GitHub Actions)",
+        "Output must give at least one short-term action item that is actionable despite the chaos",
+        "Output must score Ownership & culture at 2/5 or lower",
+        "Output must not recommend a full team reorganisation"
+      ]
+    }
+  ]
+}
