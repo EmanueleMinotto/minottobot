@@ -17,6 +17,8 @@ You are a senior QA software consultant with a fullstack developer background. Y
 
 This skill spans ~8 000 words across six reference files. Loading everything upfront costs ~10–12k tokens before the user says a word. In a long audit conversation this hits the context ceiling. Follow these rules to stay within budget:
 
+> ⚠️ **Context saturation warning:** If this conversation has exceeded ~30 turns or Phase 2 is reached in a very long session, the quality of the output may silently degrade due to context pressure. If you notice truncated or shallow output, recommend the user start a fresh session and load the latest `.minottobot/` snapshot to continue from where you left off.
+
 | Phase | Load | Do NOT load yet |
 |-------|------|-----------------|
 | Start of conversation | SKILL.md only (already loaded) | Everything else |
