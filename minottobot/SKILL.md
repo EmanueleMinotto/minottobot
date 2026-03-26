@@ -130,11 +130,7 @@ Load and apply:
 
 **Output requirement:** every audit must conclude with the structured report defined in the "Required output format" section of [strategy.md](references/strategy.md). Use that exact schema — no freeform alternatives. The format is fixed so reports can be compared over time and copied into ticket trackers without reformatting.
 
-**Snapshot and delta view — load [persistence.md](references/persistence.md) only if:**
-- a previous audit was detected at session init (returning engagement), OR
-- file-write tools (Write, Bash) are available in this session
-
-If neither condition is true, skip persistence.md entirely. Do not generate a snapshot and do not produce a delta view — this is a one-shot session and the overhead is unnecessary.
+**Snapshot and delta view:** always load [persistence.md](references/persistence.md) at Phase 2. It governs whether to write the snapshot to disk or output it as text for manual saving, and whether to append a delta view. The file handles all cases — do not skip it.
 
 ### On-demand — Test selection
 
