@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must address ownership ambiguity explicitly",
+      "passed": true,
+      "evidence": "Dedicated 'Ownership & culture' section states: 'No product owner means no one is accountable for prioritization — \"urgent\" becomes whatever is loudest.' Executive summary adds: 'leadership instability (3 VPs in 18 months) has eroded ownership culture.' Pattern identification section also flags: 'Cultural flags (leadership instability, no PO, process bypasses under urgency) → ownership and trust problem'."
+    },
+    {
+      "text": "Output must mention both CI systems by name (CircleCI and GitHub Actions)",
+      "passed": true,
+      "evidence": "Phase 0 table (row 5): 'two systems (CircleCI + GitHub Actions), authority unclear'. Top 3 blockers: 'CircleCI and GitHub Actions coexist with no agreed deployment source of truth'. CI/CD findings: 'CircleCI was the original system; GitHub Actions was added 6 months ago. Neither has been formally designated as the deployment authority.'"
+    },
+    {
+      "text": "Output must give at least one short-term action item that is actionable despite the chaos",
+      "passed": true,
+      "evidence": "Short term section includes: 'Run the full test suite once (against a non-production environment if possible) and record how many tests pass. This gives you a baseline.' Also: 'Designate GitHub Actions as the single CI authority for deployments and disable or archive CircleCI build triggers.' Both are concrete steps executable without resolving the broader organisational problems."
+    },
+    {
+      "text": "Output must score Ownership & culture at 2/5 or lower",
+      "passed": true,
+      "evidence": "Area scores table: '| 🔴 Ownership & culture  |  1/5  | 3 VPs in 18 months, no PO, urgency bypasses process'. Score is 1/5, which is at or below the 2/5 threshold."
+    },
+    {
+      "text": "Output must not recommend a full team reorganisation",
+      "passed": true,
+      "evidence": "No recommendation for team reorganisation appears anywhere in the report. Long-term items include adding a product owner ('Get a product owner formally assigned to the Platform team') and securing leadership commitment, but no restructuring of the team or reporting lines is proposed."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

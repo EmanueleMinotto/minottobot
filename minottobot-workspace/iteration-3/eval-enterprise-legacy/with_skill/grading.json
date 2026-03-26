@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must mention CI run time of 47 minutes",
+      "passed": true,
+      "evidence": "Row 3 of the quantitative baseline table: 'Average CI run time | 47 minutes | Significant DX friction; developers avoid re-runs'. Also appears in the executive summary: '30% flaky tests and a 47-minute Jenkins pipeline destroy developer trust and feedback loops.' and in the area scores table: '47-min Jenkins build, biweekly deploys, no team ownership'."
+    },
+    {
+      "text": "Output must address flaky tests specifically (not just 'tests exist')",
+      "passed": true,
+      "evidence": "The report quantifies and names the problem specifically: '~3,600 tests are unreliable and likely ignored' (baseline table), 'Flaky test epidemic — 3,600 flaky tests means the CI signal is untrustworthy; developers learn to ignore failures, eroding the entire safety net' (Top 3 blockers), and proposes concrete remediation: 'Quarantine all known flaky tests into a separate CI stage (\"quarantine suite\") so the main pipeline signal becomes trustworthy immediately'."
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": true,
+      "evidence": "The report lists four short-term action items in the improvement plan (sprint horizon) and the action items table includes A1–A4 all marked '⚡ short', e.g. A1: 'Quarantine flaky tests into separate CI stage | ⚡ short | QA Guild | ○ open'."
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": true,
+      "evidence": "Area scores table row: '🔴 CI/CD | 2/5 | 47-min Jenkins build, biweekly deploys, no team ownership'. The score of 2/5 satisfies the '2/5 or lower' threshold."
+    },
+    {
+      "text": "Output must not recommend replacing Jenkins without acknowledging migration cost",
+      "passed": false,
+      "evidence": "The medium-term section recommends: 'Migrate CI ownership from the central CI team to each product team's codebase — Jenkinsfiles (or a migration to GitHub Actions/GitLab CI) should live in the repo and be owned by the team that runs them.' Action item A5 reads: 'Transfer CI pipeline ownership (Jenkinsfiles) to product teams'. Neither the narrative nor any action item explicitly acknowledges migration cost, effort, or risk associated with moving away from Jenkins. The recommendation to migrate is made without a corresponding cost acknowledgment."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.80
+  }
+}

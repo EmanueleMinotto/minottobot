@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must give at least one short-term action item related to testing",
+      "passed": true,
+      "evidence": "Priority 4 in the action plan: 'Write 3–5 integration tests for critical API paths | 1–2 days | First automated correctness signal'"
+    },
+    {
+      "text": "Output must mention the absence of a staging environment",
+      "passed": true,
+      "evidence": "Executive Summary: 'no staging environment' and Section 3 Current State: 'Local development and production only. No staging environment.'"
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": false,
+      "evidence": "The report contains no numeric scoring system. CI/CD is described qualitatively as 'High Risk' but no X/5 score is assigned to any domain."
+    },
+    {
+      "text": "Output must recommend a specific test type to adopt first, not just 'add tests'",
+      "passed": true,
+      "evidence": "Testing Recommendations #1: 'Begin with integration tests for the most critical API endpoints (authentication, billing, core data flows). These provide the highest return on investment at this stage.'"
+    },
+    {
+      "text": "Output must not recommend a full test suite rewrite as the first step",
+      "passed": true,
+      "evidence": "Testing Recommendations #4: 'Do not attempt to retroactively test all existing code at once — prioritize by business criticality and risk of change.'"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.80
+  }
+}

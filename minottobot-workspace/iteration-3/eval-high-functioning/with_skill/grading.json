@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must score at least three areas at 4/5 or higher",
+      "passed": true,
+      "evidence": "CI/CD 5/5, Testing 4/5, Code review 4/5, Monitoring 5/5, Developer Experience 5/5, Ownership & culture 4/5 — six of six areas score 4/5 or higher."
+    },
+    {
+      "text": "Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs)",
+      "passed": true,
+      "evidence": "No recommendation to adopt Datadog, SLOs, or feature flags. The medium-term item 'Introduce a feature flag lifecycle review: monthly async scan of active flags' is a process recommendation for managing existing flags, not a suggestion to adopt the tooling. No new monitoring or observability tooling from the team's existing stack is proposed."
+    },
+    {
+      "text": "Output must give at least one non-trivial medium- or long-term recommendation",
+      "passed": true,
+      "evidence": "Medium term: 'Evaluate contract testing (e.g., Pact) for B2B SaaS integrations. At Series B with external customers, API contracts are a real integration risk worth guarding against.' Long term: 'Consider mutation testing (e.g., Stryker for TypeScript) on critical modules to validate that the 2,100 unit tests are actually catching real bugs — not just executing code paths.'"
+    },
+    {
+      "text": "Output must acknowledge the low incident rate of 0.1 P1/month",
+      "passed": false,
+      "evidence": "The specific figure '0.1 P1/month' does not appear anywhere in the report. The only incident-related mention is: 'MTTR of 12 minutes is excellent; capturing the \"why\" on even low-frequency incidents compounds learning at the team level.' — this references low frequency vaguely but never cites the 0.1 P1/month figure."
+    },
+    {
+      "text": "Output must include at least one improvement item",
+      "passed": true,
+      "evidence": "The report contains an 'Improvement plan' section with 11 action items (A1–A11) across short, medium, and long-term horizons, e.g. 'A1 | Audit and triage all skipped/disabled tests', 'A8 | Evaluate contract testing (Pact) for B2B API boundaries', 'A10 | Pilot mutation testing (Stryker) on highest-risk modules'."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.80
+  }
+}

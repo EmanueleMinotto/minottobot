@@ -1,0 +1,63 @@
+{
+  "iteration": 3,
+  "date": "2026-03-26",
+  "evals": [
+    "startup-chaos",
+    "enterprise-legacy",
+    "post-incident",
+    "high-functioning",
+    "org-chaos"
+  ],
+  "per_eval": {
+    "startup-chaos": {
+      "with_skill":    { "pass_rate": 1.0,  "tokens": 32656, "duration_ms": 148652 },
+      "without_skill": { "pass_rate": 0.8,  "tokens": 12436, "duration_ms": 108693 }
+    },
+    "enterprise-legacy": {
+      "with_skill":    { "pass_rate": 0.8,  "tokens": 32328, "duration_ms": 155280 },
+      "without_skill": { "pass_rate": 0.6,  "tokens": 14762, "duration_ms": 157581 }
+    },
+    "post-incident": {
+      "with_skill":    { "pass_rate": 1.0,  "tokens": 32406, "duration_ms": 130843 },
+      "without_skill": { "pass_rate": 0.8,  "tokens": 14244, "duration_ms": 136418 }
+    },
+    "high-functioning": {
+      "with_skill":    { "pass_rate": 0.8,  "tokens": 32895, "duration_ms": 144781 },
+      "without_skill": { "pass_rate": 0.8,  "tokens": 14270, "duration_ms": 139567 }
+    },
+    "org-chaos": {
+      "with_skill":    { "pass_rate": 1.0,  "tokens": 39671, "duration_ms": 194478 },
+      "without_skill": { "pass_rate": 0.8,  "tokens": 12799, "duration_ms": 106262 }
+    }
+  },
+  "run_summary": {
+    "with_skill": {
+      "pass_rate":    { "mean": 0.92,   "stddev": 0.10 },
+      "time_seconds": { "mean": 154.81, "stddev": 21.39 },
+      "tokens":       { "mean": 33991,  "stddev": 2847 }
+    },
+    "without_skill": {
+      "pass_rate":    { "mean": 0.76,   "stddev": 0.08 },
+      "time_seconds": { "mean": 129.70, "stddev": 19.55 },
+      "tokens":       { "mean": 13702,  "stddev": 912 }
+    },
+    "delta": {
+      "pass_rate":    0.16,
+      "time_seconds": 25.11,
+      "tokens":       20289
+    }
+  },
+  "notes": [
+    "iteration-3: same SKILL.md as iteration-2 — no changes applied between runs. This iteration captures a clean repeat to check result stability.",
+    "with_skill mean pass_rate: 0.92 — identical to iteration-2 (0.92). Results are stable.",
+    "startup-chaos with_skill: 5/5 (1.0) — improved from 0.8 in iteration-2. Assertion 1 now passes: the skill recommended unit tests explicitly as a short-term action item.",
+    "enterprise-legacy with_skill: 4/5 (0.8) — same as iteration-2. New failure: assertion 5 failed — Jenkins migration recommended without acknowledging migration cost. This is a new failure pattern not seen in iteration-2.",
+    "post-incident with_skill: 5/5 (1.0) — same as iteration-2.",
+    "high-functioning with_skill: 4/5 (0.8) — same as iteration-2. Assertion 4 ('must acknowledge the low incident rate of 0.1 P1/month') failed again. The skill still does not instruct citing user-provided metrics verbatim.",
+    "org-chaos with_skill: 5/5 (1.0) — same as iteration-2.",
+    "without_skill mean pass_rate: 0.76 — same as iteration-2. enterprise-legacy dropped to 0.6 (from 0.8) due to no numeric scoring schema; post-incident failed assertion 4 (blameless postmortem culture without data point).",
+    "with_skill uses ~148% more tokens than without_skill (33991 vs 13702) — higher than iteration-2 (72%). Org-chaos with_skill consumed 39,671 tokens (the highest single run), likely due to loading all reference files including persistence.md.",
+    "with_skill is ~25s slower on average (154.81s vs 129.70s). Iteration-2 showed with_skill was faster — this reversal may reflect model load variation.",
+    "Highest-priority findings for iteration-4: (1) add instruction to cite user-provided numeric metrics verbatim (fixes high-functioning assertion 4, persistent across iterations); (2) add instruction that when recommending CI system migration, explicitly acknowledge migration cost and risk (fixes enterprise-legacy assertion 5); (3) investigate why org-chaos with_skill used 39,671 tokens vs ~32k average — may indicate over-loading of reference files."
+  ]
+}

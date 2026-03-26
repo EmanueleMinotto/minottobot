@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must give at least one short-term action item related to testing",
+      "passed": true,
+      "evidence": "Add a `test` script placeholder in `package.json` and write the first 3 unit tests for the highest-risk API endpoint. The goal is not coverage — it is establishing the habit and the scaffold. (Short term / this sprint section)"
+    },
+    {
+      "text": "Output must mention the absence of a staging environment",
+      "passed": true,
+      "evidence": "No staging environment — without a staging environment, there is no safe place to test anything. Features go straight from local to production. (Top 3 blockers, item 3); also in Executive summary: 'Zero tests, no staging environment, and manual deploys create daily production incidents.'"
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": true,
+      "evidence": "CI/CD | 2/5 | Pipeline runs ESLint only; deploy is fully manual (Area scores table)"
+    },
+    {
+      "text": "Output must recommend a specific test type to adopt first, not just 'add tests'",
+      "passed": true,
+      "evidence": "write the first 3 unit tests for the highest-risk API endpoint (Short term section); medium term elaborates: 'Adopt Jest (backend) and Vitest (frontend) and reach 20% coverage on critical paths.' The first recommended test type is explicitly unit tests."
+    },
+    {
+      "text": "Output must not recommend a full test suite rewrite as the first step",
+      "passed": true,
+      "evidence": "The goal is not coverage — it is establishing the habit and the scaffold. Pick the endpoint that, if broken, would generate a support ticket in under 5 minutes. (Short term section); medium term reinforces: 'Do not target 100% — target the paths that, if broken, hurt users immediately.' No full rewrite is suggested anywhere."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

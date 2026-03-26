@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must mention CI run time of 47 minutes",
+      "passed": true,
+      "evidence": "CI pipeline age and speed (47-minute builds on a 2011 Jenkins setup) — mentioned in Executive Summary, CI/CD findings table ('Full build duration | 47 minutes | Poor — target is <15 minutes'), and repeated in analysis and metrics table ('CI build duration (full) | 47 min')."
+    },
+    {
+      "text": "Output must address flaky tests specifically (not just 'tests exist')",
+      "passed": true,
+      "evidence": "Section 2 is dedicated entirely to flaky tests with specific detail: 'A 30% flakiness rate is a serious indicator of test suite decay. More critically, the note that flaky tests are \"frequently ignored\" represents the most damaging state a test suite can be in: the team has implicitly accepted that CI signal is unreliable.' Root causes and a tiered remediation plan are also provided."
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": true,
+      "evidence": "Multiple short-term items are given, e.g. under Section 2 Recommendations 'Short-term (1–3 months): Introduce a flakiness tracking dashboard.' and Phase 1 of the roadmap: 'Quarantine flaky tests — separate suite, no longer blocking CI merges.' and Phase 2 'Parallelise CI pipeline — target 20-minute builds.'"
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": false,
+      "evidence": "The report contains no numerical scoring system (e.g. X/5) for any dimension including CI/CD. CI/CD is described qualitatively ('Significantly outdated', 'Poor') but no score out of 5 is assigned anywhere in the report."
+    },
+    {
+      "text": "Output must not recommend replacing Jenkins without acknowledging migration cost",
+      "passed": false,
+      "evidence": "The report recommends 'Evaluate modern CI platforms. Jenkins 2011 carries significant maintenance overhead. GitHub Actions, GitLab CI, or Buildkite should be evaluated. Migration can be phased by team.' and in Phase 3: 'Migrate CI to modern platform (GitHub Actions or equivalent).' The word 'phased' implies non-trivial effort but no explicit acknowledgment of migration cost (financial, time, or risk) is made anywhere in the report."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 2,
+    "total": 5,
+    "pass_rate": 0.60
+  }
+}

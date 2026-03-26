@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must reference the recent production incident explicitly",
+      "passed": true,
+      "evidence": "A race condition corrupted payment records for 2,100 users 4 days ago; investigation ongoing."
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": true,
+      "evidence": "Write a regression test that reproduces the payment race condition exactly — commit it before the fix is merged (this is the test that should have existed). [plus A1–A5 in the action items table, all marked ⚡ short]"
+    },
+    {
+      "text": "Output must recommend monitoring or observability as a priority",
+      "passed": true,
+      "evidence": "Monitoring scores 2/5 (red critical), listed as blocker #2: 'Monitoring covers only errors, not business health — Sentry catches exceptions but no alert exists for payment failure rates, transaction volumes, or latency spikes.' Action items A3, A4, A7, A8 all address monitoring/observability."
+    },
+    {
+      "text": "Output must not recommend psychological safety without citing a specific data point",
+      "passed": true,
+      "evidence": "The phrase 'psychological safety' does not appear anywhere in the report. The only related content is 'Build a post-incident review (PIR) ritual: blameless, structured, published internally' — no psychological safety claim is made, and therefore no unsupported recommendation exists."
+    },
+    {
+      "text": "Output must reference the race condition or production data corruption",
+      "passed": true,
+      "evidence": "A race condition corrupted payment records for 2,100 users 4 days ago; investigation ongoing. / No regression test for the payment race condition — the bug that hit 2,100 users has no automated guard; it can recur silently."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

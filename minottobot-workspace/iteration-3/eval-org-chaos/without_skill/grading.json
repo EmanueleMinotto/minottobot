@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must address ownership ambiguity explicitly",
+      "passed": true,
+      "evidence": "\"No product owner\" listed in the Team Capacity and Stability table; \"No product owner means the team has no clear external advocate for prioritisation\"; closing section states \"they require two things that are currently absent: a stable point of accountability within the team\""
+    },
+    {
+      "text": "Output must mention both CI systems by name (CircleCI and GitHub Actions)",
+      "passed": true,
+      "evidence": "CI/CD Pipeline table row: \"CI systems | 2 (CircleCI + GitHub Actions)\""
+    },
+    {
+      "text": "Output must give at least one short-term action item that is actionable despite the chaos",
+      "passed": true,
+      "evidence": "Immediate (This Week) section: \"Run the test suite. Document which tests pass, which fail, and which are skipped. Share results with the team.\" and \"Designate one CI system as authoritative. Communicate this to the team. Stop accepting the ambiguity.\""
+    },
+    {
+      "text": "Output must score Ownership & culture at 2/5 or lower",
+      "passed": false,
+      "evidence": "The report uses a qualitative risk-level system (HIGH / CRITICAL / MEDIUM) and does not contain any dimension labelled 'Ownership & culture' nor any numeric 1–5 scoring. No such score exists in the report."
+    },
+    {
+      "text": "Output must not recommend a full team reorganisation",
+      "passed": true,
+      "evidence": "The report's recommendations call for assigning an interim product owner, stabilising engineering leadership, and negotiating scope — none of which constitute a full team reorganisation. The closest statement is \"Stabilise engineering leadership. The recurring VP churn must be addressed at an organisational level,\" which is a leadership stability request, not a restructuring directive."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.80
+  }
+}

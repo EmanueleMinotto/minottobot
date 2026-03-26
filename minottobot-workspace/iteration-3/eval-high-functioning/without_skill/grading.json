@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must score at least three areas at 4/5 or higher",
+      "passed": true,
+      "evidence": "Testing: 'Score: Strong (4/5)'; CI: 'Score: Excellent (5/5)'; Deployment: 'Score: Excellent (4.5/5)'; Incident Management: 'Score: Excellent (4.5/5)'; Observability: 'Score: Strong (4/5)'; Code Review: 'Score: Strong (4/5)'; Team Structure: 'Score: Strong (4/5)'; Architecture: 'Score: Strong (4/5)' — eight areas scored 4/5 or higher."
+    },
+    {
+      "text": "Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs)",
+      "passed": false,
+      "evidence": "Priority 7 in recommendations: 'Confirm distributed tracing (Datadog APM) and frontend RUM coverage' — recommends extending Datadog (which the team already uses). Section 5 also states: 'Datadog RUM or an equivalent tool should be confirmed as in scope.' The team already has Datadog; recommending Datadog APM and Datadog RUM violates this constraint."
+    },
+    {
+      "text": "Output must give at least one non-trivial medium- or long-term recommendation",
+      "passed": true,
+      "evidence": "Section 8 (Architecture): 'Supabase is excellent for the current scale but has known scaling considerations around connection pooling (use PgBouncer/Supavisor), real-time subscription load, and row-level security (RLS) performance at high data volumes. These are not immediate concerns but should be on the architectural radar as the company scales post-Series B.' Also Priority 9: 'Supabase connection pooling and RLS performance review' rated Medium effort/impact — a forward-looking architectural recommendation."
+    },
+    {
+      "text": "Output must acknowledge the low incident rate of 0.1 P1/month",
+      "passed": true,
+      "evidence": "Section 4 metrics: 'P1 incidents: 0.1 per month (~1.2/year)'. Analysis: '0.1 P1/month means the team goes roughly 10 months between P1 incidents. This is consistent with the high deployment frequency and feature flag safety nets — defects are contained before becoming customer-impacting crises.'"
+    },
+    {
+      "text": "Output must include at least one improvement item",
+      "passed": true,
+      "evidence": "Section 10 'Prioritized Recommendations' contains 10 improvement items, including: 'Implement feature flag lifecycle management (expiry dates, review process)', 'Map E2E test coverage against critical user journeys', 'Formalize lightweight post-incident review process', and others."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.80
+  }
+}

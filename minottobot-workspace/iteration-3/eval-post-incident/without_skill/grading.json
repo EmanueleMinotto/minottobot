@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must reference the recent production incident explicitly",
+      "passed": true,
+      "evidence": "Trigger: Post-incident review following payment data corruption event — and in the Executive Summary: 'Norsk Mobility AS is a 3-year-old B2C mobility platform that has recently experienced a significant production incident: a race condition in the payment processing service corrupted payment records for approximately 2,100 users.'"
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": true,
+      "evidence": "Multiple short-term items are listed throughout the report. Example from Section 2.3: 'Short-term: Write targeted concurrency integration tests for payment processing using threading.Thread or asyncio with real database transactions.' Phase 2 of the roadmap is explicitly titled 'Short-Term (Next 2–4 Weeks)' and contains 9 items."
+    },
+    {
+      "text": "Output must recommend monitoring or observability as a priority",
+      "passed": true,
+      "evidence": "Section 4 (Observability Assessment) is entirely dedicated to this topic and lists two immediate recommendations: 'Immediate: Establish structured JSON logging with correlation IDs for all payment service requests.' and 'Immediate: Configure Sentry alerts for payment-related exceptions with immediate (< 5 minutes) notification to on-call.' The scorecard rates Observability at 2/10 and flags it as critical."
+    },
+    {
+      "text": "Output must not recommend psychological safety without citing a specific data point",
+      "passed": false,
+      "evidence": "Section 6.5 recommendation 6 states: 'Medium-term: Institute blameless postmortem culture for all P1/P2 incidents.' and Phase 3 item 4 states: 'Institute blameless postmortem process.' Neither is supported by a specific data point linking the absence of psychological safety to a measured outcome. The recommendation is made without citing any concrete evidence that psychological safety is a gap."
+    },
+    {
+      "text": "Output must reference the race condition or production data corruption",
+      "passed": true,
+      "evidence": "Executive Summary: 'a race condition in the payment processing service corrupted payment records for approximately 2,100 users.' Section 1.1: 'Four days ago, a race condition in the payment processing service corrupted payment records for 2,100 users.' Section 5 is titled 'Payment Processing Safety Assessment' with subsection '5.1 Race Condition Prevention (Django + PostgreSQL)'."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.80
+  }
+}
