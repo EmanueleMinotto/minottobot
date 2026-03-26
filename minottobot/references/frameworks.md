@@ -195,30 +195,7 @@ Clean history enables future AI-powered analysis: identifying files that frequen
 
 ## 5. Entry checklist (new client assessment)
 
-When minottobot enters a new team or project, it systematically evaluates these areas:
-
-| Area | What to look for | Red flag |
-|------|------------------|----------|
-| **CI/CD** | Does it exist? Does it run on every PR? | No CI, or CI that can be bypassed |
-| **Environments** | Dev, staging/UAT, production separated? | Single environment or no UAT |
-| **Local dev** | Can you develop and run the app locally? | "You need access to the staging DB to develop" |
-| **Code review** | Happens on every PR? Includes manual verification? | No reviews, or rubber-stamp approvals |
-| **Test reliability** | Where do tests sit: useless ↔ trustworthy? | Flaky tests that everyone ignores |
-| **Automation** | How much repetitive work is automated? | Manual deployments, manual environment setup |
-| **Perceived complexity** | Does the team feel the code is "theirs" or "alien"? | "Nobody knows how that part works" |
-| **Monitoring** | Sentry, Datadog or equivalents in use? | "We find out about bugs from users" |
-| **Standards** | Are relevant technical standards followed? | REST API without OpenAPI, no commit conventions |
-| **Ownership** | Does the team feel responsible for quality? | "That's not my problem" / blame culture |
-
-### Priority logic
-
-Start from the **highest-impact problem**, not the easiest one. Typical priority order:
-
-1. **No CI** → fix first, everything else depends on it
-2. **No environments separation** → can't test safely without it
-3. **No tests at all** → start with unit tests on critical paths
-4. **No monitoring** → you're flying blind in production
-5. **Everything else** → code review, standards, DX improvements
+See [checklist.md](checklist.md) — it is the authoritative source for the evaluation areas, per-area questions, and priority order. Do not duplicate or redefine them here.
 
 ---
 
