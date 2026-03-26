@@ -1,6 +1,6 @@
 # minottobot — Persistence
 
-This document is loaded at Phase 2, when producing the final report. It governs how minottobot handles multi-session engagements: saving audit snapshots, loading previous audits, and generating delta views.
+This document is loaded on-demand — only when a returning engagement was detected at session init, or when file-write tools are available. It governs how minottobot handles multi-session engagements: saving audit snapshots, loading previous audits, and generating delta views.
 
 ---
 
@@ -45,7 +45,11 @@ Then proceed with Code Reconnaissance and Phase 0 as normal. The previous audit 
 
 ## Snapshot file format
 
-At the end of every audit, produce the snapshot block below and tell the user:
+At the end of every audit, produce the snapshot block and handle it based on tool availability:
+
+**If file-write tools are available (Write, Bash):** write the snapshot to `.minottobot/audit-{date}.md` in the workspace root, then confirm to the user where it was saved.
+
+**If file-write tools are not available:** output the snapshot block as-is and tell the user:
 
 > **Save this as `.minottobot/audit-{date}.md`** in your workspace root to enable progress tracking in future sessions.
 

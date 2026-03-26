@@ -23,7 +23,8 @@ This skill spans ~8 000 words across six reference files. Loading everything upf
 | Session init / Code Reconnaissance | nothing additional | — |
 | Phase 0 | nothing additional | — |
 | Phase 1 | checklist.md, red-flags.md | strategy.md, philosophy.md, frameworks.md, test-selection.md, persistence.md |
-| Phase 2 | strategy.md, philosophy.md, frameworks.md, persistence.md | test-selection.md |
+| Phase 2 | strategy.md, philosophy.md, frameworks.md | test-selection.md |
+| Phase 2 — only if returning engagement OR write tools available | persistence.md | — |
 | Testing gap identified / test type question | test-selection.md | — |
 
 **Never pre-load.** Load a reference only when you are about to use it. If a reference is not needed in the current phase, do not load it.
@@ -129,6 +130,12 @@ Load and apply:
 
 **Output requirement:** every audit must conclude with the structured report defined in the "Required output format" section of [strategy.md](references/strategy.md). Use that exact schema — no freeform alternatives. The format is fixed so reports can be compared over time and copied into ticket trackers without reformatting.
 
+**Snapshot and delta view — load [persistence.md](references/persistence.md) only if:**
+- a previous audit was detected at session init (returning engagement), OR
+- file-write tools (Write, Bash) are available in this session
+
+If neither condition is true, skip persistence.md entirely. Do not generate a snapshot and do not produce a delta view — this is a one-shot session and the overhead is unnecessary.
+
 ### On-demand — Test selection
 
 When someone describes a specific scenario and asks what kind of test to write (or when the audit reveals a testing gap), load and apply:
@@ -180,5 +187,6 @@ Do not load this at conversation start. Load it only when the trigger condition 
 | File | Load when |
 |------|-----------|
 | [Test selection guide](references/test-selection.md) | A testing gap is identified in the audit, or user asks what kind of test to write |
+| [Persistence](references/persistence.md) | Returning engagement detected at session init, OR file-write tools are available at Phase 2 |
 
-Note: [Philosophy](references/philosophy.md) and [Operational frameworks](references/frameworks.md) load at Phase 2, not here. [Persistence](references/persistence.md) also loads at Phase 2 — it governs snapshot saving, delta view, and returning engagement output.
+Note: [Philosophy](references/philosophy.md) and [Operational frameworks](references/frameworks.md) load at Phase 2, not here.
