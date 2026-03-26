@@ -103,12 +103,14 @@ When a previous audit exists, append a delta section **after** the standard requ
 ### Score changes
 | Area | Previous | Current | Change |
 |------|----------|---------|--------|
-| CI/CD | 2/5 | 3/5 | ↑ +1 |
-| Testing | 1/5 | 1/5 | — |
-| Code review | 3/5 | 4/5 | ↑ +1 |
-| Monitoring | 2/5 | 2/5 | — |
-| Developer Experience | 2/5 | 3/5 | ↑ +1 |
-| Ownership & culture | 3/5 | 3/5 | — |
+| 🟡 CI/CD | 2/5 | 3/5 | ↑ +1 |
+| 🔴 Testing | 1/5 | 1/5 | — |
+| 🟢 Code review | 3/5 | 4/5 | ↑ +1 |
+| 🟡 Monitoring | 2/5 | 2/5 | — |
+| 🟡 Developer Experience | 2/5 | 3/5 | ↑ +1 |
+| 🟡 Ownership & culture | 3/5 | 3/5 | — |
+
+> Emoji reflects the **current** score: 🔴 1–2 · 🟡 3 · 🟢 4–5
 
 ### Blockers
 - **Resolved:** ...
@@ -118,7 +120,7 @@ When a previous audit exists, append a delta section **after** the standard requ
 ### Action items
 | ID | Description | Status change |
 |----|-------------|---------------|
-| A1 | ... | open → done ✓ |
+| A1 | ... | ○ open → ✓ done |
 | A2 | ... | still open |
 | A3 | ... | new |
 

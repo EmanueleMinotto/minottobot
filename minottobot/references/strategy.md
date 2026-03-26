@@ -136,51 +136,56 @@ Every audit report **must** use exactly this structure — no variations, no fre
 - ...
 
 ## Area scores (1 = critical · 5 = excellent)
-| Area             | Score | One-line finding                     |
-|------------------|-------|--------------------------------------|
-| CI/CD            |  ?/5  | ...                                  |
-| Testing          |  ?/5  | ...                                  |
-| Code review      |  ?/5  | ...                                  |
-| Monitoring       |  ?/5  | ...                                  |
-| Developer Experience | ?/5 | ...                               |
-| Ownership & culture | ?/5 | ...                               |
+| Area                    | Score | One-line finding                     |
+|-------------------------|-------|--------------------------------------|
+| 🔴 CI/CD                |  ?/5  | ...                                  |
+| 🔴 Testing              |  ?/5  | ...                                  |
+| 🟡 Code review          |  ?/5  | ...                                  |
+| 🟢 Monitoring           |  ?/5  | ...                                  |
+| 🟢 Developer Experience |  ?/5  | ...                                  |
+| 🟡 Ownership & culture  |  ?/5  | ...                                  |
+
+> 🔴 1–2 critical/gap · 🟡 3 functional · 🟢 4–5 good/excellent
 
 <!-- In multi-repo environments, add a breakdown subsection when scores differ
      significantly across repos. Example:
      **CI/CD by repo:** frontend 4/5 · backend 1/5 · infra 3/5 -->
 
 ## Top 3 blockers right now
-1. ...
-2. ...
-3. ...
+1. 🚨 **...** — ...
+2. ⚠️ **...** — ...
+3. ⚠️ **...** — ...
 
 ## Improvement plan
-### Short term (this sprint)
+### ⚡ Short term (this sprint)
 - ...
 
-### Medium term (this quarter)
+### ◆ Medium term (this quarter)
 - ...
 
-### Long term (this half)
+### ◎ Long term (this half)
 - ...
 
 ## Action items
 | ID | Description | Horizon | Owner | Status |
 |----|-------------|---------|-------|--------|
-| A1 | ... | short | | open |
-| A2 | ... | medium | | open |
+| A1 | ... | ⚡ short | | ○ open |
+| A2 | ... | ◆ medium | | ○ open |
 ```
 
 **Scoring rules:**
-- 1 = critical problem, immediate risk
-- 2 = significant gap, slowing the team
-- 3 = functional but room for improvement
-- 4 = good, minor gaps only
-- 5 = excellent, model practice
+- 1 = critical problem, immediate risk → 🔴
+- 2 = significant gap, slowing the team → 🔴
+- 3 = functional but room for improvement → 🟡
+- 4 = good, minor gaps only → 🟢
+- 5 = excellent, model practice → 🟢
 
 **Format rules:**
 - Executive summary: max 3 bullets, each under 20 words
 - One-line findings in the table: max 10 words, factual, no hedging
-- Blockers: ranked by impact, not by area
+- Emoji on area names: 🔴 for score 1–2, 🟡 for 3, 🟢 for 4–5
+- Blockers: 🚨 for score-1 risk or immediate threat, ⚠️ for score-2 or transversal impact; ranked by impact, not by area
+- Horizon icons: ⚡ short · ◆ medium · ◎ long (used in plan headings and action items table)
+- Status icons: ○ open · ✓ done · — blocked
 - Plan items: one action per bullet, owner-assignable
 - Action item IDs are stable across sessions — see [persistence.md](persistence.md) for ID rules and delta view
