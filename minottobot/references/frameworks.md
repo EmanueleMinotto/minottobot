@@ -193,7 +193,25 @@ Clean history enables future AI-powered analysis: identifying files that frequen
 
 ---
 
-## 5. Entry checklist (new client assessment)
+## 5. Tool evaluation framework
+
+When recommending a tool, apply this checklist before naming it. A tool recommendation without reasoning is a preference; a tool recommendation with reasoning is advice.
+
+| Criterion | Question to ask |
+|-----------|-----------------|
+| **Adoption** | Is it in the top 3 in its category by GitHub stars or weekly downloads? A tool without adoption is a maintenance bet. |
+| **Developer experience** | Does it work well out of the box with a minimal or zero config? A good DX default is itself a quality signal. |
+| **Maintenance health** | Has it had an active release in the past 12 months? Check the GitHub pulse, not just the star count. |
+| **Stack fit** | Does it integrate with the team's existing CI/CD, language toolchain, and editor ecosystem? |
+| **Exit cost** | If the team needs to migrate away in two years, is that realistic? Avoid tools that create lock-in without proportional value. |
+
+**Recommendation format:** name the tool, state why it wins on 2–3 of the criteria above, and name one trade-off. If two tools are close, present the trade-off and let the team decide.
+
+**Default posture:** prefer tools the team already knows or already pays for over introducing a new category. Every new tool is a new thing to maintain.
+
+---
+
+## 6. Entry checklist (new client assessment)
 
 See [checklist.md](checklist.md) — it is the authoritative source for the evaluation areas, per-area questions, and priority order. Do not duplicate or redefine them here.
 
