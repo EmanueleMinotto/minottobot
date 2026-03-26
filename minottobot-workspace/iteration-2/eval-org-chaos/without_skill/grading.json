@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must address ownership ambiguity explicitly",
+      "passed": true,
+      "evidence": "Key findings line: '3 VP changes in 18 months with no current Product Owner.' Organizational Governance is scored 2/10 (Critical). Ownership ambiguity is explicitly named in both the findings and the scoring table."
+    },
+    {
+      "text": "Output must mention both CI systems by name (CircleCI and GitHub Actions)",
+      "passed": false,
+      "evidence": "Key findings state 'two CI systems with no designated authoritative deployment pipeline' and the CI/CD Clarity score row says 'CI/CD Clarity & Reliability 2/10'. Neither CircleCI nor GitHub Actions is named anywhere in the report. Referring to 'two CI systems' without naming them fails this assertion."
+    },
+    {
+      "text": "Output must give at least one short-term action item that is actionable despite the chaos",
+      "passed": true,
+      "evidence": "Top immediate actions section: '(1) Run tests now to establish a baseline, (2) designate one authoritative CI pipeline and decommission the other, (3) open an incident tracker and document the unresolved outage, (4) enforce code review without urgency exceptions.' All four are concrete and executable."
+    },
+    {
+      "text": "Output must score Ownership & culture at 2/5 or lower",
+      "passed": true,
+      "evidence": "The report uses a 10-point scale. 'Organizational Governance 2/10' corresponds to 1/5 on a 5-point scale, which is at or below 2/5 (equivalent threshold: 4/10). 2/10 clearly passes."
+    },
+    {
+      "text": "Output must not recommend a full team reorganisation",
+      "passed": true,
+      "evidence": "The report's immediate actions focus on CI pipeline designation, test baseline, incident tracking, and code review enforcement. No recommendation to restructure team topology, reorg the organisation, or change reporting structures is present."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  }
+}

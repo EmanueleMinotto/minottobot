@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must give at least one short-term action item related to testing",
+      "passed": true,
+      "evidence": "Priority 2.1: 'Introduce a testing baseline — establish a forward rule: all new features and all bug fixes require a test. Start with the highest-risk surface area — database migrations, authentication flows, and any billing logic.'"
+    },
+    {
+      "text": "Output must mention the absence of a staging environment",
+      "passed": true,
+      "evidence": "Priority 1.3: 'Add a staging environment — Heroku supports environment pipelining natively.' Environment Strategy scored 1/5: 'No staging. Every change is validated in production by real users.'"
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": true,
+      "evidence": "CI/CD Pipeline scored 1.5/5: 'CI exists but provides almost no safety signal beyond syntax. No staging gate.' (1.5 ≤ 2)"
+    },
+    {
+      "text": "Output must recommend a specific test type to adopt first, not just 'add tests'",
+      "passed": true,
+      "evidence": "Priority 2.1 specifies 'Node.js API: Jest or Vitest with Supertest for HTTP-level integration tests; React frontend: Vitest + React Testing Library for component tests' — recommends specific test types with tooling."
+    },
+    {
+      "text": "Output must not recommend a full test suite rewrite as the first step",
+      "passed": true,
+      "evidence": "'Do not attempt to retroactively test the entire codebase. Instead, establish a forward rule: all new features and all bug fixes require a test.'"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

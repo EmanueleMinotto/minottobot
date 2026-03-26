@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must score at least three areas at 4/5 or higher",
+      "passed": true,
+      "evidence": "Six areas at 4/5 or higher: Test Coverage & Strategy 4/5, CI/CD Pipeline 4/5, Deployment Safety 5/5, Incident Management 5/5, Observability 5/5, Testing Culture 4/5."
+    },
+    {
+      "text": "Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs)",
+      "passed": true,
+      "evidence": "No recommendation to adopt Datadog, feature flags, or SLOs. New tooling recommended: Stryker (mutation testing), Lighthouse CI/bundle size tracking, supabase test db, Pact (contract testing). Datadog referenced only as existing context ('does this feature have a Datadog SLO?'), not as a new recommendation."
+    },
+    {
+      "text": "Output must give at least one non-trivial medium- or long-term recommendation",
+      "passed": true,
+      "evidence": "Priority 1.2: 'Formalize an architectural decision record (ADR) process.' Priority 2.1: 'Introduce mutation testing (Stryker).' These are substantive, non-trivial recommendations."
+    },
+    {
+      "text": "Output must acknowledge the low incident rate of 0.1 P1/month",
+      "passed": true,
+      "evidence": "Incident Management scored 5/5: '0.1 P1/month and 12-min MTTR at this scale is outstanding.' Executive summary: 'incident rate, MTTR, deploy frequency, and CI discipline — are elite-tier.'"
+    },
+    {
+      "text": "Output must include at least one improvement item",
+      "passed": true,
+      "evidence": "Multiple improvement items: CODEOWNERS 2-approval, ADR process, Supabase contract testing, mutation testing, Lighthouse CI, per-module coverage thresholds."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

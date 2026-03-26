@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must mention CI run time of 47 minutes",
+      "passed": true,
+      "evidence": "CI/CD Pipeline finding states: '47-minute build time destroys feedback loops.'"
+    },
+    {
+      "text": "Output must address flaky tests specifically (not just 'tests exist')",
+      "passed": true,
+      "evidence": "Test Quality finding states: '30% flaky test rate (~3,600 tests) erodes trust in the entire suite.' Specific percentage and count are provided."
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": true,
+      "evidence": "'Top 5 Immediate Actions' lists five items, including 'Quarantine all flaky tests from blocking CI' and 'Implement parallel test execution to cut build time'."
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": true,
+      "evidence": "CI/CD Pipeline scored 3/10 (30%), which is below the midpoint of 50% and therefore equivalent to 2/5 or lower on the required scale."
+    },
+    {
+      "text": "Output must not recommend replacing Jenkins without acknowledging migration cost",
+      "passed": false,
+      "evidence": "CI/CD finding recommends 'migrate to GitHub Actions/GitLab CI' as a direct fix with no mention of migration cost, risk, complexity, or sequencing. Immediate action #4 ('Begin CI platform migration evaluation') also contains no cost acknowledgment."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  }
+}

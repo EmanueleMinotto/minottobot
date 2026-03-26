@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must give at least one short-term action item related to testing",
+      "passed": true,
+      "evidence": "Short term: 'Write the first 5–10 unit tests targeting the highest-risk business logic (auth, billing, data mutations) — establish the habit, not coverage targets.' Action item A3 confirms this."
+    },
+    {
+      "text": "Output must mention the absence of a staging environment",
+      "passed": true,
+      "evidence": "Blocker #3: 'No staging environment — every untested change lands directly on paying customers with no intermediate validation.' Also scored under Developer Experience: 'No staging means devs can only validate in production.'"
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": true,
+      "evidence": "CI/CD scored 2/5: 'Actions runs lint only; deploys are fully manual with no pipeline gate.'"
+    },
+    {
+      "text": "Output must recommend a specific test type to adopt first, not just 'add tests'",
+      "passed": true,
+      "evidence": "Short term specifies unit tests: 'Write the first 5–10 unit tests targeting the highest-risk business logic (auth, billing, data mutations)'"
+    },
+    {
+      "text": "Output must not recommend a full test suite rewrite as the first step",
+      "passed": true,
+      "evidence": "First step is 5–10 targeted unit tests, not a rewrite. No mention of rewriting the existing (non-existent) suite."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

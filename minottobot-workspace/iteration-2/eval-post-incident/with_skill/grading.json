@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must reference the recent production incident explicitly",
+      "passed": true,
+      "evidence": "Executive summary states: 'Payment race condition corrupted 2,100 records; monitoring and test coverage were both absent at incident time.' The incident is also referenced in the top blockers and action items."
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": true,
+      "evidence": "Explicit 'Short term (this sprint)' section lists five items, e.g. 'Write regression test for the payment race condition covering the exact corruption scenario.' The Action Items table also labels A1–A5 with horizon 'short'."
+    },
+    {
+      "text": "Output must recommend monitoring or observability as a priority",
+      "passed": true,
+      "evidence": "Monitoring is scored 2/5 and listed as top blocker #2: 'Monitoring has no baseline or alerts. Sentry was added 3 days ago. The next incident will still be reported by users first.' Short-term actions include 'Configure Sentry alerts for error spikes, unhandled exceptions, and payment-critical errors' and medium-term adds 'structured logging and Sentry Performance'."
+    },
+    {
+      "text": "Output must not recommend psychological safety without citing a specific data point",
+      "passed": true,
+      "evidence": "The report recommends 'blameless incident culture' in the long-term section, but only after citing the concrete data point 'Users reported the incident before the team knew' (Ownership & culture score 2/5). The cultural recommendation is grounded in that specific observable failure, not issued as a generic platitude."
+    },
+    {
+      "text": "Output must reference the race condition or production data corruption",
+      "passed": true,
+      "evidence": "Multiple explicit references: 'Payment race condition corrupted 2,100 records' (executive summary); 'No concurrency or data-integrity tests for the payment service. The race condition is still not covered by automated tests' (top blockers #1); action item A1: 'Write regression test for the payment race condition'."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

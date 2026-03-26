@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must mention CI run time of 47 minutes",
+      "passed": true,
+      "evidence": "Multiple mentions: executive summary ('47-minute Jenkins build'), area scores table ('47-minute build, no clear gate'), and top blockers ('47-minute Jenkins build — feedback is too slow to be actionable')."
+    },
+    {
+      "text": "Output must address flaky tests specifically (not just 'tests exist')",
+      "passed": true,
+      "evidence": "Top blocker #1: '30% (~3,600 tests) are unreliable and ignored, making the entire suite untrustworthy; developers cannot get honest signal from CI.' Specific count, percentage, and impact are all stated."
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": true,
+      "evidence": "The 'Short term (this sprint)' section lists four concrete actions, and the action items table marks A1–A4 with horizon 'short' (e.g. 'Quarantine all flaky tests and open per-team flakiness backlog')."
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": true,
+      "evidence": "Area scores table explicitly shows: 'CI/CD | 2/5 | Jenkins from 2011, 47-minute build, no clear gate'."
+    },
+    {
+      "text": "Output must not recommend replacing Jenkins without acknowledging migration cost",
+      "passed": true,
+      "evidence": "Jenkins replacement is deferred to long-term and explicitly qualified: 'Evaluate Jenkins modernization … but only after the higher-urgency items above are stabilized.' Migration is framed as 'institutional risk' and an 'investment', acknowledging cost and sequencing constraints."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

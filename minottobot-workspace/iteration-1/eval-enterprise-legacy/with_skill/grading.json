@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must mention CI run time of 47 minutes",
+      "passed": true,
+      "evidence": "Executive summary: 'A 47-minute Jenkins build and biweekly windows are creating a dangerous release bottleneck.' CI/CD score: '47-min build, 15-year-old Jenkins, no path to fast feedback.'"
+    },
+    {
+      "text": "Output must address flaky tests specifically (not just 'tests exist')",
+      "passed": true,
+      "evidence": "Blocker #1: 'Flaky test epidemic. 30% of tests are untrusted. Every ignored failure is a potential P1 hiding in plain sight. This is not a coverage problem — it is a trust and discipline problem.' Testing scored 1/5: '3,600 ignored flaky tests make the suite actively misleading.'"
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": true,
+      "evidence": "Short term includes: 'Quarantine all known flaky tests immediately — move them to a separate suite, stop counting them as green, and assign ownership for triage.' (A1, A2, A3, A4 all short-term)"
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": true,
+      "evidence": "CI/CD scored 2/5: '47-min build, 15-year-old Jenkins, no path to fast feedback.'"
+    },
+    {
+      "text": "Output must not recommend replacing Jenkins without acknowledging migration cost",
+      "passed": true,
+      "evidence": "Long term: 'Evaluate Jenkins migration seriously — but treat it as a large, high-risk infrastructure project, not a quick fix. A 15-year-old Jenkins instance in a regulated financial environment will have undocumented dependencies and compliance artefacts attached to it. Any migration requires a parallel-run period, stakeholder sign-off, and an explicit rollback plan. Do not start this without dedicated resourcing.'"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

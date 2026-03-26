@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must score at least three areas at 4/5 or higher",
+      "passed": true,
+      "evidence": "All 6 areas score 4/5 or higher: CI/CD 5/5, Testing 4/5, Code review 4/5, Monitoring 5/5, Developer Experience 4/5, Ownership & culture 5/5."
+    },
+    {
+      "text": "Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs)",
+      "passed": true,
+      "evidence": "Datadog, feature flags, and SLOs are referenced only as existing capabilities already in use. New recommendations are all novel items: post-deploy smoke tests (Playwright/k6), OpenAPI/Supabase contract validation, mutation testing (Stryker), chaos/game-day exercises, coverage tooling (c8/istanbul), Conventional Commits."
+    },
+    {
+      "text": "Output must give at least one non-trivial medium- or long-term recommendation",
+      "passed": true,
+      "evidence": "Multiple non-trivial long-term recommendations are present, e.g. 'Invest in mutation testing (Stryker): at 2,100 unit tests, the question shifts from do tests exist? to do tests actually catch regressions?' and 'Build a chaos/resilience practice: proactive failure injection (game days, simulated service degradation) to validate runbooks before incidents happen.'"
+    },
+    {
+      "text": "Output must acknowledge the low incident rate of 0.1 P1/month",
+      "passed": false,
+      "evidence": "The report never mentions '0.1 P1/month' or the specific incident rate. The executive summary calls the team 'a model engineering team: fast CI, low incidents' but does not cite the 0.1 P1/month figure."
+    },
+    {
+      "text": "Output must include at least one improvement item",
+      "passed": true,
+      "evidence": "A full improvement plan with 9 action items is present across short, medium, and long horizons (A1–A9), including 'Add coverage reporting (c8/istanbul) to GitHub Actions CI', 'Add post-deploy smoke tests (Playwright or k6)', and 'Introduce mutation testing (Stryker)'."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  }
+}

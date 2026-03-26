@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must reference the recent production incident explicitly",
+      "passed": true,
+      "evidence": "Opening: 'You experienced a data-corrupting race condition in payment processing that affected 2,100 users, with no monitoring in place to catch it. That is the defining fact of this assessment.'"
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": true,
+      "evidence": "Priority 1 ('Stop the bleeding, this week') contains 3 concrete actions: audit payment service, add concurrency tests, set up Sentry alerts."
+    },
+    {
+      "text": "Output must recommend monitoring or observability as a priority",
+      "passed": true,
+      "evidence": "Priority 1.3: 'Set up Sentry alerts properly, not just collection.' Priority 2.1: 'Introduce observability with intent, not just error capture' including structured logging and metrics layer."
+    },
+    {
+      "text": "Output must not recommend psychological safety without citing a specific data point",
+      "passed": true,
+      "evidence": "Psychological safety is not mentioned anywhere in the report."
+    },
+    {
+      "text": "Output must reference the race condition or production data corruption",
+      "passed": true,
+      "evidence": "Opening and throughout: 'data-corrupting race condition in payment processing.' Priority 1.2: 'Add targeted concurrency tests to the payment service... a regression harness for exactly the class of bug that just hit you.'"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

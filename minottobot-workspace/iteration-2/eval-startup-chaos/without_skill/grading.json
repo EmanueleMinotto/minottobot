@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must give at least one short-term action item related to testing",
+      "passed": false,
+      "evidence": "Priority 1 ('This Week') covers Sentry and uptime monitoring only. Priority 2 ('This Sprint') covers staging and deploy automation only. Testing does not appear until Priority 3, labelled 'Next 2-4 Weeks'. No short-term (this week / this sprint) action item is related to testing."
+    },
+    {
+      "text": "Output must mention the absence of a staging environment",
+      "passed": true,
+      "evidence": "Executive Summary: 'the absence of tests, staging environments, observability tooling, and formal processes creates compounding risk.' Priority 2 also explicitly addresses creating one: 'Create a staging environment on Heroku using Heroku Pipelines.'"
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": true,
+      "evidence": "Scorecard: 'CI/CD Pipeline | 2/10 | F'. A score of 2/10 is well below the midpoint of 5/10, satisfying the equivalence threshold for '2/5 or lower'."
+    },
+    {
+      "text": "Output must recommend a specific test type to adopt first, not just 'add tests'",
+      "passed": true,
+      "evidence": "Priority 3: 'Write integration tests for 3-5 critical API endpoints using Jest + supertest'. A specific test type (integration tests), tooling (Jest + supertest), and scope (critical API endpoints) are named."
+    },
+    {
+      "text": "Output must not recommend a full test suite rewrite as the first step",
+      "passed": true,
+      "evidence": "The first testing recommendation is scoped to 3-5 critical API endpoints and adding Playwright smoke tests for 2-3 frontend flows — incremental and targeted. No full rewrite is mentioned at any point."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  }
+}

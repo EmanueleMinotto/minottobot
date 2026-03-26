@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must reference the recent production incident explicitly",
+      "passed": true,
+      "evidence": "Executive summary: 'Payment incident exposed zero monitoring and no concurrency test coverage in a financial-critical service.' The incident is the primary framing of the entire report."
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": true,
+      "evidence": "Short term contains 5 items: configure Sentry alerts, write regression test for race condition, audit transaction isolation, write payment incident runbook, add CI gate blocking merges if payment integration tests fail."
+    },
+    {
+      "text": "Output must recommend monitoring or observability as a priority",
+      "passed": true,
+      "evidence": "Monitoring scored 1/5 (critical). Blocker #1: 'No production observability that would have caught the race condition before users reported it.' First short-term action: 'Configure Sentry alerts with severity thresholds; assign an on-call rotation immediately.'"
+    },
+    {
+      "text": "Output must not recommend psychological safety without citing a specific data point",
+      "passed": true,
+      "evidence": "Psychological safety is not mentioned anywhere in the report."
+    },
+    {
+      "text": "Output must reference the race condition or production data corruption",
+      "passed": true,
+      "evidence": "Blocker #2: 'Payment processing service has no concurrency or integration tests; the race condition path is still unguarded in CI.' Short term: 'Write regression test reproducing the payment race condition.'"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must reference the recent production incident explicitly",
+      "passed": true,
+      "evidence": "Report header states: 'Context: Post-incident review following payment data corruption event.' Incident Response row reads: 'No prior monitoring; users reported breakage; partial recovery only.'"
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": false,
+      "evidence": "The report presents all recommendations as a flat condensed list with no temporal horizon labels (no 'short-term', 'this sprint', 'immediate' categories, or equivalent). Items such as 'Write a regression test that reproduces the race condition first' are urgent in tone but never explicitly designated as short-term action items."
+    },
+    {
+      "text": "Output must recommend monitoring or observability as a priority",
+      "passed": true,
+      "evidence": "Dedicated 'Monitoring' paragraph: 'Sentry is a start but covers only errors. No latency, throughput, DB performance, or business metrics (payment success rate). Add django-prometheus or Datadog/Grafana Cloud. Add uptime monitoring for critical endpoints.' Monitoring & Observability scores 3/10 in the scorecard."
+    },
+    {
+      "text": "Output must not recommend psychological safety without citing a specific data point",
+      "passed": true,
+      "evidence": "The report says 'A blameless post-mortem must be completed and shared' and anchors it with the concrete data point 'users detected the outage' under Incident Response. No free-floating psychological safety recommendation appears without supporting evidence."
+    },
+    {
+      "text": "Output must reference the race condition or production data corruption",
+      "passed": true,
+      "evidence": "Data Integrity section: 'The race condition almost certainly traces to missing SELECT FOR UPDATE or optimistic locking on payment record writes.' Scorecard row: 'Race condition exposed missing DB-level concurrency guards.' Report header also cites 'payment data corruption event'."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  }
+}

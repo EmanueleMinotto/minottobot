@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must address ownership ambiguity explicitly",
+      "passed": true,
+      "evidence": "Executive summary: 'Leadership instability (3 VPs in 18 months, no product owner) has eroded accountability across the board.' Ownership & culture 2/5. Long term: 'Introduce ownership mapping: every service and pipeline job must have a named team member as the designated owner.'"
+    },
+    {
+      "text": "Output must mention both CI systems by name (CircleCI and GitHub Actions)",
+      "passed": false,
+      "evidence": "The report consistently refers to 'two competing CI systems' and 'the authoritative CI system' without naming CircleCI or GitHub Actions by name. Neither name appears in the output."
+    },
+    {
+      "text": "Output must give at least one short-term action item that is actionable despite the chaos",
+      "passed": true,
+      "evidence": "Short term A1: 'Run full test suite; record baseline pass/fail count.' A2: 'Declare authoritative CI system; disable deploy triggers on the other.' Both require no external dependencies or organizational change."
+    },
+    {
+      "text": "Output must score Ownership & culture at 2/5 or lower",
+      "passed": true,
+      "evidence": "Ownership & culture scored 2/5: 'No product owner, 3 VPs in 18 months, diffuse accountability at every layer.'"
+    },
+    {
+      "text": "Output must not recommend a full team reorganisation",
+      "passed": true,
+      "evidence": "No team reorganisation recommended. 'Negotiate a dedicated product owner assignment with leadership' and 'create and publish service ownership map' are process/accountability changes, not org redesign."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  }
+}

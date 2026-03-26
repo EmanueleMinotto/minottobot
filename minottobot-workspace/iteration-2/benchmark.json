@@ -1,0 +1,60 @@
+{
+  "iteration": 2,
+  "date": "2026-03-26",
+  "evals": [
+    "startup-chaos",
+    "enterprise-legacy",
+    "post-incident",
+    "high-functioning",
+    "org-chaos"
+  ],
+  "per_eval": {
+    "startup-chaos": {
+      "with_skill":    { "pass_rate": 0.8,  "tokens": 21956, "duration_ms": 72702 },
+      "without_skill": { "pass_rate": 0.8,  "tokens": 12933, "duration_ms": 91506 }
+    },
+    "enterprise-legacy": {
+      "with_skill":    { "pass_rate": 1.0,  "tokens": 24163, "duration_ms": 104551 },
+      "without_skill": { "pass_rate": 0.8,  "tokens": 13904, "duration_ms": 117794 }
+    },
+    "post-incident": {
+      "with_skill":    { "pass_rate": 1.0,  "tokens": 26146, "duration_ms": 135460 },
+      "without_skill": { "pass_rate": 0.8,  "tokens": 13991, "duration_ms": 120649 }
+    },
+    "high-functioning": {
+      "with_skill":    { "pass_rate": 0.8,  "tokens": 22284, "duration_ms": 64672 },
+      "without_skill": { "pass_rate": 0.6,  "tokens": 14046, "duration_ms": 118465 }
+    },
+    "org-chaos": {
+      "with_skill":    { "pass_rate": 1.0,  "tokens": 22183, "duration_ms": 71705 },
+      "without_skill": { "pass_rate": 0.8,  "tokens": 13050, "duration_ms": 98328 }
+    }
+  },
+  "run_summary": {
+    "with_skill": {
+      "pass_rate":    { "mean": 0.92,  "stddev": 0.10 },
+      "time_seconds": { "mean": 89.82, "stddev": 26.66 },
+      "tokens":       { "mean": 23346, "stddev": 1607 }
+    },
+    "without_skill": {
+      "pass_rate":    { "mean": 0.76,  "stddev": 0.08 },
+      "time_seconds": { "mean": 109.35, "stddev": 12.02 },
+      "tokens":       { "mean": 13585, "stddev": 488 }
+    },
+    "delta": {
+      "pass_rate":    0.16,
+      "time_seconds": -19.53,
+      "tokens":       9761
+    }
+  },
+  "notes": [
+    "SKILL.md fix (iteration-2): added 'Name tools and systems verbatim' instruction. org-chaos with_skill improved from 4/5 (0.80) to 5/5 (1.00) — CircleCI and GitHub Actions now named explicitly in the report.",
+    "with_skill mean pass_rate: 0.92 (down from 0.96 in iteration-1). Two new failures emerged.",
+    "startup-chaos with_skill: assertion 1 failed — 'must give at least one short-term action item related to testing'. The skill correctly prioritizes monitoring before testing for zero-test teams, but the assertion expects testing in the short-term horizon. This assertion may be too strict, or the skill needs a rule for zero-test baselines.",
+    "high-functioning with_skill: assertion 4 failed — 'must acknowledge the low incident rate of 0.1 P1/month'. The report says 'low incidents' but does not cite the specific figure. Same root cause as the tool-naming fix: specific user-provided metrics should be cited verbatim.",
+    "without_skill mean pass_rate: 0.76 (down from 1.00 in iteration-1). The without_skill agents produced shorter, less-structured reports this run. The high-functioning without_skill report was truncated and lacked a recommendations section entirely, causing 2 failures.",
+    "with_skill uses ~72% more tokens than without_skill (23346 vs 13585) due to loading 4 reference files (SKILL.md, checklist.md, red-flags.md, strategy.md). This is the expected cost of a structured skill.",
+    "with_skill is ~19.5s faster on average (89.82s vs 109.35s). Structured instructions produce more direct, focused output.",
+    "Highest-priority findings for iteration 3: (1) add instruction to cite user-provided metrics verbatim (not just tools), generalizing the tool-naming fix; (2) clarify that testing is always a short-term item when the team has zero or near-zero tests."
+  ]
+}

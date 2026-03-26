@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must address ownership ambiguity explicitly",
+      "passed": true,
+      "evidence": "Team Stability & Ownership scored 1.5/5: 'There is no stable decision-making authority.' Structural Observations: 'Before implementing any of the above recommendations, identify who currently has the authority to make and sustain these decisions.' Priority 3.3 addresses team ownership explicitly."
+    },
+    {
+      "text": "Output must mention both CI systems by name (CircleCI and GitHub Actions)",
+      "passed": true,
+      "evidence": "Priority 1.1: 'Designate one authoritative CI system. Pick either CircleCI or GitHub Actions.' Both names explicitly mentioned."
+    },
+    {
+      "text": "Output must give at least one short-term action item that is actionable despite the chaos",
+      "passed": true,
+      "evidence": "Priority 1 ('Weeks 1–2'): 'Run the test suite immediately and record the result.' and 'Designate one authoritative CI system.' Summary: 'Run the test suite. Record the number. Identify which CI system triggered the last 3 deployments.' All actionable with current team."
+    },
+    {
+      "text": "Output must score Ownership & culture at 2/5 or lower",
+      "passed": true,
+      "evidence": "Team Stability & Ownership scored 1.5/5: '4 of 11 engineers on loan, no product owner, 3 engineering VPs in 18 months.' (1.5 ≤ 2)"
+    },
+    {
+      "text": "Output must not recommend a full team reorganisation",
+      "passed": true,
+      "evidence": "No team reorganisation recommended. 'Advocate for a product owner assignment' and 'define team ownership while engineers are on loan' are process changes, not structural reorganisation."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

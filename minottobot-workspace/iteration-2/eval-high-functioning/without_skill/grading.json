@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must score at least three areas at 4/5 or higher",
+      "passed": true,
+      "evidence": "All 6 dimensions score 80/100 or higher (equivalent to 4/5+): Testing & Quality 88, CI/CD & Deployment 95, Incident Management 96, Observability & Monitoring 93, Code Review & Culture 90, Team Structure & Scalability 80."
+    },
+    {
+      "text": "Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs)",
+      "passed": true,
+      "evidence": "Datadog is referenced as already in use; the recommendation 'enable Datadog burn rate alerts' is an enhancement to existing Datadog usage, not a new tool adoption. Feature flags are noted as already present. No recommendation to newly adopt Datadog, feature flags, or SLOs as net-new tooling."
+    },
+    {
+      "text": "Output must give at least one non-trivial medium- or long-term recommendation",
+      "passed": false,
+      "evidence": "The report is truncated at 25 lines and contains only an executive summary block. No medium- or long-term recommendation section exists anywhere in the output."
+    },
+    {
+      "text": "Output must acknowledge the low incident rate of 0.1 P1/month",
+      "passed": true,
+      "evidence": "'Extremely low P1 rate (0.1/month) and 12-minute MTTR are standout metrics — 3–5x better than industry median'"
+    },
+    {
+      "text": "Output must include at least one improvement item",
+      "passed": false,
+      "evidence": "The report is truncated at 25 lines; it ends after the key findings block. No improvement items, action plan, or recommendations section is present in the output."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 2,
+    "total": 5,
+    "pass_rate": 0.6
+  }
+}

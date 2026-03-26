@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must give at least one short-term action item related to testing",
+      "passed": false,
+      "evidence": "The four short-term items (A1–A4) cover Sentry, uptime monitoring, branch protection, and code review policy. No testing action item appears in the short-term horizon. The first testing item (A6: 'Write integration tests for top 3 incident-prone API endpoints') is explicitly marked medium-term."
+    },
+    {
+      "text": "Output must mention the absence of a staging environment",
+      "passed": true,
+      "evidence": "Executive summary bullet: 'No staging environment means every deploy is a live experiment on real users.' Also listed as blocker #3: 'No staging environment — untested code ships directly to production users, amplifying every other risk.'"
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": true,
+      "evidence": "Area scores table: 'CI/CD | 2/5 | GitHub Actions exists but enforces no quality gate'. Score is exactly 2/5."
+    },
+    {
+      "text": "Output must recommend a specific test type to adopt first, not just 'add tests'",
+      "passed": true,
+      "evidence": "Medium-term section: 'start with integration tests for the Node.js API using Jest + Supertest, targeting the three most incident-prone endpoints first.' The specific test type (integration tests), framework (Jest + Supertest), scope (API), and targeting criteria are all named."
+    },
+    {
+      "text": "Output must not recommend a full test suite rewrite as the first step",
+      "passed": true,
+      "evidence": "The first testing recommendation is targeted and incremental: integration tests on the three most incident-prone endpoints, with explicit guidance to 'Don't aim for coverage percentage — aim for the paths that have burned the team.' No full rewrite is suggested at any stage."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  }
+}

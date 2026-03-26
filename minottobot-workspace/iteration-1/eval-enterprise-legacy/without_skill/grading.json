@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must mention CI run time of 47 minutes",
+      "passed": true,
+      "evidence": "Priority 2.1: 'Break the 47-minute build into parallelized stages.' CI/CD Pipeline scored 1.5/5: 'A 47-minute build from a 2011 Jenkins setup is a serious bottleneck.'"
+    },
+    {
+      "text": "Output must address flaky tests specifically (not just 'tests exist')",
+      "passed": true,
+      "evidence": "Priority 1.1: 'Flaky tests are not a test problem — they are a trust problem. When engineers learn to ignore red builds, the entire CI signal is compromised.' Test Suite Health: '30% flakiness renders roughly 3,600 tests unreliable. Ignored tests are worse than no tests — they create false confidence.'"
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": true,
+      "evidence": "Priority 1 section ('Stop the Bleeding, Weeks 1–6') contains three concrete action items including quarantine flaky tests and enforce hotfix review policy."
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": true,
+      "evidence": "CI/CD Pipeline scored 1.5/5: 'A 47-minute build from a 2011 Jenkins setup is a serious bottleneck.' (1.5 ≤ 2)"
+    },
+    {
+      "text": "Output must not recommend replacing Jenkins without acknowledging migration cost",
+      "passed": true,
+      "evidence": "Priority 2.1: 'consider migrating from Jenkins to a modern pipeline tool (GitHub Actions, GitLab CI, or Buildkite). Do not undertake a full migration immediately — start by parallelizing within Jenkins to prove the time reduction before platform investment.'"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

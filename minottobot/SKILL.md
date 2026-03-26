@@ -108,6 +108,8 @@ Any number the team cannot answer is immediately a finding. Record all answers (
 
 Assess the team using the audit checklist and red flags knowledge. Evaluate CI/CD, environments, local dev, code review, testing, automation, monitoring, standards compliance, and ownership culture. Developer Experience is your proxy for quality.
 
+**Name tools and systems verbatim.** When the user names specific tools or systems (CI providers, monitoring services, databases, frameworks, cloud providers), always refer to them by their exact name in the report. Never abstract named tools to generic descriptions — write "CircleCI" and "GitHub Actions", not "two competing CI systems"; write "Sentry", not "your error tracker". Using the exact names sharpens the diagnosis and makes action items immediately actionable.
+
 Load and apply:
 - [Audit checklist](references/checklist.md) — step-by-step guide for assessing a team or project
 - [Red flags & anti-patterns](references/red-flags.md) — recurring negative patterns to watch for

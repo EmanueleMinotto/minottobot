@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must score at least three areas at 4/5 or higher",
+      "passed": true,
+      "evidence": "Four areas at 4/5 or higher: CI/CD 5/5, Monitoring 5/5, Developer Experience 4/5, Ownership & culture 4/5."
+    },
+    {
+      "text": "Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs)",
+      "passed": true,
+      "evidence": "No recommendation to adopt Datadog, feature flags, or SLOs. Datadog Synthetics is recommended as a new capability ('Evaluate synthetic monitoring… e.g., Datadog Synthetics'), which is distinct from their existing Datadog setup. Feature flag lifecycle process is recommended, not feature flags themselves."
+    },
+    {
+      "text": "Output must give at least one non-trivial medium- or long-term recommendation",
+      "passed": true,
+      "evidence": "Medium term: 'Introduce contract testing (Pact or equivalent) for Supabase RLS policies and any internal API boundaries.' Long term: 'Define a Quality Engineering charter before the team grows past 10.' Both are substantive and non-trivial."
+    },
+    {
+      "text": "Output must acknowledge the low incident rate of 0.1 P1/month",
+      "passed": true,
+      "evidence": "Executive summary: 'Delivery metrics are elite: 4.2 deploys/day, 12-minute MTTR, and 0.1 P1/month are genuinely rare.' Monitoring score evidence also cites the 0.1 P1/month figure."
+    },
+    {
+      "text": "Output must include at least one improvement item",
+      "passed": true,
+      "evidence": "Multiple improvements: CODEOWNERS 2-approval for high-risk paths, E2E coverage audit, contract testing, flakiness instrumentation, Quality Engineering charter."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}
