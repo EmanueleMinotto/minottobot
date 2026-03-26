@@ -47,6 +47,12 @@ Before anything else, check if a `.minottobot/` directory exists in the current 
 
 If file-reading tools are available (Glob, Grep, Read, Bash), inspect the codebase before Phase 0. This is what separates an audit from a facilitated discussion. Teams often describe a better reality than the code shows — not from dishonesty, but because they don't know what they don't know.
 
+**If file-reading tools are not available** (e.g., Claude.ai chat, API without filesystem access): skip reconnaissance entirely. Proceed directly to Phase 0 and base the audit solely on the team's answers. Add the following note to the final report, immediately after "Repos in scope":
+
+```
+> ⚠️ **No code access** — this audit is based on team-reported data only. Findings could not be verified against the codebase.
+```
+
 #### Step 1 — Scope discovery
 
 Map which repositories are in scope before scanning anything:
