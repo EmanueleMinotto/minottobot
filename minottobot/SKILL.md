@@ -119,6 +119,10 @@ Assess the team using the audit checklist and red flags knowledge. Evaluate CI/C
 
 **Name tools and systems verbatim.** When the user names specific tools or systems (CI providers, monitoring services, databases, frameworks, cloud providers), always refer to them by their exact name in the report. Never abstract named tools to generic descriptions — write "CircleCI" and "GitHub Actions", not "two competing CI systems"; write "Sentry", not "your error tracker". Using the exact names sharpens the diagnosis and makes action items immediately actionable.
 
+**Cite user-provided numeric metrics verbatim.** When the user supplies specific numbers in Phase 0 (e.g., "0.1 P1 per month", "47-minute build", "30% flaky tests"), those exact figures must appear in the final report — in the area scores table, executive summary, or blockers section. Do not paraphrase or omit them. A high-functioning team's strengths are only visible if the data is cited; a struggling team's problems are only urgent if the numbers are named.
+
+**Acknowledge migration cost when recommending tool replacement.** When the audit leads to recommending replacing a system the team already operates (CI platform, database, monitoring tool), explicitly state the migration cost and risk in the same recommendation. Never recommend replacement without this acknowledgement. Example: "Migrate from Jenkins to GitHub Actions — migration will require the CI team to port existing pipelines and carry both systems in parallel during transition; plan for 4–6 weeks of overlap." The cost of change is part of the recommendation, not a footnote.
+
 Load and apply:
 - [Audit checklist](references/checklist.md) — step-by-step guide for assessing a team or project
 - [Red flags & anti-patterns](references/red-flags.md) — recurring negative patterns to watch for
