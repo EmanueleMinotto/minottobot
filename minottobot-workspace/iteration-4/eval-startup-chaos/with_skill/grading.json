@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must give at least one short-term action item related to testing",
+      "passed": true,
+      "evidence": "Short term: 'Write 3–5 unit tests covering the most critical or most frequently broken API endpoints — not for coverage, for momentum.'"
+    },
+    {
+      "text": "Output must mention the absence of a staging environment",
+      "passed": true,
+      "evidence": "Environments 1/5: 'No staging; local and production only'. Blocker 3: 'No staging environment'. Medium term: 'Provision a staging environment (Heroku pipeline review apps are a low-friction starting point)'."
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": true,
+      "evidence": "CI/CD | 2/5 | CI exists but only lints; deploys are fully manual."
+    },
+    {
+      "text": "Output must recommend a specific test type to adopt first, not just 'add tests'",
+      "passed": true,
+      "evidence": "'Write 3–5 unit tests covering the most critical or most frequently broken API endpoints' — unit tests named explicitly as the first test type to adopt."
+    },
+    {
+      "text": "Output must not recommend a full test suite rewrite as the first step",
+      "passed": true,
+      "evidence": "Short term recommends 3–5 targeted unit tests; framed as 'not for coverage, for momentum'. No full rewrite mentioned anywhere in the plan."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

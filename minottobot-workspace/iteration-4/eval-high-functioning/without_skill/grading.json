@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must score at least three areas at 4/5 or higher",
+      "passed": false,
+      "evidence": "Output uses no numerical scoring. No area score table present."
+    },
+    {
+      "text": "Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs)",
+      "passed": true,
+      "evidence": "Datadog and feature flags referenced only as existing assets. No new tooling recommended anywhere in the output."
+    },
+    {
+      "text": "Output must give at least one non-trivial medium- or long-term recommendation",
+      "passed": true,
+      "evidence": "'auditing whether runbooks are actually being kept current or are drifting' and 'Documentation of why the norms exist (not just what they are) will help as the team grows' — substantive longer-term items."
+    },
+    {
+      "text": "Output must acknowledge the low incident rate of 0.1 P1/month",
+      "passed": true,
+      "evidence": "'0.1 P1 per month and 12-minute MTTR are excellent.' Explicitly cites the metric verbatim from the user's input."
+    },
+    {
+      "text": "Output must include at least one improvement item",
+      "passed": true,
+      "evidence": "'auditing whether runbooks are actually being kept current', 'Documentation of why the norms exist', Supabase scaling as a forward-looking concern."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  }
+}

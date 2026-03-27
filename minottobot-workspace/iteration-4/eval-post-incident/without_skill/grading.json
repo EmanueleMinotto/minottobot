@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must reference the recent production incident explicitly",
+      "passed": true,
+      "evidence": "'The race condition in payment processing is a symptom of a deeper structural problem' and '2,100 affected users'. Incident is the central framing of the entire response."
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": true,
+      "evidence": "Immediate priorities include: 'Audit every place in your payment code where concurrent writes can happen', 'Add database-level constraints as a second line of defense', 'Write an idempotency key mechanism'."
+    },
+    {
+      "text": "Output must recommend monitoring or observability as a priority",
+      "passed": true,
+      "evidence": "'Instrument your payment flows right now. Sentry alone isn't enough for financial operations. You need structured logging on every payment state transition.' Dedicated section on Sentry configuration."
+    },
+    {
+      "text": "Output must not recommend psychological safety without citing a specific data point",
+      "passed": true,
+      "evidence": "'Psychological safety' is not mentioned anywhere in the output. No unsupported cultural recommendations made."
+    },
+    {
+      "text": "Output must reference the race condition or production data corruption",
+      "passed": true,
+      "evidence": "'The race condition in payment processing' and 'Audit every place in your payment code where concurrent writes can happen. PostgreSQL's SELECT FOR UPDATE is your friend.' Multiple explicit references to the race condition."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

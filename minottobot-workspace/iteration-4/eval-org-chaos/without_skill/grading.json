@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must address ownership ambiguity explicitly",
+      "passed": true,
+      "evidence": "'No product owner means no one is making prioritization calls' and 'Who on the team has the institutional memory?' — ownership ambiguity addressed as a root cause of the platform's problems."
+    },
+    {
+      "text": "Output must mention both CI systems by name (CircleCI and GitHub Actions)",
+      "passed": false,
+      "evidence": "'CI drift (two systems, nobody knows which is authoritative)' and 'talk to whoever set up GHA' — 'GHA' used once but not expanded to GitHub Actions. CircleCI is not named anywhere in the output."
+    },
+    {
+      "text": "Output must give at least one short-term action item that is actionable despite the chaos",
+      "passed": true,
+      "evidence": "'Run the test suite. Find out the actual pass rate.' and 'Determine which CI system actually deploys. Read the configs, trace the last deployment.' Both are actionable with existing resources."
+    },
+    {
+      "text": "Output must score Ownership & culture at 2/5 or lower",
+      "passed": false,
+      "evidence": "Output uses no numerical scoring. No area score table present."
+    },
+    {
+      "text": "Output must not recommend a full team reorganisation",
+      "passed": true,
+      "evidence": "Organizational instability named as root cause but response recommends only process changes. 'Advocate for a consistent engineering leadership tenure' is the most structural recommendation — not a reorganisation."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 2,
+    "total": 5,
+    "pass_rate": 0.6
+  }
+}

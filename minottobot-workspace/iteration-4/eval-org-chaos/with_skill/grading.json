@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must address ownership ambiguity explicitly",
+      "passed": true,
+      "evidence": "Executive summary: 'No incident tracking, no product owner, 3 VPs in 18 months — structural instability is severe'. Medium term: 'Assign an interim product owner or a rotating engineering lead to represent product priorities'."
+    },
+    {
+      "text": "Output must mention both CI systems by name (CircleCI and GitHub Actions)",
+      "passed": true,
+      "evidence": "Short term: 'Designate one CI system (GitHub Actions recommended) as the single authoritative pipeline; disable or archive CircleCI for deployment triggers.' Both named explicitly."
+    },
+    {
+      "text": "Output must give at least one short-term action item that is actionable despite the chaos",
+      "passed": true,
+      "evidence": "'Designate GitHub Actions as sole authoritative CI; decommission CircleCI deploy triggers' and 'Run the full test suite immediately; triage results into passing, failing, and flaky buckets.' Both are concrete actions a 7-person team can execute independently."
+    },
+    {
+      "text": "Output must score Ownership & culture at 2/5 or lower",
+      "passed": true,
+      "evidence": "Ownership & culture | 2/5 | No product owner, leadership churn, shared accountability absent."
+    },
+    {
+      "text": "Output must not recommend a full team reorganisation",
+      "passed": true,
+      "evidence": "Long term: 'Stabilize organizational context: advocate for a consistent engineering leadership tenure' — advocacy only, not a directive to reorganise. No structural team changes recommended anywhere in the plan."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

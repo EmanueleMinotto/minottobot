@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must give at least one short-term action item related to testing",
+      "passed": true,
+      "evidence": "'Integration tests for your most critical API endpoints (auth, billing, core data mutations) — maybe 10-15 tests. Use a framework you won't fight: Jest + Supertest for Node.js is a natural fit.'"
+    },
+    {
+      "text": "Output must mention the absence of a staging environment",
+      "passed": true,
+      "evidence": "'Add a staging environment — git push heroku main directly to production is a significant risk multiplier.' Dedicated section with Heroku pipeline instructions."
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": false,
+      "evidence": "Output uses no numerical scoring. No area score table present."
+    },
+    {
+      "text": "Output must recommend a specific test type to adopt first, not just 'add tests'",
+      "passed": true,
+      "evidence": "'Integration tests for your most critical API endpoints (auth, billing, core data mutations)' — integration tests recommended explicitly with a specific framework (Jest + Supertest)."
+    },
+    {
+      "text": "Output must not recommend a full test suite rewrite as the first step",
+      "passed": true,
+      "evidence": "'Don't try to retroactively test everything — you'll burn out and abandon it. Start narrow.' Explicitly discourages comprehensive coverage as a first step."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  }
+}

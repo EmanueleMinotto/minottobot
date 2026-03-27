@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must reference the recent production incident explicitly",
+      "passed": true,
+      "evidence": "Executive summary: 'Payment race condition corrupted 2,100 user records; monitoring and testing were both absent beforehand.' Incident is central to the entire report framing."
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": true,
+      "evidence": "Short term includes 5 specific actions: integration tests for payment service, Sentry alerts with on-call routing, E2E test audit, structured logging, and blameless post-mortem."
+    },
+    {
+      "text": "Output must recommend monitoring or observability as a priority",
+      "passed": true,
+      "evidence": "Blocker 2: 'Reactive-only observability — Sentry and E2E tests were added after the incident'. Short term: 'Configure Sentry alerts for payment-related errors with dedicated on-call notification (not just a dashboard nobody watches)'."
+    },
+    {
+      "text": "Output must not recommend psychological safety without citing a specific data point",
+      "passed": true,
+      "evidence": "'Psychological safety' is not mentioned anywhere in the report. Blameless post-mortem is recommended but grounded in the specific incident, not a generic cultural assertion."
+    },
+    {
+      "text": "Output must reference the race condition or production data corruption",
+      "passed": true,
+      "evidence": "Executive summary: 'Payment race condition corrupted 2,100 user records'. Blocker 1: 'race condition had no layer to catch it'. Short term: 'targeting concurrency and data-integrity paths first'."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

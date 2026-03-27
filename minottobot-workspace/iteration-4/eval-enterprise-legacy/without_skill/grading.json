@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must mention CI run time of 47 minutes",
+      "passed": true,
+      "evidence": "'A 47-minute build on a 2011 Jenkins setup is a compounding problem. It slows feedback loops, discourages small commits, and encourages batching.'"
+    },
+    {
+      "text": "Output must address flaky tests specifically (not just 'tests exist')",
+      "passed": true,
+      "evidence": "'Flaky tests are your most urgent technical debt. 30% flakiness (roughly 3,600 tests) means your test suite is actively harmful. Engineers learn to ignore red builds, which destroys the value of every test.'"
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": true,
+      "evidence": "'Quarantine flaky tests immediately. Tag them, move them to a separate non-blocking suite, and assign ownership.'"
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": false,
+      "evidence": "Output uses no numerical scoring. No area score table present."
+    },
+    {
+      "text": "Output must not recommend replacing Jenkins without acknowledging migration cost",
+      "passed": false,
+      "evidence": "'Start the Jenkins conversation... the CI team should be building a migration case. GitHub Actions or a modern alternative will pay back quickly in build time and team autonomy.' Does not explicitly acknowledge migration cost or risk."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 2,
+    "total": 5,
+    "pass_rate": 0.6
+  }
+}

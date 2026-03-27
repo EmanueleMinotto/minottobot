@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must score at least three areas at 4/5 or higher",
+      "passed": true,
+      "evidence": "6 of 6 areas scored 4/5 or higher: CI/CD 5/5, Testing 4/5, Code review 4/5, Monitoring 5/5, Developer Experience 5/5, Ownership & culture 4/5."
+    },
+    {
+      "text": "Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs)",
+      "passed": true,
+      "evidence": "No recommendation to adopt Datadog, feature flags, or SLOs. Recommendations cover Conventional Commits, TypeScript strict mode, OpenAPI specs, and a feature flag lifecycle *policy* (not the tool itself)."
+    },
+    {
+      "text": "Output must give at least one non-trivial medium- or long-term recommendation",
+      "passed": true,
+      "evidence": "Long term: 'Grow integration test count toward a 1:4 ratio with unit tests (target ~525); prioritise Supabase RLS and API boundary tests.' Medium term: 'Document OpenAPI specs for any external-facing APIs; validate them against implementation in CI.'"
+    },
+    {
+      "text": "Output must acknowledge the low incident rate of 0.1 P1/month",
+      "passed": false,
+      "evidence": "The report does not cite '0.1 P1/month' or '0.1 P1 per month' verbatim. Monitoring is scored 5/5 with '12-min MTTR' noted, but the specific incident rate metric is absent. Same failure as iterations 2 and 3."
+    },
+    {
+      "text": "Output must include at least one improvement item",
+      "passed": true,
+      "evidence": "Multiple improvement items: 'Audit integration test coverage', 'Grow integration test count to ~525', 'Run a structured DX survey', 'Define a feature flag lifecycle policy', etc."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  }
+}

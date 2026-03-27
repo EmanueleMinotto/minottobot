@@ -1,0 +1,35 @@
+{
+  "assertion_results": [
+    {
+      "text": "Output must mention CI run time of 47 minutes",
+      "passed": true,
+      "evidence": "Area scores: '47-min builds; 15-year-old Jenkins; no fast feedback'. Blocker 2: '47-minute CI build — feedback is too slow to be actionable'."
+    },
+    {
+      "text": "Output must address flaky tests specifically (not just 'tests exist')",
+      "passed": true,
+      "evidence": "Executive summary: '30% flaky tests and a 47-minute CI build destroy developer trust'. Blocker 1: '30% flaky test rate — the test suite cannot be trusted; developers have learned to ignore failures'. Short term: 'Quarantine all known flaky tests'."
+    },
+    {
+      "text": "Output must give at least one short-term action item",
+      "passed": true,
+      "evidence": "Short term includes: 'Quarantine all known flaky tests', 'Identify and document the 5 slowest CI job segments', 'Mandate that hotfix PRs require at minimum 1 senior approval'."
+    },
+    {
+      "text": "Output must score CI/CD at 2/5 or lower",
+      "passed": true,
+      "evidence": "CI/CD | 2/5 | 47-min builds; 15-year-old Jenkins; no fast feedback."
+    },
+    {
+      "text": "Output must not recommend replacing Jenkins without acknowledging migration cost",
+      "passed": false,
+      "evidence": "Medium term recommends 'Migrate CI pipeline to a modern platform (GitHub Actions or GitLab CI): parallelise test execution to bring build time under 15 minutes' without explicitly acknowledging migration cost or risk. Same failure as iteration-3."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  }
+}
