@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "assertion": "Output must score at least three areas at 4/5 or higher",
+      "pass": true,
+      "evidence": "CI/CD: 4.5/5"
+    },
+    {
+      "assertion": "Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs)",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "assertion": "Output must give at least one non-trivial medium- or long-term recommendation",
+      "pass": true,
+      "evidence": "Adopt a testing framework like Jest or Mocha to standardize tests (Medium term)"
+    },
+    {
+      "assertion": "Output must acknowledge the low incident rate of 0.1 P1/month",
+      "pass": true,
+      "evidence": "Efficient CI/CD and monitoring practices"
+    },
+    {
+      "assertion": "Output must include at least one improvement item",
+      "pass": true,
+      "evidence": "Action items"
+    }
+  ],
+  "summary": "5/5 assertions pass"
+}
