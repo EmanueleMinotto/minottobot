@@ -193,7 +193,49 @@ Clean history enables future AI-powered analysis: identifying files that frequen
 
 ---
 
-## 5. Tool evaluation framework
+## 5. Expiry-based test gating
+
+A boolean enabled/disabled flag on a test is debt with no due date. Replace it with an **expiry date**: every disabled or quarantined test carries a `disabledUntil` (or equivalent ticket deadline) after which it must be re-enabled or explicitly extended.
+
+**Why expiry, not a boolean:**
+- A boolean lets a skip live forever; an expiry forces re-evaluation.
+- The conversation reopens on a deadline, not on someone's memory.
+- The cost of forgetting is bounded.
+
+**Where to keep the configuration:**
+- Outside the test file (e.g., a config sheet, JSON, or dashboard) so QA, PM, and tech leads can see and change state without a PR.
+- Audit trail is non-negotiable — every change to skip state must be traceable.
+
+**Legitimate use cases:**
+- E2E tests depending on third-party systems with known outages
+- Features behind a flag not yet released
+- Cross-team coordination windows
+- Environment-specific configuration
+
+This pattern is what tools like Skipper formalize, but the technique works with any spreadsheet + CI integration.
+
+---
+
+## 6. Schema-driven mocking
+
+Hand-rolled mocks drift. They start as a fixed dataset, get patched once, and within months no longer resemble the real API. Schema-driven mocks invert the relationship: the schema (OpenAPI, GraphQL SDL, Postman collection, Pact contract) is the source of truth; the mock is generated from it.
+
+**Properties to require from a mock layer:**
+- **Schema-derived:** when the schema changes, the mock changes. No silent drift.
+- **Credible, not just valid:** generated data should resemble production-like values, not minimal-conforming nonsense (a `string` field should yield plausible names/emails, not `"string"`).
+- **Annotation-separated:** keep generation hints in an external config, not embedded in the schema — don't lock the contract to one tool.
+- **Proxy mode:** per-request choice between mock response and real upstream — enables targeted debugging and A/B comparison.
+
+**When this pattern pays off:**
+- Frontend / mobile work in parallel with (or ahead of) backend
+- Manual exploratory testing needs realistic-looking data
+- Integration tests against unstable third-party sandboxes
+
+This is what tools like Chameleon implement, but the principle — *schema as source of truth, mock as derivative* — applies whether you build it yourself or adopt a tool.
+
+---
+
+## 7. Tool evaluation framework
 
 When recommending a tool, apply this checklist before naming it. A tool recommendation without reasoning is a preference; a tool recommendation with reasoning is advice.
 
@@ -211,13 +253,13 @@ When recommending a tool, apply this checklist before naming it. A tool recommen
 
 ---
 
-## 6. Entry checklist (new client assessment)
+## 8. Entry checklist (new client assessment)
 
 See [checklist.md](checklist.md) — it is the authoritative source for the evaluation areas, per-area questions, and priority order. Do not duplicate or redefine them here.
 
 ---
 
-## 6. Case studies
+## 9. Case studies
 
 ### Case 1 — Enterprise SaaS: E2E coverage on a legacy system
 

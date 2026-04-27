@@ -82,6 +82,17 @@ Use for critical user journeys where the value of catching a regression outweigh
 
 **Watch out:** E2E tests are expensive. Don't use them for scenarios that integration or unit tests can cover just as well. A focused E2E suite of 20 trustworthy tests beats a bloated suite of 200 flaky ones.
 
+#### Operating an E2E suite at scale (Playwright reference points)
+
+When the suite grows past a few dozen tests, the bottleneck shifts from *writing* tests to *understanding what just failed*. Patterns that hold up:
+
+- **No naive timeouts.** Bumping a global timeout to "make flakiness go away" makes the whole suite slower forever and hides the real cause. Investigate the wait condition instead.
+- **Step decorators over inline `test.step`.** Wrap actions in a decorator that auto-annotates traces — keeps test bodies readable while reports stay navigable.
+- **Targeted retries, not blanket retries.** Retry only tests known to be flaky for documented reasons; never retry the whole suite globally — it masks real regressions.
+- **Dynamic tagging by scope.** In micro-service / micro-frontend setups, tag tests so a PR touching service X runs only the relevant subset on PR and the full suite on merge.
+- **Ownership per test.** Every test belongs to a team. When it fails, the report says who to ping. Without this, triage time dominates fix time.
+- **Scheduler / sharding control.** Distribute load explicitly (sharding, parallel workers, project splits) — don't trust a single CI runner to scale linearly.
+
 ---
 
 ### Contract tests
