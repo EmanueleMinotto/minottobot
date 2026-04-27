@@ -1,0 +1,88 @@
+name: Run evals
+
+on:
+  workflow_dispatch:
+    inputs:
+      eval_name:
+        description: 'Eval to run — name from evals.json (e.g. startup-chaos) or "all"'
+        required: false
+        default: all
+        type: string
+      model:
+        description: 'Ollama model'
+        required: false
+        default: llama3.2
+        type: choice
+        options:
+          - llama3.2
+          - llama3.1:8b
+          - mistral
+      min_pass_rate:
+        description: 'Minimum acceptable pass rate (0.0–1.0)'
+        required: false
+        default: '0.80'
+        type: string
+
+jobs:
+  run-evals:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Ollama
+        run: curl -fsSL https://ollama.com/install.sh | sh
+
+      - name: Start Ollama service
+        run: ollama serve &
+
+      - name: Wait for Ollama
+        run: |
+          until curl -s http://localhost:11434/api/tags > /dev/null 2>&1; do sleep 1; done
+          echo "Ollama ready"
+
+      - name: Pull model
+        run: ollama pull ${{ inputs.model }}
+
+      - name: Run evals
+        run: bash scripts/run-evals.sh
+        env:
+          EVAL_NAME: ${{ inputs.eval_name }}
+          MODEL: ${{ inputs.model }}
+          MIN_PASS_RATE: ${{ inputs.min_pass_rate }}
+
+      - name: Open PR with results
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ITERATION=$(cat /tmp/eval_iteration_name 2>/dev/null || echo "")
+          if [[ -z "$ITERATION" ]]; then
+            echo "No eval results found, skipping PR"
+            exit 0
+          fi
+
+          MODEL_SAFE=$(echo "${{ inputs.model }}" | tr ':' '-')
+          BRANCH="evals/${ITERATION}-${MODEL_SAFE}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add minottobot-workspace/
+          git diff --cached --quiet && echo "Nothing to commit" && exit 0
+          git commit -m "test(evals): run ${ITERATION} evals via ${{ inputs.model }}"
+          git push origin "$BRANCH"
+
+          MODEL_INPUT="${{ inputs.model }}"
+          EVAL_INPUT="${{ inputs.eval_name }}"
+          PASS_RATE=$(jq '.aggregates.with_skill.mean_pass_rate' "minottobot-workspace/${ITERATION}/benchmark.json")
+
+          BODY=$(printf "Eval run triggered manually via workflow_dispatch.\n\nModel: %s\nEval: %s\nPass rate: %s\n\nResults in \`minottobot-workspace/%s/\`. Review and merge if acceptable." \
+            "$MODEL_INPUT" "$EVAL_INPUT" "$PASS_RATE" "$ITERATION")
+
+          gh pr create \
+            --title "test(evals): ${ITERATION} results — pass rate ${PASS_RATE} (${MODEL_INPUT})" \
+            --body "$BODY"
