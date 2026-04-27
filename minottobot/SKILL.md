@@ -123,6 +123,8 @@ Assess the team using the audit checklist and red flags knowledge. Evaluate CI/C
 **Name tools and systems verbatim.** When the user names specific tools or systems (CI providers, monitoring services, databases, frameworks, cloud providers), always refer to them by their exact name in the report. Never abstract named tools to generic descriptions — write "CircleCI" and "GitHub Actions", not "two competing CI systems"; write "Sentry", not "your error tracker". Using the exact names sharpens the diagnosis and makes action items immediately actionable.
 
 **Cite user-provided numeric metrics verbatim.** When the user supplies specific numbers in Phase 0 (e.g., "0.1 P1 per month", "47-minute build", "30% flaky tests"), those exact figures must appear in the final report — in the area scores table, executive summary, or blockers section. Do not paraphrase or omit them. A high-functioning team's strengths are only visible if the data is cited; a struggling team's problems are only urgent if the numbers are named.
+- ❌ WRONG: "long build time" / "slow CI" / "high flaky rate"
+- ✅ RIGHT: "47-minute build" / "30% flaky tests" / "4-hour MTTR"
 
 **Acknowledge migration cost when recommending tool replacement.** When the audit leads to recommending replacing a system the team already operates (CI platform, database, monitoring tool), explicitly state the migration cost and risk in the same recommendation. Never recommend replacement without this acknowledgement. Example: "Migrate from Jenkins to GitHub Actions — migration will require the CI team to port existing pipelines and carry both systems in parallel during transition; plan for 4–6 weeks of overlap." The cost of change is part of the recommendation, not a footnote.
 
@@ -137,7 +139,54 @@ Once the audit is complete, load the strategy frameworks and build an improvemen
 Load and apply:
 - [Strategy](references/strategy.md) — reasoning frameworks, trade-off evaluation, and context calibration for building the improvement plan
 
-**Output requirement:** every audit must conclude with the structured report defined in the "Required output format" section of [strategy.md](references/strategy.md). Use that exact schema — no freeform alternatives. The format is fixed so reports can be compared over time and copied into ticket trackers without reformatting.
+**Output requirement:** every audit must conclude with exactly this structure — no freeform alternatives, no deviations. The format is fixed so reports can be compared over time and copied into ticket trackers without reformatting.
+
+```markdown
+# Minottobot audit report — {team} — {date}
+
+## Repos in scope
+- {repo name} ({primary tech})
+
+## Executive summary (3 bullets max, each under 20 words)
+- ...
+
+## Area scores (1 = critical · 5 = excellent)
+| Area                    | Score | One-line finding                     |
+|-------------------------|-------|--------------------------------------|
+| CI/CD                   | [score]/5 | ...                                  |
+| Testing                 | [score]/5 | ...                                  |
+| Code review             | [score]/5 | ...                                  |
+| Monitoring              | [score]/5 | ...                                  |
+| Developer Experience    | [score]/5 | ...                                  |
+| Ownership & culture     | [score]/5 | ...                                  |
+
+## Top 3 blockers right now
+1. **...** — ...
+2. **...** — ...
+3. **...** — ...
+
+## Improvement plan
+### Short term (this sprint)
+- ...
+
+### Medium term (this quarter)
+- ...
+
+### Long term (this half)
+- ...
+
+## Action items
+| ID | Description | Horizon | Owner | Status |
+|----|-------------|---------|-------|--------|
+| A1 | ... | short | | open |
+```
+
+**Scoring rules:** 1 = critical · 2 = significant gap · 3 = functional · 4 = good · 5 = excellent. Use the exact `?/5` format in the table.
+
+**Migration cost rule (MANDATORY):** whenever the improvement plan recommends replacing or migrating away from a system the team already runs (CI platform, database, monitoring tool), the same sentence or bullet MUST state the migration cost and risk.
+- ❌ WRONG: "Consider adopting GitHub Actions instead of Jenkins."
+- ✅ RIGHT: "Evaluate Jenkins replacement (e.g. GitHub Actions) — migration requires porting pipelines, a 4–8 week parallel-run period, and dedicated CI team capacity; do not start without explicit resourcing."
+A recommendation without this acknowledgement violates the output contract.
 
 **Snapshot and delta view — load [persistence.md](references/persistence.md) only if:**
 - a previous audit was detected at session init (returning engagement), OR
