@@ -1,0 +1,75 @@
+{
+  "iteration": "iteration-5",
+  "generated_at": "2026-04-27T08:08:16Z",
+  "mode": "with_skill",
+  "per_eval": [
+    {
+      "name": "startup-chaos",
+      "with_skill": {
+        "pass_count": 5,
+        "total": 5,
+        "pass_rate": 1,
+        "duration_ms": 172466,
+        "run_exit_code": 0,
+        "grade_exit_code": 0,
+        "summary": "All listed assertions are explicitly satisfied by the provided audit output. "
+      }
+    },
+    {
+      "name": "enterprise-legacy",
+      "with_skill": {
+        "pass_count": 5,
+        "total": 5,
+        "pass_rate": 1,
+        "duration_ms": 190845,
+        "run_exit_code": 0,
+        "grade_exit_code": 0,
+        "summary": "All assertions are explicitly satisfied (5/5 pass). "
+      }
+    },
+    {
+      "name": "post-incident",
+      "with_skill": {
+        "pass_count": 5,
+        "total": 5,
+        "pass_rate": 1,
+        "duration_ms": 176330,
+        "run_exit_code": 0,
+        "grade_exit_code": 0,
+        "summary": "All assertions are explicitly satisfied by the provided audit output. "
+      }
+    },
+    {
+      "name": "high-functioning",
+      "with_skill": {
+        "pass_count": 4,
+        "total": 5,
+        "pass_rate": 0.8,
+        "duration_ms": 189453,
+        "run_exit_code": 0,
+        "grade_exit_code": 0,
+        "summary": "4/5 assertions pass. The only failed assertion is the prohibition on recommending already-owned tooling/practices, because the report explicitly recommends Datadog/feature-flag/SLO-related actions. "
+      }
+    },
+    {
+      "name": "org-chaos",
+      "with_skill": {
+        "pass_count": 5,
+        "total": 5,
+        "pass_rate": 1,
+        "duration_ms": 282675,
+        "run_exit_code": 0,
+        "grade_exit_code": 0,
+        "summary": "Pass: all assertions are explicitly satisfied by the provided audit output. "
+      }
+    }
+  ],
+  "aggregates": {
+    "with_skill": {
+      "mean_pass_rate": 0.96,
+      "total_assertions_passed": 24,
+      "total_assertions": 25,
+      "mean_duration_ms": 202353.8
+    }
+  }
+}
