@@ -61,6 +61,16 @@ Before looking at code or pipelines, collect three inputs:
 - [ ] Are tests trustworthy or flaky?
 - [ ] Do developers run tests locally?
 - [ ] Do developers write tests or is it only QA?
+- [ ] Are there skipped/disabled tests? Do they have an expiry date or ticket with owner?
+- [ ] Before declaring a feature done, does someone actually open a browser / app and exercise it? Is manual verification visible (e.g., PR checklist, manual coverage tooling) or invisible work?
+- [ ] For UI changes, are golden-path and edge-case scenarios both exercised before merge?
+
+### Feature flags & release hygiene
+- [ ] Is deploy decoupled from release? (deploy = technical event, release = product decision)
+- [ ] Does each flag have an owner and an explicit removal condition?
+- [ ] Is there a regular review (e.g., monthly) to prune dead flags?
+- [ ] Are flag names structured to communicate intent and scope?
+- [ ] Is there a kill-switch / instant rollback mechanism for risky changes?
 
 ### Automation
 - [ ] How much repetitive work is automated?
@@ -79,6 +89,9 @@ Before looking at code or pipelines, collect three inputs:
 - [ ] Is there documentation for APIs?
 - [ ] Are commit messages structured and meaningful?
 - [ ] Is there a Git history strategy?
+- [ ] Is the history readable (no auto-format commit noise, no vague "fix"/"wip" messages)?
+- [ ] Are formatting/lint fixes enforced in CI or pre-commit, rather than landing as separate commits?
+- [ ] Is there a baseline-freeze approach for incremental quality improvements (e.g., ESLint `--max-warnings` set to current count, lowered over time)?
 
 ### Ownership & culture
 - [ ] Does the team feel responsible for quality collectively?

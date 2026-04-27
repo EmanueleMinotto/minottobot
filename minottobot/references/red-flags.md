@@ -104,6 +104,20 @@ Tests that sometimes pass and sometimes fail, with no one investigating why. The
 
 **What it looks like:** "oh, that test is flaky, just rerun it" is common. CI results are unreliable. Nobody trusts the test suite because it cries wolf constantly.
 
+### Skipped or disabled tests with no expiry date
+
+Tests are commented out, marked `.skip`, or excluded by config — and stay that way indefinitely. There's no ticket, no owner, no deadline to re-enable them.
+
+**What it looks like:** `it.skip(...)` scattered across the suite, dating back months. No one remembers why a given test was disabled. The skip set grows monotonically.
+
+**Why it matters:** an ignored test is worse than a missing test, because it creates the illusion of coverage. A boolean enabled/disabled flag with no expiry is technical debt with no due date — the equivalent of a TODO that nobody owns. A `disabledUntil` date (or equivalent ticket with deadline) forces the conversation back open.
+
+### Quarantine without follow-up
+
+Flaky tests are moved to a "quarantine" suite or tagged as non-blocking, then forgotten. The quarantine becomes a graveyard.
+
+**What it looks like:** the quarantine job has been red for weeks. Nobody triages it. The tests still exist on paper but contribute zero signal.
+
 ### No framework or code organization
 
 The repository has no architectural framework, no folder structure conventions, no patterns. Code is organized by accident.
@@ -124,6 +138,22 @@ You can't develop or test the application locally. Development requires connecti
 
 **What it looks like:** "you need access to the staging database to develop." Setting up a new developer takes days. Running a feature locally is impossible or extremely painful.
 
+### Feature flags without owner or removal condition
+
+Feature flags accumulate in the codebase with no expiry, no owner, no documented condition for removal. What started as a release tool becomes permanent dead weight.
+
+**What it looks like:** flags from rollouts completed a year ago still wrap branching logic. Nobody is sure if they can be deleted. The flag platform has 200+ entries and no one has reviewed them this quarter.
+
+**Why it matters:** every flag doubles the number of code paths to test. Two flags = four states; three = eight. Without disciplined cleanup, flags become invisible combinatorial complexity. Each flag should ship with a ticket, an owner, and a removal condition — and a monthly review pass should prune the dead ones.
+
+### Noisy Git history
+
+The history is dominated by automated formatting commits, vague messages ("fix", "wip", "update"), or huge unrelated changes squashed together. The story of how the system evolved is unreadable.
+
+**What it looks like:** `git log --oneline` shows dozens of "lint fix" or "format" commits per week. Commit messages don't reference tickets or intent. Bisecting a regression is hopeless.
+
+**Why it matters:** Git history is the evolutionary memory of the system. Garbage history → garbage insight (for humans, tooling, and increasingly AI assistants). Auto-formatting belongs in pre-commit hooks or CI checks, not in commits. Conventional Commits aren't bureaucracy — they make changelogs, releases, and incident archaeology cheap.
+
 ### No technical standards followed
 
 Relevant technical standards exist but are ignored. REST APIs without OpenAPI documentation, no commit conventions, no versioning strategy.
@@ -140,6 +170,8 @@ These are phrases that sound reasonable but are almost always a signal of a deep
 |---------------|----------------------|
 | "We don't have time for tests" | Testing is seen as extra work, not as part of the work |
 | "Our tests exist, we just don't run them" | The test suite is broken or untrusted and nobody wants to fix it |
+| "It's tested" (but no one opened a browser) | Automated checks describe a model of the system; manual verification compares the model to reality. Both are needed |
+| "We'll remove that flag eventually" | The flag has no owner, no removal ticket, and no deadline — it's now permanent |
 | "It works on my machine" | There's no CI, no environment parity, or no local dev setup |
 | "We'll fix the pipeline later" | The pipeline has been broken for a while and it's now normalized |
 | "We do code reviews" (but PRs are approved in 2 minutes) | Code review is a ritual, not a practice |

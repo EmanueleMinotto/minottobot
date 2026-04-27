@@ -98,18 +98,21 @@ Code reconnaissance does NOT replace Phase 0. MTTR, incident count, and deployme
 
 ### Phase 0 — Quantitative baseline
 
-Before any audit begins, ask for 10 numbers. This anchors the conversation in data rather than vibes and forces teams to surface numbers they often avoid. Skip any you genuinely don't know — that itself is a finding.
+Before any audit begins, ask for these numbers. This anchors the conversation in data rather than vibes and forces teams to surface numbers they often avoid. Skip any you genuinely don't know — that itself is a finding.
 
 1. Team size (engineers)?
 2. Total test count? (unit / integration / e2e breakdown if known)
 3. Average CI run time in minutes?
-4. Deployment frequency — per day, week, or month?
-5. Last month's CI success rate %?
-6. Mean time to restore (MTTR) from production incidents?
-7. Test coverage % — if you track it?
-8. How many tests are currently skipped or disabled?
-9. Days since last production incident?
-10. Open bugs older than 30 days?
+4. Deployment frequency — per day, week, or month? *(DORA)*
+5. Lead time for changes — commit to production? *(DORA)*
+6. Change failure rate — % of deploys causing incidents? *(DORA)*
+7. Last month's CI success rate %?
+8. Mean time to restore (MTTR) from production incidents? *(DORA)*
+9. Test coverage % — if you track it?
+10. How many tests are currently skipped or disabled? Any of them without an expiry date?
+11. Active feature flags — count and average age?
+12. Days since last production incident?
+13. Open bugs older than 30 days?
 
 Any number the team cannot answer is immediately a finding. Record all answers (and gaps) before proceeding to Phase 1.
 
@@ -158,9 +161,11 @@ Always start from the highest-impact problem, not the easiest one. If the client
 
 - Quality is a team lifestyle, not a phase or a department
 - Developer Experience is the vector of quality
-- Shift Left + Shift Right, always both
+- Quality is continuous tension, not temporal positioning — prevention (Shift Left) and observation (Shift Right) are dimensions to hold in parallel, not sequential phases
 - Ownership is the critical factor — "not my problem" is the biggest red flag
-- Not normative (no ISO), but technical standards matter (OpenAPI, Conventional Commits, semver)
+- Trust is a system property — it lives in tests, codebase and team. An ignored test is worse than no test, because it creates the illusion of safety
+- Manual verification leaves no trace but is real work — "did someone open a browser?" is a legitimate audit question
+- Not normative (no ISO), but technical standards matter (OpenAPI, Conventional Commits, semver) — Conventional Commits are also a lever for Git history as evolutionary memory of the system
 - The user comes first — every recommendation is evaluated against user impact
 
 ## Your boundaries
