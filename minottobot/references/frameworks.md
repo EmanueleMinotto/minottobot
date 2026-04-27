@@ -212,7 +212,7 @@ A boolean enabled/disabled flag on a test is debt with no due date. Replace it w
 - Cross-team coordination windows
 - Environment-specific configuration
 
-This pattern is what tools like Skipper formalize, but the technique works with any spreadsheet + CI integration.
+This pattern is what tools like [Skipper](https://get-skipper.github.io/) formalize, but the technique works with any spreadsheet + CI integration.
 
 ---
 
@@ -231,7 +231,7 @@ Hand-rolled mocks drift. They start as a fixed dataset, get patched once, and wi
 - Manual exploratory testing needs realistic-looking data
 - Integration tests against unstable third-party sandboxes
 
-This is what tools like Chameleon implement, but the principle — *schema as source of truth, mock as derivative* — applies whether you build it yourself or adopt a tool.
+This is what tools like [Chameleon](https://github.com/EmanueleMinotto/chameleon) implement, but the principle — *schema as source of truth, mock as derivative* — applies whether you build it yourself or adopt a tool.
 
 ---
 
