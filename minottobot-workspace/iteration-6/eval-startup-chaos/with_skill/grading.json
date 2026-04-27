@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "assertion": "Output must give at least one short-term action item related to testing",
+      "pass": true,
+      "evidence": "Set up ESLint on frontend and backend repos with automated deployment to staging."
+    },
+    {
+      "assertion": "Output must mention the absence of a staging environment",
+      "pass": true,
+      "evidence": "No automated deployment to staging environment for basic testing."
+    },
+    {
+      "assertion": "Output must score CI/CD at 2/5 or lower",
+      "pass": true,
+      "evidence": "CI/CD                | 1/5   | No automated testing or CI/CD pipeline."
+    },
+    {
+      "assertion": "Output must recommend a specific test type to adopt first, not just 'add tests'",
+      "pass": false,
+      "evidence": "heuristic fallback"
+    },
+    {
+      "assertion": "Output must not recommend a full test suite rewrite as the first step",
+      "pass": true,
+      "evidence": "Implement ESLint on frontend and backend repos with automated deployment to staging environment for basic testing. This does not indicate a full test suite rewrite as the first step."
+    }
+  ],
+  "summary": "4/5 assertions pass"
+}

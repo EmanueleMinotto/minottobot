@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "assertion": "Output must score at least three areas at 4/5 or higher",
+      "pass": false,
+      "evidence": "heuristic fallback"
+    },
+    {
+      "assertion": "Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs)",
+      "pass": false,
+      "evidence": "heuristic fallback"
+    },
+    {
+      "assertion": "Output must give at least one non-trivial medium- or long-term recommendation",
+      "pass": true,
+      "evidence": "Implement mutation testing to ensure that the system is robust against unexpected input or errors."
+    },
+    {
+      "assertion": "Output must acknowledge the low incident rate of 0.1 P1/month",
+      "pass": true,
+      "evidence": "Their incident rate is low with 0.1 P1 per month and 0.5 P2 per month."
+    },
+    {
+      "assertion": "Output must include at least one improvement item",
+      "pass": true,
+      "evidence": "Evaluate implementing pair programming or code reviews by multiple engineers to improve code quality."
+    }
+  ],
+  "summary": "3/5 assertions pass"
+}

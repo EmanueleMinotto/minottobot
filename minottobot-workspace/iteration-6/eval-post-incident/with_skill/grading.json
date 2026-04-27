@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "assertion": "Output must reference the recent production incident explicitly",
+      "pass": false,
+      "evidence": "heuristic fallback"
+    },
+    {
+      "assertion": "Output must give at least one short-term action item",
+      "pass": true,
+      "evidence": "### Short term (this sprint)\n- Automate manual approval gate in CI/CD pipeline"
+    },
+    {
+      "assertion": "Output must recommend monitoring or observability as a priority",
+      "pass": true,
+      "evidence": "Implement monitoring integration: integrate Sentry with production workflow, and define alerting thresholds."
+    },
+    {
+      "assertion": "Output must not recommend psychological safety without citing a specific data point",
+      "pass": false,
+      "evidence": "heuristic fallback"
+    },
+    {
+      "assertion": "Output must reference the race condition or production data corruption",
+      "pass": false,
+      "evidence": "heuristic fallback"
+    }
+  ],
+  "summary": "2/5 assertions pass"
+}
