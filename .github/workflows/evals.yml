@@ -11,7 +11,7 @@ on:
       model:
         description: 'Ollama model'
         required: false
-        default: llama3.2
+        default: mistral
         type: choice
         options:
           - llama3.2
