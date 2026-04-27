@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "assertion": "Output must give at least one short-term action item related to testing",
+      "pass": true,
+      "evidence": "Implement automated testing"
+    },
+    {
+      "assertion": "Output must mention the absence of a staging environment",
+      "pass": true,
+      "evidence": "Manual deployment and no staging environments"
+    },
+    {
+      "assertion": "Output must score CI/CD at 2/5 or lower",
+      "pass": true,
+      "evidence": "CI/CD scores 2/5"
+    },
+    {
+      "assertion": "Output must recommend a specific test type to adopt first, not just 'add tests'",
+      "pass": true,
+      "evidence": "'Implement automated testing for critical functionalities'"
+    },
+    {
+      "assertion": "Output must not recommend a full test suite rewrite as the first step",
+      "pass": true,
+      "evidence": "direct quote from output: 'Inefficient CI setup with limited checks' - no mention of a full test suite rewrite as the first step"
+    }
+  ],
+  "summary": "5/5 assertions pass"
+}

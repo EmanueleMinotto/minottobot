@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "assertion": "Output must address ownership ambiguity explicitly",
+      "pass": true,
+      "evidence": "Frequent leadership change"
+    },
+    {
+      "assertion": "Output must mention both CI systems by name (CircleCI and GitHub Actions)",
+      "pass": true,
+      "evidence": "CircleCI, GitHub Actions"
+    },
+    {
+      "assertion": "Output must give at least one short-term action item that is actionable despite the chaos",
+      "pass": true,
+      "evidence": "direct quote from action items: A1 - Fix CI setup, get tests running again | short | Platform team | open"
+    },
+    {
+      "assertion": "Output must score Ownership & culture at 2/5 or lower",
+      "pass": true,
+      "evidence": "Frequent leadership change"
+    },
+    {
+      "assertion": "Output must not recommend a full team reorganisation",
+      "pass": true,
+      "evidence": ""
+    }
+  ],
+  "summary": "5/5 assertions pass"
+}

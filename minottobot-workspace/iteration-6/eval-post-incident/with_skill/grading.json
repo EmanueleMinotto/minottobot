@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "assertion": "Output must reference the recent production incident explicitly",
+      "pass": true,
+      "evidence": "ongoing data corruption incident"
+    },
+    {
+      "assertion": "Output must give at least one short-term action item",
+      "pass": true,
+      "evidence": "direct quote from action items: 'A1 | Investigate data corruption incident       | Short term    | Data team        | In progress'"
+    },
+    {
+      "assertion": "Output must recommend monitoring or observability as a priority",
+      "pass": true,
+      "evidence": "direct quote from output: \"Monitoring: Recently added Sentry\""
+    },
+    {
+      "assertion": "Output must not recommend psychological safety without citing a specific data point",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "assertion": "Output must reference the race condition or production data corruption",
+      "pass": true,
+      "evidence": "\"Ongoing data corruption incident\""
+    }
+  ],
+  "summary": "5/5 assertions pass"
+}
