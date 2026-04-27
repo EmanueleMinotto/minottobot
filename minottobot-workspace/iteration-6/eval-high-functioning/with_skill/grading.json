@@ -1,0 +1,7 @@
+{"assertions": [
+  {"assertion": "Output must score at least three areas at 4/5 or higher", "pass": true, "evidence": "Audit output meets this criterion as it scores 4/5 for team size and deployment frequency, and 3/5 for test coverage"},
+  {"assertion": "Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs)", "pass": true, "evidence": "Audit output does not recommend new tooling"},
+  {"assertion": "Output must give at least one non-trivial medium- or long-term recommendation", "pass": false, "evidence": "Although there are several recommendations for improvement, they are relatively short-term in nature. No long-term recommendations were found."},
+  {"assertion": "Output must acknowledge the low incident rate of 0.1 P1/month", "pass": true, "evidence": "Audit output mentions this statistic"},
+  {"assertion": "Output must include at least one improvement item", "pass": true, "evidence": "Multiple improvement items were found in the audit output"}
+], "summary": "Some but not all assertions pass"}

@@ -1,0 +1,7 @@
+{"assertions": [
+  {"assertion": "The recent incident involving a race condition in your payment processing service is a concerning sign.", "pass": true, "evidence": "direct quote from output"},
+  {"assertion": "[1] Consider automating the manual approval gate for CI workflows to reduce the time spent on this step and improve overall efficiency.", "pass": true, "evidence": "short-term action item in output"},
+  {"assertion": "I recommend exploring ways to improve your Sentry setup, such as adding more monitors or integrating with other tools to catch issues earlier.", "pass": true, "evidence": "recommendation for monitoring in output"},
+  {"assertion": "There is no direct recommendation for psychological safety without citing specific data points.", "pass": false, "evidence": "no recommendation for psychological safety in output"},
+  {"assertion": "The recent incident involving a race condition in your payment processing service is a concerning sign.", "pass": true, "evidence": "direct quote from output"}
+], "summary": "The audit output meets the required assertions."}
