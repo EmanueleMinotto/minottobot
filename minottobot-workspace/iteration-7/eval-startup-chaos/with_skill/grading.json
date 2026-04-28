@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "assertion": "Output must give at least one short-term action item related to testing",
+      "pass": true,
+      "evidence": "Implement unit tests for critical components"
+    },
+    {
+      "assertion": "Output must mention the absence of a staging environment",
+      "pass": true,
+      "evidence": "The absence of a dedicated staging environment makes it difficult to test changes before pushing them to production."
+    },
+    {
+      "assertion": "Output must score CI/CD at 2/5 or lower",
+      "pass": true,
+      "evidence": "direct quote from output: CI/CD - 2/5"
+    },
+    {
+      "assertion": "Output must recommend a specific test type to adopt first, not just 'add tests'",
+      "pass": true,
+      "evidence": "direct quote from output: 'Implement automated testing for critical components'"
+    },
+    {
+      "assertion": "Output must not recommend a full test suite rewrite as the first step",
+      "pass": true,
+      "evidence": "direct quote from output: 'No automated tests: Lack of a comprehensive testing strategy leads to code quality issues and longer deployment times.'"
+    }
+  ],
+  "summary": "5/5 assertions pass"
+}

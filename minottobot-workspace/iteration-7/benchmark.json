@@ -1,0 +1,76 @@
+{
+  "iteration": "iteration-7",
+  "generated_at": "2026-04-28T20:54:24Z",
+  "model": "mistral",
+  "mode": "with_skill",
+  "per_eval": [
+    {
+      "name": "enterprise-legacy",
+      "with_skill": {
+        "pass_count": 5,
+        "total": 5,
+        "pass_rate": 1,
+        "duration_ms": 1279308,
+        "run_exit_code": 0,
+        "grade_exit_code": 0,
+        "summary": "5/5 assertions pass"
+      }
+    },
+    {
+      "name": "high-functioning",
+      "with_skill": {
+        "pass_count": 5,
+        "total": 5,
+        "pass_rate": 1,
+        "duration_ms": 1209338,
+        "run_exit_code": 0,
+        "grade_exit_code": 0,
+        "summary": "5/5 assertions pass"
+      }
+    },
+    {
+      "name": "org-chaos",
+      "with_skill": {
+        "pass_count": 5,
+        "total": 5,
+        "pass_rate": 1,
+        "duration_ms": 1207974,
+        "run_exit_code": 0,
+        "grade_exit_code": 0,
+        "summary": "5/5 assertions pass"
+      }
+    },
+    {
+      "name": "post-incident",
+      "with_skill": {
+        "pass_count": 5,
+        "total": 5,
+        "pass_rate": 1,
+        "duration_ms": 1193214,
+        "run_exit_code": 0,
+        "grade_exit_code": 0,
+        "summary": "5/5 assertions pass"
+      }
+    },
+    {
+      "name": "startup-chaos",
+      "with_skill": {
+        "pass_count": 5,
+        "total": 5,
+        "pass_rate": 1,
+        "duration_ms": 1251816,
+        "run_exit_code": 0,
+        "grade_exit_code": 0,
+        "summary": "5/5 assertions pass"
+      }
+    }
+  ],
+  "aggregates": {
+    "with_skill": {
+      "mean_pass_rate": 1,
+      "total_assertions_passed": 25,
+      "total_assertions": 25,
+      "mean_duration_ms": 1228330
+    }
+  }
+}
