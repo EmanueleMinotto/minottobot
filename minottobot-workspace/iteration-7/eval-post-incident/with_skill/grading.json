@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "assertion": "Output must reference the recent production incident explicitly",
+      "pass": true,
+      "evidence": "4 days ago incident"
+    },
+    {
+      "assertion": "Output must give at least one short-term action item",
+      "pass": true,
+      "evidence": "direct quote from action items: A1 | Expand E2E test suite | short | QA team | open"
+    },
+    {
+      "assertion": "Output must recommend monitoring or observability as a priority",
+      "pass": true,
+      "evidence": "direct quote from output: 'Lack of monitoring until recently'"
+    },
+    {
+      "assertion": "Output must not recommend psychological safety without citing a specific data point",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "assertion": "Output must reference the race condition or production data corruption",
+      "pass": true,
+      "evidence": "direct quote from output: 'Lack of monitoring until recently — Inability to detect and address issues proactively before the recent incident'"
+    }
+  ],
+  "summary": "5/5 assertions pass"
+}

@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "assertion": "Output must score at least three areas at 4/5 or higher",
+      "pass": true,
+      "evidence": "direct quote from output: CI/CD - Efficient GitHub Actions setup (4/5)"
+    },
+    {
+      "assertion": "Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs)",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "assertion": "Output must give at least one non-trivial medium- or long-term recommendation",
+      "pass": true,
+      "evidence": "direct quote from output: \"Evaluate a testing tool like Cypress or TestCafe for E2E testing, with migration cost/risk included in the recommendation\""
+    },
+    {
+      "assertion": "Output must acknowledge the low incident rate of 0.1 P1/month",
+      "pass": true,
+      "evidence": "Efficient GitHub Actions setup"
+    },
+    {
+      "assertion": "Output must include at least one improvement item",
+      "pass": true,
+      "evidence": "direct quote from output: Improvement plan"
+    }
+  ],
+  "summary": "5/5 assertions pass"
+}

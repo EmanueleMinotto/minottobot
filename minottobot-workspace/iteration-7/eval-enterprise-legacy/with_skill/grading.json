@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "assertion": "Output must mention CI run time of 47 minutes",
+      "pass": true,
+      "evidence": "Long CI times impact productivity"
+    },
+    {
+      "assertion": "Output must address flaky tests specifically (not just 'tests exist')",
+      "pass": true,
+      "evidence": "Reduce test flakiness by refactoring test code"
+    },
+    {
+      "assertion": "Output must give at least one short-term action item",
+      "pass": true,
+      "evidence": "direct quote from action items: A1, A2, A3"
+    },
+    {
+      "assertion": "Output must score CI/CD at 2/5 or lower",
+      "pass": true,
+      "evidence": "CI/CD scoring 1/5"
+    },
+    {
+      "assertion": "Output must not recommend replacing Jenkins without acknowledging migration cost",
+      "pass": true,
+      "evidence": "direct quote from output: \"Evaluate CI tool migration (e.g. Jenkins → GitHub Actions, CircleCI, etc.) — migration requires 4–6 weeks parallel-run, dedicated CI team capacity\""
+    }
+  ],
+  "summary": "5/5 assertions pass"
+}
