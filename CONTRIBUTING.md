@@ -17,6 +17,26 @@ fix(shared): correct DFER loop description
 docs(strategy): expand trade-off reasoning examples
 ```
 
+## Changelog
+
+Every user-visible change must be recorded in [`CHANGELOG.md`](CHANGELOG.md), which follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+- Add the entry under `## [Unreleased]`, in the matching group: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
+- Write entries for users of the skill, not for the diff: describe the behaviour that changed, not the file that moved.
+- Internal-only work (eval runs, workspace iterations, CI tweaks) does not need an entry.
+
+Versioning rules for this skill:
+
+- **MAJOR** — the audit workflow or the skill contract changes in a way that breaks existing `.minottobot/` snapshots or expectations.
+- **MINOR** — new phases, new reference files, or new capabilities.
+- **PATCH** — wording fixes, prompt tuning, and reference corrections that do not change the workflow.
+
+### Releasing
+
+1. Move the `[Unreleased]` entries under a new `## [X.Y.Z] - YYYY-MM-DD` heading and add the comparison links at the bottom of the file.
+2. Commit with `chore(release): vX.Y.Z`.
+3. Tag the commit: `git tag -a vX.Y.Z -m "vX.Y.Z"` and push with `git push --follow-tags`.
+
 ## Skills
 
 Each skill must follow the [Agent Skills](https://agentskills.io/) format:
