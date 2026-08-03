@@ -60,42 +60,46 @@ Instructions for the agent...
 
 ## Evals
 
-The `minottobot/evals/` directory contains a regression suite for the skill. It follows the [agentskills.io eval pattern](https://agentskills.io/skill-creation/evaluating-skills).
+The `minottobot/evals/` directory contains a regression suite for the skill, built on [DeepEval](https://deepeval.com/) and run against a local Ollama instance.
 
 ### Structure
 
 ```
 minottobot/evals/
-  evals.json            — machine-readable test cases with prompts and assertions
-  startup-chaos.md      — captured output for Swiftly Inc (startup, 0 tests)
-  enterprise-legacy.md  — captured output for FinanceCore Ltd (enterprise, legacy CI)
-  post-incident.md      — captured output for Norsk Mobility AS (post-incident team)
-  high-functioning.md   — captured output for Helix Team @ Atmos (high-functioning)
-  org-chaos.md          — captured output for Momentum Fintech Platform (org chaos)
+  evals.json         — machine-readable test cases: prompt + natural-language assertions per scenario
+  ollama_model.py     — DeepEvalBaseLLM wrapper calling the Ollama HTTP API
+  test_evals.py        — pytest suite: generates the audit report, grades each assertion with GEval
 ```
 
-Each `*.md` file has three sections: the input team profile, the minottobot audit output, and an assertions table with PASS/FAIL grades.
+`evals.json` is the single source of truth for the 5 scenarios (startup-chaos, enterprise-legacy, post-incident, high-functioning, org-chaos) and their assertions — nothing else needs to change when adding or editing a scenario.
 
-### Re-running an eval
+### Running the evals
 
-1. Load the skill in a fresh Claude Code session: `/skills add minottobot/`
-2. Find the prompt for the eval in `evals.json` (match by `name`)
-3. Paste the prompt into the session and let minottobot complete the audit
-4. Replace the "Minottobot output" section in the `*.md` file with the new output
-5. Re-evaluate each assertion in the assertions table — mark PASS or FAIL with a brief evidence quote from the output
+Requires [uv](https://docs.astral.sh/uv/) and a local [Ollama](https://ollama.com/) instance:
+
+```bash
+ollama serve &
+ollama pull llama3.2   # model under test (OLLAMA_MODEL, default llama3.2)
+ollama pull mistral    # judge model (OLLAMA_JUDGE_MODEL, default mistral — kept different
+                        # from the model under test so it doesn't grade its own output)
+
+uv sync
+uv run pytest minottobot/evals/test_evals.py -v -n 5   # runs all 5 scenarios concurrently
+```
+
+Ollama serves concurrent requests against an already-loaded model, so running the 5 scenarios in parallel (`-n 5`, via `pytest-xdist`) is faster than running them sequentially — but on a single local GPU, 5 concurrent requests contend with each other and tail latency is unpredictable. Expect the full suite to take roughly **8-12 minutes** on typical consumer hardware (`llama3.2` under test, `mistral` as judge), not sub-5-minutes: local GPU-bound inference for both report generation and grading is the structural cost, not the harness. `OLLAMA_REQUEST_TIMEOUT` (default `900`s) gives individual requests enough headroom under that contention; lower `-n` (e.g. `-n 2`) trades parallelism for more consistent per-request latency if the default flakes.
+
+Useful env vars: `OLLAMA_MODEL`, `OLLAMA_JUDGE_MODEL`, `OLLAMA_URL`, `MIN_PASS_RATE` (per-assertion GEval threshold, default `0.80`). Run a single scenario with `-k <name>` (e.g. `-k startup-chaos`).
+
+For each scenario, `test_evals.py` loads `SKILL.md` as the system prompt (no separate hardcoded output-contract template — `SKILL.md` is the only source of truth for the expected output format), generates the audit report via the model under test, then evaluates every assertion in that scenario as its own `GEval` metric against the judge model.
 
 ### Grading rules
 
-- **PASS** requires concrete evidence: quote or reference the specific part of the output that satisfies the assertion.
-- **FAIL** if you have to give the benefit of the doubt. If an assertion says "must mention X" and X is implied but not stated, that is a FAIL.
-- A regression is any assertion that flips from PASS to FAIL after a reference file change.
+- Each assertion is graded independently by the judge model via `GEval`, using the assertion text verbatim as the evaluation criteria.
+- A regression is any assertion whose score drops below `MIN_PASS_RATE` after a `SKILL.md`/reference file change that previously passed.
+- Evaluations run against small local models, so scores can be noisier than a frontier-model judge — treat a single borderline failure as a signal to re-run before treating it as a hard regression.
 
 ### Adding a new eval
 
 1. Add an entry to `evals.json` following the existing schema (`id`, `name`, `prompt`, `expected_output`, `assertions`).
-2. Run the eval using the steps above and save the output as `evals/<name>.md`.
-3. Fill in the assertions table with initial PASS/FAIL grades.
-
-### Workspace model
-
-For multi-iteration tracking (comparing skill versions, measuring improvement over time), use the workspace structure described at [agentskills.io/skill-creation/evaluating-skills](https://agentskills.io/skill-creation/evaluating-skills). The workspace lives outside the skill directory: `minottobot-workspace/iteration-N/eval-<name>/with_skill/` and `without_skill/`.
+2. Run `uv run pytest minottobot/evals/test_evals.py -v -k <name>` to generate and grade it.

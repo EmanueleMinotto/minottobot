@@ -1,2 +1,8 @@
 .minottobot/
 *.log
+.venv/
+.deepeval/
+.deepeval-cache.json
+.pytest_cache/
+__pycache__/
+*.egg-info/

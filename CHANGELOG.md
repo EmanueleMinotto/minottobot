@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Migrated the eval regression suite from `scripts/run-evals.sh` (bash + Ollama curl calls) to [DeepEval](https://deepeval.com/) (`minottobot/evals/test_evals.py`, `ollama_model.py`, `batch_assertion_metric.py`), reusing the same 5 team scenarios and 25 assertions in `evals.json`. Grading batches all assertions for a scenario into a single judge call, and the 5 scenarios run in parallel via `pytest-xdist`.
+- Rewrote `.github/workflows/evals.yml` to run `uv run pytest` instead of the bash script; it now also pulls a separate judge model (default `mistral`, distinct from the model under test) and no longer commits results to a workspace directory.
+- Rewrote the `## Evals` section of `CONTRIBUTING.md` for the new `uv run pytest` workflow.
+
+### Removed
+
+- `scripts/run-evals.sh` and the multi-iteration `minottobot-workspace/` directory (iterations 1–6).
+- The manually captured `minottobot/evals/*.md` scenario outputs — superseded by the automated DeepEval suite.
+
 ## [1.0.0] - 2026-08-03
 
 First stable release of the minottobot skill.
