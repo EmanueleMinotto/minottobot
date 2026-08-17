@@ -94,10 +94,23 @@ Before looking at code or pipelines, collect three inputs:
 - [ ] Is there a baseline-freeze approach for incremental quality improvements (e.g., ESLint `--max-warnings` set to current count, lowered over time)?
 
 ### Ownership & culture
+
+This area has two halves. Assess both — a team can pass the first and fail the second.
+
+**Ownership of quality (how the team behaves):**
 - [ ] Does the team feel responsible for quality collectively?
 - [ ] How does the team react to production incidents?
 - [ ] Is there blame culture or learning culture?
 - [ ] Do developers and QA collaborate or operate in silos?
+
+**Structural ownership (who is accountable):**
+- [ ] Is there a named owner for this platform — a product owner, tech lead, or accountable person?
+- [ ] Has engineering leadership been stable, or has the team cycled through managers/VPs?
+- [ ] Does headcount on paper match effective capacity, or are people on loan elsewhere?
+- [ ] For every system the team runs in duplicate (CI, monitoring, databases), can they name which one is authoritative?
+- [ ] Are there unresolved incidents or abandoned migrations that nobody currently owns?
+
+A "no" to any structural question is a finding on its own, independent of how the team feels about quality. See [Organisational red flags](red-flags.md#organisational-red-flags).
 
 ---
 
@@ -106,6 +119,7 @@ Before looking at code or pipelines, collect three inputs:
 Look for clusters, not isolated issues. A single problem is a problem to fix. Multiple problems in the same area reveal a systemic pattern.
 
 - Cultural flags cluster → ownership and trust problem → address team dynamics before touching tools
+- Organisational flags cluster → structural ownership problem → name it as a root cause, and pick short-term actions the team can complete *without* organisational change
 - Process flags cluster → workflow maturity problem → start with CI and environment setup
 - Technical flags cluster → DX problem → start with the highest-friction pain point
 

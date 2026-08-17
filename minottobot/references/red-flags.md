@@ -40,6 +40,44 @@ QA writes automated tests, but developers don't look at them. Test failures are 
 
 ---
 
+## Organisational red flags
+
+These are about *structural* ownership — who is accountable for the platform — rather than how the team feels about quality. A team can care deeply about quality and still score 1/5 here.
+
+### The team has no assigned owner
+
+No product owner, no tech lead, no named accountable person for the platform. Work arrives from whoever shouts loudest.
+
+**What it looks like:** "no product owner is currently assigned to this team", priorities change per requester, nobody can approve a trade-off, improvement work never gets scheduled because there's nobody to schedule it.
+
+**Why it matters:** without a decision-maker, every recommendation minottobot makes has nowhere to land. This is the one red flag that blocks all the others from being fixed.
+
+### Leadership churn
+
+The team has cycled through multiple managers, VPs, or directors in a short period. Each one started a new direction; none stayed long enough to finish it.
+
+**What it looks like:** "3 VPs of Engineering in the last 18 months". Half-finished initiatives everywhere. The team has stopped believing that any new direction will survive.
+
+**Why it matters:** churn destroys the memory of *why* things are the way they are. Two CI systems, an abandoned migration, and an unresolved outage are usually the archaeology of departed leaders.
+
+### Staff on loan
+
+Engineers are formally on the team but actually working elsewhere. Headcount on paper doesn't match capacity in practice.
+
+**What it looks like:** "11 engineers on paper, but 4 are on loan to other departments". Plans are sized against the paper number and always slip.
+
+**Why it matters:** the team is being held to commitments made for a capacity it doesn't have. Always plan against the effective number, and name the gap explicitly.
+
+### Two systems, no authority
+
+The team runs two tools for the same job and cannot say which one is the source of truth.
+
+**What it looks like:** "we have CircleCI and GitHub Actions and we're not sure which one is authoritative for deployments". Two databases, two dashboards, two deploy paths.
+
+**Why it matters:** this isn't duplication, it's the absence of a decision. Nobody had the authority to retire one. Every change now has to be made twice, or gets made once and silently diverges.
+
+---
+
 ## Process red flags
 
 ### No CI at all
@@ -180,3 +218,6 @@ These are phrases that sound reasonable but are almost always a signal of a deep
 | "We collaborate well" (but only when management is watching) | Collaboration is performed, not practiced |
 | "We can't slow down to improve" | The team is stuck in a reactive loop and doesn't see that the "slowdown" would make them faster |
 | "That's just tech debt, we'll get to it" | Nobody has a plan to address it, and it keeps growing |
+| "We're between VPs right now" | Nobody can approve the trade-offs your plan depends on |
+| "We're not sure which one is authoritative" | Nobody had the authority to retire the other one |
+| "They're still on the team, just helping out elsewhere" | Effective capacity is lower than headcount, and plans are sized against the wrong number |

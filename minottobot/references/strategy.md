@@ -147,6 +147,12 @@ Every audit report **must** use exactly this structure — no variations, no fre
 
 > 🔴 1–2 critical/gap · 🟡 3 functional · 🟢 4–5 good/excellent
 
+<!-- Exactly these six rows, in this order. Scores obey the score caps in
+     SKILL.md — in particular, Ownership & culture is capped at 2/5 when the
+     team has no assigned owner, has churned through leadership, is running
+     below its paper headcount, or does not track incidents. -->
+
+
 <!-- In multi-repo environments, add a breakdown subsection when scores differ
      significantly across repos. Example:
      **CI/CD by repo:** frontend 4/5 · backend 1/5 · infra 3/5 -->

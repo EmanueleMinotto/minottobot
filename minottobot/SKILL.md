@@ -181,7 +181,34 @@ Load and apply:
 | A1 | ... | short | | open |
 ```
 
-**Scoring rules:** 1 = critical · 2 = significant gap · 3 = functional · 4 = good · 5 = excellent. Use the exact `?/5` format in the table.
+**Scoring rules:** 1 = critical · 2 = significant gap · 3 = functional · 4 = good · 5 = excellent.
+
+Write the score as a bare number followed by `/5` — `2/5`, never `[2]/5` and never `2`. The square brackets in the template above are placeholders to replace, not literal characters.
+
+The table has exactly the six rows shown above, in that order. Do not add rows for other topics (deployment frequency, incidents, environments) and do not omit a row because the user gave no data on it — findings about those belong in the one-line finding of the area they affect. If the user provided no evidence for an area, score it and say so: `2/5 | No data provided — untracked is itself a finding`.
+
+**Score caps (MANDATORY).** Scores are anchored to evidence, not impressions. When any of these signals is present in the Phase 0 data, the area score is capped at the stated value regardless of how positive the rest of the picture looks:
+
+| Signal in the data | Area | Cap |
+|---|---|---|
+| No CI, or CI that can be bypassed, or two CI systems with no authoritative one | CI/CD | 2/5 |
+| Tests not run recently, unknown pass rate, or a flaky rate the team ignores | Testing | 2/5 |
+| No tests at all | Testing | 1/5 |
+| Review skipped for "urgent" work, or no formal policy | Code review | 2/5 |
+| No monitoring, or monitoring added only after an incident | Monitoring | 2/5 |
+| No staging environment, or no local dev setup | Developer Experience | 2/5 |
+| **No assigned owner or product owner for the team** | **Ownership & culture** | **2/5** |
+| **Leadership churn — multiple managers/VPs within ~18 months** | **Ownership & culture** | **2/5** |
+| **Headcount on paper exceeds effective capacity (staff on loan)** | **Ownership & culture** | **2/5** |
+| **Incidents untracked, or a past outage still unresolved** | **Ownership & culture** | **2/5** |
+
+Ownership & culture is the area most often over-scored. A team can be collaborative, blameless, and genuinely invested in quality and still score 1–2/5 here, because this area measures *structural* ownership — who is accountable — not how the team feels. Never infer a good ownership score from the absence of complaints; score it from the presence of a named owner and stable leadership. When a cap applies, the one-line finding must name the specific signal that triggered it.
+
+**Address ownership ambiguity as a root cause.** When any of the ownership caps above applies, the report must state explicitly that ownership is unclear and connect it to the downstream symptoms it explains — duplicated systems nobody retired, abandoned migrations, unresolved incidents, improvement work that never gets scheduled. Do not leave it as a score in a table.
+
+Then keep every recommendation inside what the team itself can execute. Changing the shape of the organisation is somebody else's decision and outside minottobot's scope: name the ownership gap as a finding, and pick actions the team can complete on its own authority despite it.
+
+**Never invent repositories, tools, or metrics.** "Repos in scope" lists only repos the user named. If the user described a stack but named no repos, write one line per component using the wording the user gave (e.g. `Laravel monolith (PHP + MySQL)`), or `Not provided` — do not fabricate repository names. The same applies to numbers: never supply a figure the user did not give.
 
 **Migration cost rule (MANDATORY):** whenever the improvement plan recommends replacing or migrating away from a system the team already runs (CI platform, database, monitoring tool), the same sentence or bullet MUST state the migration cost and risk.
 - ❌ WRONG: "Consider adopting GitHub Actions instead of Jenkins."
