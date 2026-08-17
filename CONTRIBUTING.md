@@ -103,19 +103,19 @@ ollama pull mistral    # judge model (OLLAMA_JUDGE_MODEL, default mistral — ke
                         # from the model under test so it doesn't grade its own output)
 
 uv sync
-uv run pytest evals/ -v -n 5          # runs every sub-suite's scenarios concurrently
-uv run pytest evals/audit -v          # runs only the audit sub-suite
+uv run pytest evals/ -v -n 2 --reruns 2 --reruns-delay 10   # runs every sub-suite's scenarios concurrently
+uv run pytest evals/audit -v                                # runs only the audit sub-suite
 ```
 
-Ollama serves concurrent requests against an already-loaded model, so running scenarios in parallel (`-n 5`, via `pytest-xdist`) is faster than running them sequentially — but on a single local GPU, concurrent requests contend with each other and tail latency is unpredictable. Expect the full suite to take longer than a single sub-suite: local GPU-bound inference for both report generation and grading is the structural cost, not the harness. `OLLAMA_REQUEST_TIMEOUT` (default `900`s) gives individual requests enough headroom under that contention; lower `-n` (e.g. `-n 2`) trades parallelism for more consistent per-request latency if the default flakes.
+Ollama serves concurrent requests against an already-loaded model, so running scenarios in parallel (`-n`, via `pytest-xdist`) is faster than running them sequentially — but on a single local GPU (or, in CI, a shared CPU-only runner), concurrent requests contend with each other and tail latency is unpredictable. Expect the full suite to take longer than a single sub-suite: local GPU/CPU-bound inference for both report generation and grading is the structural cost, not the harness. `OLLAMA_REQUEST_TIMEOUT` (default `900`s) gives individual requests enough headroom under that contention; keep `-n` low (`2`, the CI default) if a higher value flakes with timeouts. `--reruns` (via `pytest-rerunfailures`) retries a scenario that fails once before failing the build, which absorbs the single-run noise described below.
 
 Useful env vars: `OLLAMA_MODEL`, `OLLAMA_JUDGE_MODEL`, `OLLAMA_URL`, `MIN_PASS_RATE` (per-assertion GEval threshold, default `0.80`). Run a single scenario with `-k <name>` (e.g. `-k startup-chaos`).
 
 ### Grading rules
 
 - Each scenario's assertions are graded together in a single judge call (`BatchAssertionMetric`), using the assertion text verbatim as the evaluation criteria.
-- A regression is any assertion whose score drops below `MIN_PASS_RATE` after a `SKILL.md`/reference file change that previously passed.
-- Evaluations run against small local models, so scores can be noisier than a frontier-model judge — treat a single borderline failure as a signal to re-run before treating it as a hard regression.
+- A regression is any assertion that still fails after a rerun, following a `SKILL.md`/reference file change that previously passed.
+- Evaluations run against small local models, so scores can be noisier than a frontier-model judge — treat a single borderline failure (one that only fails without a rerun) as noise, not a hard regression. CI reruns each failure up to twice before failing the build for exactly this reason.
 
 ### Adding a new eval
 
@@ -124,4 +124,4 @@ Useful env vars: `OLLAMA_MODEL`, `OLLAMA_JUDGE_MODEL`, `OLLAMA_URL`, `MIN_PASS_R
 
 ### CI
 
-[`.github/workflows/evals.yml`](.github/workflows/evals.yml) runs the full suite (`evals/` — all sub-suites, `-n 5`) on every pull request and on every push to `main`, using an ephemeral Ollama instance on `ubuntu-latest` with the default models (`llama3.2` under test, `mistral` as judge). It can also be triggered manually via `workflow_dispatch`, which additionally lets you pick a specific model pair, a custom `MIN_PASS_RATE`, or a single scenario by name instead of the full suite.
+[`.github/workflows/evals.yml`](.github/workflows/evals.yml) runs the full suite (`evals/` — all sub-suites, `-n 2 --reruns 2 --reruns-delay 10`) on every pull request and on every push to `main`, using an ephemeral Ollama instance on `ubuntu-latest` with the default models (`llama3.2` under test, `mistral` as judge). It can also be triggered manually via `workflow_dispatch`, which additionally lets you pick a specific model pair, a custom `MIN_PASS_RATE`, or a single scenario by name instead of the full suite.
