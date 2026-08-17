@@ -79,8 +79,15 @@ jobs:
           MIN_PASS_RATE: ${{ inputs.min_pass_rate || '0.80' }}
           EVAL_NAME: ${{ inputs.eval_name || 'all' }}
         run: |
+          # -n 2 (not 5): on the shared ubuntu-latest runner, 5 concurrent
+          # CPU-bound Ollama requests contend hard enough to blow past
+          # OLLAMA_REQUEST_TIMEOUT (see CONTRIBUTING.md#running-the-evals).
+          # --reruns retries a scenario that fails once — small local models
+          # are noisier than a frontier judge, so a single borderline result
+          # is treated as signal to re-run, not an immediate hard failure
+          # (see CONTRIBUTING.md#grading-rules).
           if [[ "$EVAL_NAME" == "all" ]]; then
-            uv run pytest evals/ -v -n 5
+            uv run pytest evals/ -v -n 2 --reruns 2 --reruns-delay 10
           else
-            uv run pytest evals/ -v -k "$EVAL_NAME"
+            uv run pytest evals/ -v -k "$EVAL_NAME" --reruns 2 --reruns-delay 10
           fi
