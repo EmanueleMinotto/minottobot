@@ -5,9 +5,9 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.0.0] - 2026-08-17
 
-**Breaking (targets v2.0.0):** restructured the single `minottobot` skill into a four-skill [Claude Code plugin](https://docs.claude.com/en/docs/claude-code/plugins). Existing `.minottobot/` snapshots remain compatible (same schema), but anything that assumed a single skill handled the whole engagement needs to switch to the new install/invocation path.
+**Breaking:** restructured the single `minottobot` skill into a four-skill [Claude Code plugin](https://docs.claude.com/en/docs/claude-code/plugins). Existing `.minottobot/` snapshots remain compatible (same schema), but anything that assumed a single skill handled the whole engagement needs to switch to the new install/invocation path.
 
 ### Added
 
@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Area scores and their evidence-based caps moved from the former "Phase 2 — Strategy" section into `audit`, since scoring is a judgment made from Phase 0/checklist evidence, not part of the improvement plan.
 - Rewrote `.github/workflows/evals.yml` to run `uv run pytest` instead of the bash script; it now also pulls a separate judge model (default `mistral`, distinct from the model under test) and no longer commits results to a workspace directory.
 - `.github/workflows/evals.yml` now runs automatically on every pull request and on every push to `main` (in addition to manual `workflow_dispatch`), running the full `evals/` suite across all sub-suites.
+- `strategy` now explicitly requires citing the audit's verbatim metrics and evidence in the executive summary, including positive signals and not just problems.
 
 ### Removed
 
@@ -50,5 +51,5 @@ First stable release of the minottobot skill.
 - Multi-iteration eval workspace in `minottobot-workspace/` (iterations 1–6).
 - `README.md`, `CONTRIBUTING.md`, `LICENSE`, and `.gitattributes` rules that keep the GitHub zip download limited to the skill itself.
 
-[Unreleased]: https://github.com/EmanueleMinotto/minottobot/compare/v1.0.0...HEAD
+[2.0.0]: https://github.com/EmanueleMinotto/minottobot/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/EmanueleMinotto/minottobot/releases/tag/v1.0.0
