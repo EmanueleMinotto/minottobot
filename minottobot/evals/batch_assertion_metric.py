@@ -14,7 +14,17 @@ Audit output:
 ---
 
 For each of the following assertions, decide whether the audit output satisfies it.
-Only answer "yes" if the assertion is explicitly and completely satisfied. Be strict.
+
+Assertions come in two kinds, and they are judged by opposite rules:
+
+- **Requirements** ("Output must ...") demand the presence of something. Be strict:
+  pass only if the audit output explicitly and completely contains it. When in
+  doubt, fail. Evidence is a direct quote of the part that satisfies it.
+- **Prohibitions** ("Output must not ...") demand the absence of something. They
+  are satisfied by default. Fail one ONLY if you can quote the specific sentence
+  in the audit output that commits the prohibited act. If you cannot produce that
+  quote, the assertion passes. Never fail a prohibition because the output is
+  silent on the topic — silence is exactly what a prohibition requires.
 
 Assertions:
 {numbered_assertions}
@@ -22,6 +32,10 @@ Assertions:
 Return ONLY a JSON object of this exact shape, with one verdict per assertion, in the
 same order as listed above:
 {{"verdicts": [{{"pass": true, "evidence": "direct quote or brief justification"}}, ...]}}
+
+For a failed prohibition, "evidence" MUST be the verbatim offending quote from the
+audit output. An empty or paraphrased evidence string means you have no violation to
+report, so the verdict must be true.
 """
 
 
@@ -65,6 +79,37 @@ class BatchAssertionMetric(BaseMetric):
             actual_output=actual_output, numbered_assertions=numbered
         )
 
+    @staticmethod
+    def _is_prohibition(assertion: str) -> bool:
+        return "must not" in assertion.lower()
+
+    def _acquit_unevidenced_prohibitions(
+        self, verdicts: List[dict], actual_output: str
+    ) -> List[dict]:
+        """Overturn prohibition failures the judge cannot back with a quote.
+
+        Judges are heavily biased against "must not ..." assertions: they are
+        satisfied by absence, so nothing in the output ever looks like positive
+        proof and the verdict defaults to fail. Measured on this suite, "must
+        not recommend psychological safety" failed 10/10 gradings on outputs
+        where neither word appeared at all.
+
+        A prohibition is only genuinely violated if the offending text exists,
+        so we require the judge's evidence to be a quote actually found in the
+        output. No quote, no violation.
+        """
+        haystack = " ".join(actual_output.lower().split())
+        for verdict, assertion in zip(verdicts, self.assertions):
+            if verdict.get("pass") or not self._is_prohibition(assertion):
+                continue
+            quote = " ".join(str(verdict.get("evidence", "")).lower().split())
+            if len(quote) < 15 or quote not in haystack:
+                verdict["pass"] = True
+                verdict["evidence"] = (
+                    "acquitted: judge cited no verbatim quote from the output"
+                )
+        return verdicts
+
     def _score_from_verdicts(self, verdicts: List[dict]) -> None:
         self.verdicts = verdicts
         passed = sum(1 for v in verdicts if v.get("pass"))
@@ -90,6 +135,9 @@ class BatchAssertionMetric(BaseMetric):
             verdicts = (verdicts + [{"pass": False, "evidence": "missing verdict"}] * len(
                 self.assertions
             ))[: len(self.assertions)]
+        verdicts = self._acquit_unevidenced_prohibitions(
+            verdicts, test_case.actual_output
+        )
         self._score_from_verdicts(verdicts)
         return self.score
 
@@ -102,5 +150,8 @@ class BatchAssertionMetric(BaseMetric):
             verdicts = (verdicts + [{"pass": False, "evidence": "missing verdict"}] * len(
                 self.assertions
             ))[: len(self.assertions)]
+        verdicts = self._acquit_unevidenced_prohibitions(
+            verdicts, test_case.actual_output
+        )
         self._score_from_verdicts(verdicts)
         return self.score
