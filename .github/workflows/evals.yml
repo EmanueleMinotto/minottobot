@@ -68,7 +68,7 @@ jobs:
           MIN_PASS_RATE: ${{ inputs.min_pass_rate }}
         run: |
           if [[ "${{ inputs.eval_name }}" == "all" ]]; then
-            uv run pytest minottobot/evals/test_evals.py -v -n 5
+            uv run pytest evals/ -v -n 5
           else
-            uv run pytest minottobot/evals/test_evals.py -v -k "${{ inputs.eval_name }}"
+            uv run pytest evals/ -v -k "${{ inputs.eval_name }}"
           fi

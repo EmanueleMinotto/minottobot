@@ -4,7 +4,7 @@ from deepeval.metrics.base_metric import BaseMetric
 from deepeval.metrics.utils import trimAndLoadJson
 from deepeval.test_case import LLMTestCase, SingleTurnParams
 
-from minottobot.evals.ollama_model import OllamaModel
+from evals._shared.ollama_model import OllamaModel
 
 GRADE_PROMPT_TEMPLATE = """You are a strict pass/fail evaluator for an audit report.
 

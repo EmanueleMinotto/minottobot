@@ -255,7 +255,7 @@ When recommending a tool, apply this checklist before naming it. A tool recommen
 
 ## 8. Entry checklist (new client assessment)
 
-See [checklist.md](checklist.md) — it is the authoritative source for the evaluation areas, per-area questions, and priority order. Do not duplicate or redefine them here.
+See [checklist.md](../../audit/references/checklist.md) (Audit skill) — it is the authoritative source for the evaluation areas, per-area questions, and priority order. Do not duplicate or redefine them here.
 
 ---
 

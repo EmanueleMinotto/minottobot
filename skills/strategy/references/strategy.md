@@ -194,4 +194,4 @@ Every audit report **must** use exactly this structure — no variations, no fre
 - Horizon icons: ⚡ short · ◆ medium · ◎ long (used in plan headings and action items table)
 - Status icons: ○ open · ✓ done · — blocked
 - Plan items: one action per bullet, owner-assignable
-- Action item IDs are stable across sessions — see [persistence.md](persistence.md) for ID rules and delta view
+- Action item IDs are stable across sessions — see [snapshot-delta.md](snapshot-delta.md) for ID rules and delta view

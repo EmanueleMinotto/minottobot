@@ -1,0 +1,57 @@
+{
+  "skill_name": "test-selection",
+  "evals": [
+    {
+      "id": 1,
+      "name": "checkout-journey",
+      "prompt": "We're about to ship a new checkout flow (add to cart, payment, confirmation). What kind of test should we write for it?",
+      "expected_output": "A recommendation to cover the checkout flow with an E2E test, since it's a critical user journey spanning multiple layers.",
+      "assertions": [
+        "Output must recommend an E2E test for the checkout flow",
+        "Output must explain that this is a critical user journey, not just a single function"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "orm-query",
+      "prompt": "We have a new repository method that runs a fairly complex ORM query joining three tables. What kind of test should we write for it?",
+      "expected_output": "A recommendation for an integration test, using a real or in-memory/containerized database rather than mocking it.",
+      "assertions": [
+        "Output must recommend an integration test for the query",
+        "Output must not recommend mocking the database for this test"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "third-party-no-sandbox",
+      "prompt": "We call a third-party shipping rates API that doesn't offer a sandbox environment. What kind of test should we write to catch it if their API changes?",
+      "expected_output": "A recommendation for a contract test, since there's no sandbox to run real integration tests against.",
+      "assertions": [
+        "Output must recommend a contract test",
+        "Output must explain that the lack of a sandbox is why integration testing isn't the right fit here"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "slow-e2e-suite",
+      "prompt": "Our E2E suite takes 45 minutes to run and developers have stopped running it locally. What should we do?",
+      "expected_output": "A diagnosis that this is a test pyramid problem, not an E2E-specific one, and a recommendation to move coverage down to integration/unit tests where possible rather than just increasing timeouts or parallelism.",
+      "assertions": [
+        "Output must identify this as a test pyramid balance problem",
+        "Output must recommend moving some coverage to integration or unit tests rather than only optimizing the E2E suite's speed",
+        "Output must not recommend simply raising timeouts as the fix"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "zero-tests-where-to-start",
+      "prompt": "We have zero automated tests on our codebase. Where should we start?",
+      "expected_output": "A recommendation to start with unit tests on the most critical business logic, then integration tests on the most-used endpoints, with E2E last and reserved for the most critical journeys.",
+      "assertions": [
+        "Output must recommend starting with unit tests on critical business logic",
+        "Output must sequence integration tests before E2E tests in the recommended order",
+        "Output must not recommend starting with a full E2E suite"
+      ]
+    }
+  ]
+}

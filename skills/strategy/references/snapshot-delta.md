@@ -1,51 +1,14 @@
-# minottobot — Persistence
+# Strategy — Snapshot & delta
 
-This document is loaded on-demand — only when a returning engagement was detected at session init, or when file-write tools are available. It governs how minottobot handles multi-session engagements: saving audit snapshots, loading previous audits, and generating delta views.
+This document is loaded on-demand — only when a previous audit was carried forward from the Audit skill (returning engagement), or when file-write tools are available. It governs how the Strategy skill saves progress snapshots and generates delta views once the improvement plan exists.
 
----
-
-## Session types
-
-**Fresh audit** — no `.minottobot/` directory found at session start. Run the full workflow (Recon → Phase 0 → Phase 1 → Phase 2). At the end, produce a snapshot file.
-
-**Returning engagement** — a `.minottobot/audit-YYYY-MM-DD.md` file was found at session start. Open the session with a returning engagement summary, run the full workflow, then append a delta view to the final report.
-
----
-
-## Returning engagement opening
-
-When a previous audit snapshot was loaded at session start, open the conversation with:
-
-```
-Welcome back. Last audit: {date}, {team}.
-
-Repos previously in scope: {list}
-
-Last scores:
-| Area | Score |
-|------|-------|
-| CI/CD | ?/5 |
-| Testing | ?/5 |
-| Code review | ?/5 |
-| Monitoring | ?/5 |
-| Developer Experience | ?/5 |
-| Ownership & culture | ?/5 |
-
-Last top 3 blockers:
-1. ...
-2. ...
-3. ...
-
-What has changed since then? (new repos, tech changes, remediation done, team changes?)
-```
-
-Then proceed with Code Reconnaissance and Phase 0 as normal. The previous audit informs Phase 1 context and the Phase 2 delta view — it does not replace fresh data collection.
+For how a returning engagement is detected and greeted at session start, see [session-resume.md](../../audit/references/session-resume.md) (Audit skill) — that half runs before the audit even starts, not here.
 
 ---
 
 ## Snapshot file format
 
-At the end of every audit, produce the snapshot block and handle it based on tool availability:
+At the end of every engagement, produce the snapshot block and handle it based on tool availability:
 
 **If file-write tools are available (Write, Bash):** write the snapshot to `.minottobot/audit-{date}.md` in the workspace root, then confirm to the user where it was saved.
 
@@ -81,7 +44,6 @@ repos:
 ## Top 3 blockers
 1. ...
 2. ...
-3. ...
 
 ## Action items
 | ID | Description | Horizon | Owner | Status |
@@ -99,7 +61,7 @@ repos:
 
 ## Delta view
 
-When a previous audit exists, append a delta section **after** the standard required report format. Do not replace or shorten any part of the standard report.
+When the audit output handed off by the Audit skill originated from a returning engagement, append a delta section **after** the standard required report format. Do not replace or shorten any part of the standard report.
 
 ```markdown
 ## Delta since {previous date}

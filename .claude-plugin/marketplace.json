@@ -1,0 +1,14 @@
+{
+  "name": "minottobot",
+  "owner": {
+    "name": "Emanuele Minotto",
+    "url": "https://github.com/EmanueleMinotto"
+  },
+  "plugins": [
+    {
+      "name": "minottobot",
+      "source": ".",
+      "description": "Your friendly neighborhood QA developer — audits engineering practices and builds improvement plans."
+    }
+  ]
+}

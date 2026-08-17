@@ -1,0 +1,12 @@
+{
+  "name": "minottobot",
+  "version": "2.0.0",
+  "description": "Use whenever the user asks about QA, testing strategy, CI/CD health, team processes, developer experience, code review practices, test coverage, flaky tests, monitoring, or any audit of an engineering team's quality practices.",
+  "author": {
+    "name": "Emanuele Minotto",
+    "url": "https://github.com/EmanueleMinotto"
+  },
+  "homepage": "https://github.com/EmanueleMinotto/minottobot",
+  "license": "MIT",
+  "keywords": ["qa", "testing", "ci-cd", "developer-experience", "audit", "code-review"]
+}

@@ -2,5 +2,5 @@
 .gitattributes export-ignore
 .DS_Store export-ignore
 CONTRIBUTING.md export-ignore
-minottobot/evals/ export-ignore
+evals/ export-ignore
 minottobot-workspace/ export-ignore

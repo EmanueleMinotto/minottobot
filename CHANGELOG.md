@@ -7,16 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+**Breaking (targets v2.0.0):** restructured the single `minottobot` skill into a four-skill [Claude Code plugin](https://docs.claude.com/en/docs/claude-code/plugins). Existing `.minottobot/` snapshots remain compatible (same schema), but anything that assumed a single skill handled the whole engagement needs to switch to the new install/invocation path.
+
+### Added
+
+- Converted the repository into a self-hosted Claude Code plugin: `.claude-plugin/plugin.json` (root = plugin) and `.claude-plugin/marketplace.json` (`source: "."`), installable via `/plugin marketplace add` + `/plugin install minottobot`.
+- Split the monolithic skill into four: `audit` (session init, code reconnaissance, Phase 0, checklist/red-flags assessment, evidence-anchored scoring — stops at a scored audit output), `strategy` (consumes an audit output and builds the improvement plan, action items, snapshot, and delta view), `test-selection` (fully standalone decision guide for what test to write), and `minottobot` (the default engagement — a thin orchestrator that runs `audit` then `strategy` in sequence).
+- New `skills/audit/references/session-resume.md` and `skills/strategy/references/snapshot-delta.md`, split from the former `persistence.md` along the audit/strategy boundary.
+- Per-skill eval sub-suites under `evals/<skill>/` (`audit`, `strategy`, `test_selection`), plus `evals/default/` retaining the original 5-scenario/25-assertion suite against the audit+strategy skills chained together. New `evals/runner.py` centralizes the harness previously duplicated in a single `test_evals.py`.
+- Migrated the eval regression suite from `scripts/run-evals.sh` (bash + Ollama curl calls) to [DeepEval](https://deepeval.com/) (`ollama_model.py`, `batch_assertion_metric.py`), reusing the same 5 team scenarios and 25 assertions. Grading batches all assertions for a scenario into a single judge call, and scenarios run in parallel via `pytest-xdist`.
+
 ### Changed
 
-- Migrated the eval regression suite from `scripts/run-evals.sh` (bash + Ollama curl calls) to [DeepEval](https://deepeval.com/) (`minottobot/evals/test_evals.py`, `ollama_model.py`, `batch_assertion_metric.py`), reusing the same 5 team scenarios and 25 assertions in `evals.json`. Grading batches all assertions for a scenario into a single judge call, and the 5 scenarios run in parallel via `pytest-xdist`.
+- Moved `minottobot/references/*.md` into `skills/audit/references/` and `skills/strategy/references/` depending on which skill now owns them (see README's "Repository structure").
+- Moved the eval suite from `minottobot/evals/` to a top-level `evals/` package; `pyproject.toml` `testpaths` updated accordingly.
+- Area scores and their evidence-based caps moved from the former "Phase 2 — Strategy" section into `audit`, since scoring is a judgment made from Phase 0/checklist evidence, not part of the improvement plan.
 - Rewrote `.github/workflows/evals.yml` to run `uv run pytest` instead of the bash script; it now also pulls a separate judge model (default `mistral`, distinct from the model under test) and no longer commits results to a workspace directory.
-- Rewrote the `## Evals` section of `CONTRIBUTING.md` for the new `uv run pytest` workflow.
 
 ### Removed
 
 - `scripts/run-evals.sh` and the multi-iteration `minottobot-workspace/` directory (iterations 1–6).
-- The manually captured `minottobot/evals/*.md` scenario outputs — superseded by the automated DeepEval suite.
+- The manually captured scenario outputs — superseded by the automated DeepEval suite.
 
 ## [1.0.0] - 2026-08-03
 

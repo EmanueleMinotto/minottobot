@@ -1,0 +1,67 @@
+{
+  "skill_name": "strategy",
+  "evals": [
+    {
+      "id": 1,
+      "name": "startup-chaos",
+      "prompt": "# Minottobot audit — Swiftly Inc — 2026-08-17\n\n## Repos in scope\n- Swiftly monolith (Node.js API + React frontend + PostgreSQL)\n\n## Phase 0 baseline\n- Team size: 4 engineers (3 backend, 1 frontend), no dedicated QA\n- Total tests: 0 — team keeps saying they'll write them, but hasn't\n- CI run time: ~2 minutes (GitHub Actions, ESLint only)\n- Deployment frequency: 2-3 times per day via `git push heroku main`, manual\n- Incidents: roughly 1 per day, almost always reported by users first. MTTR ~1 hour\n- Code review: informal, no policy\n\n## Area scores (1 = critical · 5 = excellent)\n| Area                    | Score | One-line finding                     |\n|-------------------------|-------|--------------------------------------|\n| CI/CD                   | 2/5 | Runs lint only, no test gate, manual deploy |\n| Testing                 | 1/5 | Zero tests of any kind |\n| Code review             | 2/5 | No formal policy, informal only |\n| Monitoring              | 2/5 | No error tracking, incidents found by users |\n| Developer Experience    | 2/5 | No staging environment, manual heroku deploys |\n| Ownership & culture     | 3/5 | Small team, everyone engaged, no structural gaps found |\n\n## Evidence & red flags\n- No staging environment — every change goes straight to production\n- Zero automated tests despite 2-3 daily deploys\n- Incidents (~1/day) are caught by users before the team notices\n\n## Systems flagged for replacement evaluation\n- None — the gap is absence of tooling, not a system to replace",
+      "expected_output": "An improvement plan that gives at least one short-term testing action item, recommends a specific test type to start with (not just 'add tests'), and does not recommend a full test suite rewrite as the first step.",
+      "assertions": [
+        "Output must give at least one short-term action item related to testing",
+        "Output must recommend a specific test type to adopt first, not just 'add tests'",
+        "Output must not recommend a full test suite rewrite as the first step",
+        "Output must carry forward the CI/CD score of 2/5 and the Testing score of 1/5 from the audit input without changing them"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "enterprise-legacy",
+      "prompt": "# Minottobot audit — FinanceCore Ltd — 2026-08-17\n\n## Repos in scope\n- FinanceCore platform (Java Spring Boot microservices, Oracle DB, React frontend)\n\n## Phase 0 baseline\n- Team size: 85 engineers across 8 product teams, central QA guild of 6\n- Total tests: ~12,000, approximately 30% flaky and frequently ignored\n- CI run time: 47 minutes (Jenkins, set up in 2011, maintained by a dedicated CI team)\n- Deployment frequency: biweekly release window, 6-hour deployment with manual sign-offs\n- Incidents: 2 P1/month, 1 P2/month, MTTR ~4 hours\n- Code review: 3 required approvals, formal policy, skipped for 'hotfixes' by some teams\n\n## Area scores (1 = critical · 5 = excellent)\n| Area                    | Score | One-line finding                     |\n|-------------------------|-------|--------------------------------------|\n| CI/CD                   | 2/5 | 47-minute Jenkins build, maintained by dedicated CI team |\n| Testing                 | 2/5 | ~30% of 12,000 tests are flaky and ignored |\n| Code review             | 2/5 | Formal policy bypassed for 'hotfixes' |\n| Monitoring              | 3/5 | MTTR ~4 hours, no further detail provided |\n| Developer Experience    | 2/5 | Slow 47-minute feedback loop, biweekly release window |\n| Ownership & culture     | 3/5 | Central QA guild exists, no structural red flags found |\n\n## Evidence & red flags\n- 47-minute CI run time on Jenkins is the single largest feedback-loop cost\n- 30% flaky test rate is a trust problem, not just a coverage gap — the team already ignores failures\n- Code review policy has a formal 'hotfix' bypass that some teams use routinely\n\n## Systems flagged for replacement evaluation\n- Jenkins — set up in 2011, maintained by a dedicated CI team, 47-minute build time",
+      "expected_output": "An improvement plan that gives at least one short-term action item, addresses the 30% flaky test rate as a trust issue, and — if it recommends replacing Jenkins — states the migration cost and risk in the same recommendation.",
+      "assertions": [
+        "Output must give at least one short-term action item",
+        "Output must address flaky tests specifically (not just 'tests exist')",
+        "Output must not recommend replacing Jenkins without acknowledging migration cost",
+        "Output must carry forward the CI/CD score of 2/5 from the audit input without changing it"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "post-incident",
+      "prompt": "# Minottobot audit — Norsk Mobility AS — 2026-08-17\n\n## Repos in scope\n- Norsk Mobility platform (Python + Django backend, React Native mobile app, PostgreSQL)\n\n## Phase 0 baseline\n- Team size: 14 engineers + 2 dedicated QA\n- Total tests: 340 unit, 45 integration, 12 E2E — all E2E written in the last week, previously zero\n- CI run time: ~12 minutes (GitHub Actions, manual approval gate before production deploy)\n- Deployment frequency: 1-2 times per week\n- Incident: 4 days ago, a race condition in the payment processing service corrupted payment records for 2,100 users. Data partially recovered, investigation ongoing\n- Monitoring: Sentry added 3 days ago; before that, nothing — users reported issues directly\n\n## Area scores (1 = critical · 5 = excellent)\n| Area                    | Score | One-line finding                     |\n|-------------------------|-------|--------------------------------------|\n| CI/CD                   | 3/5 | 12-minute run, manual approval gate before prod |\n| Testing                 | 3/5 | 397 tests total, but E2E coverage only exists since last week |\n| Code review             | 3/5 | No data suggesting problems, none reported |\n| Monitoring              | 2/5 | Sentry added only 3 days ago, after the incident |\n| Developer Experience    | 3/5 | No major DX gaps reported |\n| Ownership & culture     | 3/5 | No structural red flags found |\n\n## Evidence & red flags\n- 4 days ago, a race condition in the payment processing service corrupted payment records for 2,100 users; investigation ongoing\n- Monitoring (Sentry) was only added 3 days ago, reactively, after the team had no visibility during the incident\n\n## Systems flagged for replacement evaluation\n- None",
+      "expected_output": "An improvement plan that explicitly references the recent incident and the race condition, recommends monitoring/observability as a priority, gives at least one short-term action item, and does not recommend 'psychological safety' as an action unless directly supported by a specific data point.",
+      "assertions": [
+        "Output must reference the recent production incident explicitly",
+        "Output must give at least one short-term action item",
+        "Output must recommend monitoring or observability as a priority",
+        "Output must not recommend psychological safety without citing a specific data point",
+        "Output must reference the race condition or production data corruption"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "high-functioning",
+      "prompt": "# Minottobot audit — Atmos (Helix team) — 2026-08-17\n\n## Repos in scope\n- Helix platform (TypeScript + Next.js + Supabase)\n\n## Phase 0 baseline\n- Team size: 7 engineers, no dedicated QA — quality is everyone's job\n- Total tests: 2,100 unit, 380 integration, 85 E2E\n- CI run time: 8 minutes (GitHub Actions, required to pass before merge, no exceptions)\n- Deployment frequency: 4.2 deploys/day on average, all behind feature flags, automatic rollback on error spike\n- Incidents: 0.1 P1/month, 0.5 P2/month, MTTR 12 minutes\n- Monitoring: Datadog with custom SLOs per service, full on-call rotation with runbooks\n- Code review: 1 approval required, PRs consistently have substantive discussion\n\n## Area scores (1 = critical · 5 = excellent)\n| Area                    | Score | One-line finding                     |\n|-------------------------|-------|--------------------------------------|\n| CI/CD                   | 5/5 | 8-minute build, no-exceptions merge gate |\n| Testing                 | 4/5 | 2,565 tests across all layers, healthy pyramid shape |\n| Code review             | 4/5 | Substantive review on every PR |\n| Monitoring              | 5/5 | Datadog with custom SLOs, full on-call rotation |\n| Developer Experience    | 4/5 | 4.2 deploys/day behind feature flags, auto-rollback |\n| Ownership & culture     | 4/5 | No structural red flags found |\n\n## Evidence & red flags\n- Incident rate is genuinely low: 0.1 P1/month, 0.5 P2/month, MTTR 12 minutes\n- No missing tooling identified — Datadog, feature flags, and SLOs are already in place\n\n## Systems flagged for replacement evaluation\n- None",
+      "expected_output": "An improvement plan that acknowledges the genuinely low incident rate (0.1 P1/month), does not recommend tools the team already has (e.g. Datadog, feature flags), and includes at least one non-trivial medium or long-term recommendation rather than being purely congratulatory.",
+      "assertions": [
+        "Output must acknowledge the low incident rate of 0.1 P1/month",
+        "Output must not recommend tooling the team already has (e.g. Datadog, feature flags, SLOs)",
+        "Output must give at least one non-trivial medium- or long-term recommendation",
+        "Output must include at least one genuine improvement item, not purely congratulatory content"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "org-chaos",
+      "prompt": "# Minottobot audit — Momentum Fintech (Platform team) — 2026-08-17\n\n## Repos in scope\n- Momentum Fintech Platform (PHP + Laravel monolith, Node.js microservices, MySQL)\n\n## Phase 0 baseline\n- Team size: 11 engineers on paper, 4 on loan elsewhere — 7 effectively active\n- Total tests: ~800, not run in about 2 months, current pass rate unknown\n- CI: two systems — CircleCI (original) and GitHub Actions (added 6 months ago), no authoritative one identified\n- Deployment frequency: irregular, last deploy 3 weeks ago\n- Incidents: not formally tracked; a major outage 6 months ago is still not fully resolved\n- Code review: officially required, skipped whenever something is 'urgent'\n- Org: 3 VPs of Engineering in the last 18 months, no product owner currently assigned\n\n## Area scores (1 = critical · 5 = excellent)\n| Area                    | Score | One-line finding                     |\n|-------------------------|-------|--------------------------------------|\n| CI/CD                   | 2/5 | Two CI systems (CircleCI and GitHub Actions), no authoritative one |\n| Testing                 | 2/5 | ~800 tests unrun for 2 months, pass rate unknown |\n| Code review             | 2/5 | Formal policy routinely skipped for 'urgent' work |\n| Monitoring              | 2/5 | Incidents untracked, 6-month-old outage unresolved |\n| Developer Experience    | 3/5 | No specific DX complaints beyond process gaps above |\n| Ownership & culture     | 2/5 | No product owner assigned; 3 VPs of Engineering in 18 months; 4 of 11 engineers on loan |\n\n## Evidence & red flags\n- Ownership is structurally absent: no product owner, 3 VPs of Engineering in 18 months, headcount on paper (11) exceeds effective capacity (7)\n- Two CI systems (CircleCI and GitHub Actions) coexist with no authoritative one for deployments\n- A major outage from 6 months ago remains unresolved and untracked alongside other incidents\n\n## Systems flagged for replacement evaluation\n- CircleCI or GitHub Actions — the team runs both and cannot name which is authoritative for deployments",
+      "expected_output": "An improvement plan that explicitly addresses ownership ambiguity as a root cause, names both CI systems (CircleCI and GitHub Actions) as a concrete problem, gives at least one actionable short-term item that can be done despite the organisational chaos, and does not recommend a full team reorganisation.",
+      "assertions": [
+        "Output must address ownership ambiguity explicitly",
+        "Output must mention both CI systems by name (CircleCI and GitHub Actions)",
+        "Output must give at least one short-term action item that is actionable despite the chaos",
+        "Output must not recommend a full team reorganisation",
+        "Output must carry forward the Ownership & culture score of 2/5 from the audit input without changing it"
+      ]
+    }
+  ]
+}
