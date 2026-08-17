@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved the eval suite from `minottobot/evals/` to a top-level `evals/` package; `pyproject.toml` `testpaths` updated accordingly.
 - Area scores and their evidence-based caps moved from the former "Phase 2 — Strategy" section into `audit`, since scoring is a judgment made from Phase 0/checklist evidence, not part of the improvement plan.
 - Rewrote `.github/workflows/evals.yml` to run `uv run pytest` instead of the bash script; it now also pulls a separate judge model (default `mistral`, distinct from the model under test) and no longer commits results to a workspace directory.
+- `.github/workflows/evals.yml` now runs automatically on every pull request and on every push to `main` (in addition to manual `workflow_dispatch`), running the full `evals/` suite across all sub-suites.
 
 ### Removed
 

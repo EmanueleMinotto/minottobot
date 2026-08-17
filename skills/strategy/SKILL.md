@@ -53,6 +53,8 @@ The plan runs on three horizons:
 
 Always start from the highest-impact problem, not the easiest one. If the client has explicit requests, prioritize those — but look for intersections with medium/long-term improvements.
 
+**Cite the audit's evidence and metrics verbatim.** The executive summary and blockers must ground themselves in the specific numbers and named tools the audit output already gave you (e.g. "0.1 P1/month", "47-minute build", "CircleCI and GitHub Actions") — not paraphrases like "low incident rate" or "slow CI". If the audit's evidence includes a strong positive signal (a low incident rate, a fast build, a healthy score), the executive summary must name it, not just the problems.
+
 **Output requirement:** every plan concludes with exactly this structure appended to the audit output it was given — no freeform alternatives, no deviations. The format is fixed so reports can be compared over time and copied into ticket trackers without reformatting.
 
 ```markdown

@@ -121,3 +121,7 @@ Useful env vars: `OLLAMA_MODEL`, `OLLAMA_JUDGE_MODEL`, `OLLAMA_URL`, `MIN_PASS_R
 
 1. Add an entry to the relevant sub-suite's `evals.json`, following the existing schema (`id`, `name`, `prompt`, `expected_output`, `assertions`).
 2. Run `uv run pytest evals/<sub-suite> -v -k <name>` to generate and grade it.
+
+### CI
+
+[`.github/workflows/evals.yml`](.github/workflows/evals.yml) runs the full suite (`evals/` — all sub-suites, `-n 5`) on every pull request and on every push to `main`, using an ephemeral Ollama instance on `ubuntu-latest` with the default models (`llama3.2` under test, `mistral` as judge). It can also be triggered manually via `workflow_dispatch`, which additionally lets you pick a specific model pair, a custom `MIN_PASS_RATE`, or a single scenario by name instead of the full suite.

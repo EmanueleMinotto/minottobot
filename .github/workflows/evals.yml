@@ -1,6 +1,10 @@
 name: Run evals
 
 on:
+  pull_request:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       eval_name:
@@ -32,6 +36,10 @@ on:
         default: '0.80'
         type: string
 
+concurrency:
+  group: evals-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   run-evals:
     runs-on: ubuntu-latest
@@ -57,18 +65,22 @@ jobs:
           echo "Ollama ready"
 
       - name: Pull models
+        env:
+          MODEL: ${{ inputs.model || 'llama3.2' }}
+          JUDGE_MODEL: ${{ inputs.judge_model || 'mistral' }}
         run: |
-          ollama pull ${{ inputs.model }}
-          ollama pull ${{ inputs.judge_model }}
+          ollama pull "$MODEL"
+          ollama pull "$JUDGE_MODEL"
 
       - name: Run evals
         env:
-          OLLAMA_MODEL: ${{ inputs.model }}
-          OLLAMA_JUDGE_MODEL: ${{ inputs.judge_model }}
-          MIN_PASS_RATE: ${{ inputs.min_pass_rate }}
+          OLLAMA_MODEL: ${{ inputs.model || 'llama3.2' }}
+          OLLAMA_JUDGE_MODEL: ${{ inputs.judge_model || 'mistral' }}
+          MIN_PASS_RATE: ${{ inputs.min_pass_rate || '0.80' }}
+          EVAL_NAME: ${{ inputs.eval_name || 'all' }}
         run: |
-          if [[ "${{ inputs.eval_name }}" == "all" ]]; then
+          if [[ "$EVAL_NAME" == "all" ]]; then
             uv run pytest evals/ -v -n 5
           else
-            uv run pytest evals/ -v -k "${{ inputs.eval_name }}"
+            uv run pytest evals/ -v -k "$EVAL_NAME"
           fi
