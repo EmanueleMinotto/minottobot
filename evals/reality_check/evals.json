@@ -1,0 +1,48 @@
+{
+  "skill_name": "reality-check",
+  "evals": [
+    {
+      "id": 1,
+      "name": "no-mcp-fallback",
+      "prompt": "I'm an EM about to walk into 1:1s and I have no idea what's actually going on with my team right now. I don't have any tools connected — just ask me.",
+      "expected_output": "A short fallback questionnaire asking directly for current-state data points (sprint status, open PR age, recent incidents, error trends), with no claim of having retrieved live data.",
+      "assertions": [
+        "Output must ask the user directly for current-state data points rather than assuming tool access",
+        "Output must not claim to have retrieved live data from a connected tool",
+        "Output must not present a six-row 1-5 scored area table (that is audit's contract, not reality-check's)"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "differentiate-from-audit",
+      "prompt": "Can you give me a reality check on my team? I don't need a full audit, just what's happening right now.",
+      "expected_output": "A response that explicitly frames itself as lighter-weight than a full audit, with no 1-5 scored area table, focused on a current-state snapshot instead.",
+      "assertions": [
+        "Output must NOT include a 1-5 scored area table",
+        "Output must explicitly distinguish itself from a full audit engagement",
+        "Output must ask for or reference current-state signals (e.g. PRs, incidents, errors) rather than a Phase 0 baseline questionnaire"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "signal-conflict",
+      "prompt": "Our issue tracker shows everything on track, all tickets green. But the team's been really quiet in standup for two weeks. What's going on?",
+      "expected_output": "A response that flags the discrepancy between the green tracker and the quiet team as itself a signal worth investigating, rather than concluding everything is fine because the tracker says so.",
+      "assertions": [
+        "Output must flag the discrepancy between tracker status and team behavior as a signal, not dismiss it",
+        "Output must not conclude everything is fine solely because the tracker is green"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "wants-a-plan-not-a-snapshot",
+      "prompt": "Great, based on this reality check, can you build me a full improvement plan with action items?",
+      "expected_output": "A response that explains this is out of scope for reality-check and points the user to audit followed by strategy for a plan built from a proper scored assessment.",
+      "assertions": [
+        "Output must state that building an improvement plan is out of scope for this skill",
+        "Output must point to the audit and/or strategy skill for building a plan",
+        "Output must not produce an improvement plan or action items table itself"
+      ]
+    }
+  ]
+}

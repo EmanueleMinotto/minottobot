@@ -204,6 +204,25 @@ Start with typescript-eslint on its `recommended` preset plus `tsc --noEmit` in 
 
 </details>
 
+### `reality-check`
+
+Standalone — no audit required. A fast, honest, current-state pulse check for a team lead or engineering manager — what's actually happening right now, not a scored assessment. When connected, it pulls live data from issue-tracker, VCS, and monitoring MCP servers; when not, it asks directly for the same data points. Deliberately lighter-weight than `audit` — use it before a 1:1 or standup, not before a quarterly review.
+
+<details>
+<summary>Example output</summary>
+
+> **"Give me a reality check on my team before my 1:1s."**
+
+Connected to your team's GitHub and Sentry MCP servers — here's what's live:
+
+- **What's on fire** — error rate is up 3x since yesterday's 2pm deploy (from Sentry) — worth checking before anything else.
+- **What's slower than it should be** — median PR review time has crept from 4h to a day and a half over the last two weeks (from GitHub) — nobody's flagged it, but it's trending the wrong way.
+- **What's actually fine** — open PR count is normal, no stale PRs over a week old (from GitHub).
+
+This isn't a scored audit — if you want a structured, evidence-based assessment with a plan attached, that's what `audit` + `strategy` are for.
+
+</details>
+
 ## Code inspection
 
 When running inside a repository (Claude Code or any environment with file-system access), the `audit` skill reads the codebase before asking questions.
@@ -263,6 +282,11 @@ The skill descriptions are intentionally explicit and slightly over-broad so ski
 1. "What linter should we use for this TypeScript project?"
 2. "Set up pre-commit hooks to catch bugs before they're committed."
 
+### Prompts that trigger `reality-check` directly
+
+1. "Give me a quick pulse check on my team before my 1:1s."
+2. "What's actually going on with our sprint right now?"
+
 ### Prompts that should NOT trigger minottobot
 
 1. "Can you help me implement this new feature?" — product/feature work, out of scope
@@ -298,4 +322,6 @@ skills/
     SKILL.md                ← standalone test-type decision guide
   daily-prevention/
     SKILL.md                ← standalone static-analysis/linting decision guide
+  reality-check/
+    SKILL.md                ← standalone, MCP-aware current-state pulse check
 ```
