@@ -1,0 +1,60 @@
+{
+  "skill_name": "daily-prevention",
+  "evals": [
+    {
+      "id": 1,
+      "name": "no-linting-ts-repo",
+      "prompt": "We're a 5-person team on a TypeScript/React codebase. We have zero linting or type checking configured — just tsc errors we mostly ignore. What should we set up?",
+      "expected_output": "A recommendation to adopt a TypeScript-aware linter (ESLint/typescript-eslint or Biome) starting from a recommended preset, strict tsc, and guidance on running checks at more than one stage (editor, pre-commit, CI).",
+      "assertions": [
+        "Output must recommend a TypeScript-aware linter (ESLint/typescript-eslint or Biome)",
+        "Output must mention running checks at more than one stage (e.g. editor, pre-commit, CI)",
+        "Output must not recommend writing tests as the primary fix for a missing linting/type-checking setup"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "python-no-type-safety",
+      "prompt": "Our Python codebase has no type hints and no static type checking — bugs keep slipping through that a type checker would catch. What do you recommend?",
+      "expected_output": "A recommendation for a Python type checker (mypy, Pyright, or Pyre) plus Ruff for lint/format, with incremental adoption guidance rather than flipping strict mode everywhere at once.",
+      "assertions": [
+        "Output must recommend a Python type checker (mypy, Pyright, or Pyre)",
+        "Output must recommend a linter/formatter distinct from the type checker (e.g. Ruff)",
+        "Output must not conflate linting and type checking as if they were the same tool"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "pre-commit-vs-ci-only",
+      "prompt": "Should we run our linter as a pre-commit hook, or just in CI?",
+      "expected_output": "A recommendation for both, tiered — fast checks pre-commit, full suite in CI — justified by how fast modern Rust-based linters have become.",
+      "assertions": [
+        "Output must recommend running checks at both pre-commit and CI stages, not just one",
+        "Output must justify pre-commit feasibility using check speed",
+        "Output must not recommend disabling or skipping pre-commit hooks in favor of CI-only checks"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "existing-linter-permissive-preset",
+      "prompt": "We already have ESLint configured on our repo, but it only catches the bare minimum — most real bugs still slip through review. Should we replace it with something else?",
+      "expected_output": "A recommendation to keep ESLint and tighten its rule set/preset (e.g. move toward typescript-eslint strict, add missing plugins) rather than replacing the tool outright.",
+      "assertions": [
+        "Output must recommend strengthening the existing ESLint configuration rather than replacing the tool",
+        "Output must reference a specific rule set or preset to move toward, not just 'more rules'",
+        "Output must not recommend switching to a different linter as the primary fix"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "semantic-bug-no-lint-rule",
+      "prompt": "We had a production bug where a discount was applied twice because the logic didn't match our pricing spec. No lint rule would have caught this. How do we prevent this kind of thing?",
+      "expected_output": "An explanation that this is outside what static analysis can catch, with a recommendation to use an AI-assisted code review skill/agent as a complement to linting for semantic/business-logic judgment calls, not a proposal to invent a lint rule for it.",
+      "assertions": [
+        "Output must explain that this kind of bug is outside what a linter or type checker can catch",
+        "Output must recommend an AI-assisted review skill or agent as a complement for this kind of semantic check",
+        "Output must not propose a specific lint rule as the fix for a business-logic/semantic bug"
+      ]
+    }
+  ]
+}
