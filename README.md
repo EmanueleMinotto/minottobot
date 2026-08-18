@@ -171,7 +171,6 @@ Standalone — no audit required. Given a specific scenario ("what test should I
 <details>
 <summary>Example output</summary>
 
-```markdown
 > **"What test should I write for our checkout's payment confirmation step?"**
 
 This spans two internal services (cart → payment) plus a third-party payment gateway — start from the test pyramid, not the scenario alone.
@@ -183,7 +182,7 @@ This spans two internal services (cart → payment) plus a third-party payment g
 Skip contract tests unless the payment gateway's API changes without notice — not the case here since it's third-party with a stable, versioned API.
 
 **Watch out:** if the gateway has no sandbox, fall back to a contract test against a mocked schema instead of hitting the real API from CI.
-```
+
 </details>
 
 
