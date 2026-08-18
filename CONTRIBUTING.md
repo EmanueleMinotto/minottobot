@@ -27,8 +27,8 @@ Every user-visible change must be recorded in [`CHANGELOG.md`](CHANGELOG.md), wh
 
 Versioning rules for this plugin:
 
-- **MAJOR** — a skill's workflow or output contract changes in a way that breaks existing `.minottobot/` snapshots or expectations, or a skill is added/removed/renamed.
-- **MINOR** — new phases, new reference files, or new capabilities within an existing skill.
+- **MAJOR** — a skill's workflow or output contract changes in a way that breaks existing `.minottobot/` snapshots or expectations, or an existing skill is removed or renamed.
+- **MINOR** — new phases, new reference files, or new capabilities within an existing skill, or an entirely new skill added without changing any existing skill's contract.
 - **PATCH** — wording fixes, prompt tuning, and reference corrections that do not change the workflow.
 
 The version lives in [`.claude-plugin/plugin.json`](.claude-plugin/plugin.json) — bump it in the same commit as the changelog entry.
@@ -84,6 +84,15 @@ evals/
     evals.json
     test_evals.py
   test_selection/        — test-selection skill alone (note: underscore — a valid Python package name; the skill directory itself is skills/test-selection/, with a hyphen)
+    evals.json
+    test_evals.py
+  daily_prevention/       — daily-prevention skill alone (same hyphen/underscore convention as test_selection)
+    evals.json
+    test_evals.py
+  reality_check/          — reality-check skill alone
+    evals.json
+    test_evals.py
+  breaking_change_detector/ — breaking-change-detector skill alone
     evals.json
     test_evals.py
 ```
