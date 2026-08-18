@@ -223,6 +223,23 @@ This isn't a scored audit — if you want a structured, evidence-based assessmen
 
 </details>
 
+### `breaking-change-detector`
+
+Standalone — no audit required. Helps API producers and consumers catch actual or potential breaking changes across REST/OpenAPI, GraphQL, gRPC/Protobuf, and consumer-driven contracts — picking the right tool (oasdiff, GraphQL Inspector, Buf breaking, Pact) for the API type, mapping changes onto SemVer, and covering the deprecate-before-remove workflow. Both `audit` and `strategy` hand off to it on-demand when unmanaged API compatibility risk surfaces mid-engagement.
+
+<details>
+<summary>Example output</summary>
+
+> **"We want to remove a field from our public REST API's response. How do we make sure we don't break consumers?"**
+
+Deprecate it first, don't remove it directly — mark it deprecated in the OpenAPI spec, measure whether it's still seeing traffic, then remove once the window's passed.
+
+Run [oasdiff](https://www.oasdiff.com/) as a CI check on every PR that touches the spec, diffing against the target branch — it flags the removal as breaking, and you can gate the merge on an accompanying version bump. This is a MAJOR-worthy change once the field actually comes out; deprecating it first is what keeps that MAJOR bump from arriving as a surprise.
+
+**Watch out:** don't bundle this removal with unrelated additive changes in the same release — it muddies what the version bump is actually signaling.
+
+</details>
+
 ## Code inspection
 
 When running inside a repository (Claude Code or any environment with file-system access), the `audit` skill reads the codebase before asking questions.
@@ -287,6 +304,11 @@ The skill descriptions are intentionally explicit and slightly over-broad so ski
 1. "Give me a quick pulse check on my team before my 1:1s."
 2. "What's actually going on with our sprint right now?"
 
+### Prompts that trigger `breaking-change-detector` directly
+
+1. "Will removing this field break our API consumers?"
+2. "How do we catch breaking changes in our GraphQL schema before they ship?"
+
 ### Prompts that should NOT trigger minottobot
 
 1. "Can you help me implement this new feature?" — product/feature work, out of scope
@@ -324,4 +346,6 @@ skills/
     SKILL.md                ← standalone static-analysis/linting decision guide
   reality-check/
     SKILL.md                ← standalone, MCP-aware current-state pulse check
+  breaking-change-detector/
+    SKILL.md                ← standalone API breaking-change decision guide
 ```

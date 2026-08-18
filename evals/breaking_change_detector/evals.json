@@ -1,0 +1,58 @@
+{
+  "skill_name": "breaking-change-detector",
+  "evals": [
+    {
+      "id": 1,
+      "name": "openapi-field-removal",
+      "prompt": "We want to remove a field from our public REST API's response schema. How do we make sure we don't break consumers?",
+      "expected_output": "A recommendation to deprecate the field before removing it, run an OpenAPI diffing tool such as oasdiff to confirm the change's impact, and treat the removal as a SemVer-relevant (MAJOR) change.",
+      "assertions": [
+        "Output must recommend deprecating the field before removing it, not removing it directly",
+        "Output must recommend an OpenAPI diffing tool (e.g. oasdiff)",
+        "Output must mention SemVer implications of the change"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "graphql-schema-diff",
+      "prompt": "We're about to merge a PR that changes our GraphQL schema. How do we know if it's a breaking change?",
+      "expected_output": "A recommendation to use a GraphQL schema-diffing tool such as GraphQL Inspector, explain its breaking/dangerous/safe classification, and run the check on pull requests.",
+      "assertions": [
+        "Output must recommend a GraphQL schema-diffing tool (e.g. GraphQL Inspector)",
+        "Output must reference a breaking/dangerous/safe (or equivalent) classification of changes",
+        "Output must recommend running the check on pull requests"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "cross-service-no-shared-env",
+      "prompt": "Two of our services are owned by different teams and we can't run them together in a shared test environment. How do we catch breaking changes between them before they hit production?",
+      "expected_output": "A recommendation for consumer-driven contract testing (Pact), explaining why it doesn't require a shared test environment and fits the cross-team ownership situation.",
+      "assertions": [
+        "Output must recommend consumer-driven contract testing (e.g. Pact)",
+        "Output must explain why a shared test environment isn't required for this approach",
+        "Output must not recommend only a schema-diff tool without addressing the cross-team ownership problem"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "protobuf-grpc-change",
+      "prompt": "We're changing a .proto definition used by a gRPC service several other teams depend on. What should we do to avoid breaking them?",
+      "expected_output": "A recommendation to use Buf breaking (or an equivalent Protobuf schema-diffing tool) as a CI check against the baseline before merging.",
+      "assertions": [
+        "Output must recommend a Protobuf/gRPC-specific breaking-change tool (e.g. Buf breaking)",
+        "Output must recommend running the check in CI before the change is merged"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "major-bump-every-change",
+      "prompt": "Our policy is to bump the MAJOR version on every single API change, no matter how small, just to be safe. Is that the right approach?",
+      "expected_output": "An explanation that reflexively bumping MAJOR on every change desensitizes consumers to what MAJOR is supposed to signal, and a recommendation to map the actual breaking/non-breaking classification onto SemVer instead.",
+      "assertions": [
+        "Output must explain that bumping MAJOR on every change trains consumers to ignore version numbers",
+        "Output must recommend basing the version bump on the actual classification of the change (breaking vs safe) rather than bumping MAJOR unconditionally"
+      ]
+    }
+  ]
+}

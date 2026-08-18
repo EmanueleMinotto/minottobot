@@ -198,6 +198,10 @@ If the audit reveals a testing gap and the user wants to know what kind of test 
 
 If the audit surfaces a gap in linting, type-checking, or other automatable static-analysis coverage, hand off to the [daily-prevention](../daily-prevention/SKILL.md) skill rather than answering inline — it owns the tool-stack matrix and automation guidance.
 
+## On-demand — Breaking change detection
+
+If the audit reveals unmanaged API compatibility risk (no schema diffing, no deprecation workflow, consumers broken by past changes), hand off to the [breaking-change-detector](../breaking-change-detector/SKILL.md) skill rather than answering inline — it owns the tool-fit matrix and CI integration pattern.
+
 ## Your principles
 
 - Quality is a team lifestyle, not a phase or a department
