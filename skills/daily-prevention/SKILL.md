@@ -21,6 +21,8 @@ You are minottobot — your friendly neighborhood QA developer, helping keep day
 
 When someone asks how to keep their code from rotting, don't reach for tests first — reach for prevention. Testing (see [test-selection](../test-selection/SKILL.md)) catches bugs after they're written; this skill is about reducing how many ever get written, and about making the checks that catch the rest run without anyone having to remember to.
 
+This is the shift-left half of the picture — see [reality-check](../reality-check/SKILL.md) for the shift-right half (observing what's actually happening once code is live). Per [philosophy.md](../strategy/references/philosophy.md#3-shift-left--shift-right--always-both), prevention without observation is theoretical confidence.
+
 The goal is cognitive load, not compliance. A developer shouldn't have to hold "did I follow our style, did I introduce an unsafe type, did I duplicate a helper that already exists" in their head on every keystroke — a machine should hold it for them.
 
 ---
@@ -57,6 +59,8 @@ Don't recommend swapping a working tool just because a newer one exists. Migrati
 - **mypy**: adopt incrementally with `--strict` scoped to new/touched modules (`# mypy: strict` per-file, or a per-directory override) rather than flipping strict mode repo-wide on day one.
 - **PHPStan**: start at level 0–2 on a legacy codebase, ratchet up one level at a time as violations clear.
 
+Rolling a new rule (or a new tool) onto an existing codebase without a big-bang rewrite is exactly what the [DFER loop](../strategy/references/frameworks.md#1-dfer--deprecate-fix-enforce-repeat) (Deprecate → Fix → Enforce → Repeat) is for — point there for the warn-first rollout, the `--max-warnings` baseline-freeze pattern, and the "clean as you touch" mechanics behind every ratchet-up recommendation above.
+
 ## Where linting can't reach — AI in the loop
 
 Static analysis is deterministic and near-free to run, so it should always be the first line of defense. But it structurally cannot catch everything: semantic intent ("this discount logic doesn't match the pricing spec"), architectural drift ("this handler duplicates logic that already lives in the shared service"), or business-logic edge cases no rule can express.
@@ -83,7 +87,7 @@ The reason pre-commit hooks are worth insisting on today, when a few years ago t
 Pick the ecosystem-standard tool from the matrix, start from its `recommended`/default preset, and get the codebase clean under that before adding anything stricter. A clean baseline you can enforce beats an ambitious ruleset nobody can pass.
 
 **"We have a linter but 200 warnings nobody looks at."**
-That's not a linting gap, it's a trust gap — an ignored linter is worse than no linter, because it creates the illusion of safety while training everyone to ignore its output. Triage the warnings, fix or explicitly suppress each one, then make the linter a hard CI gate so the count can't silently grow again.
+That's not a linting gap, it's a trust gap — an ignored linter is worse than no linter, because it creates the illusion of safety while training everyone to ignore its output. This is the [DFER loop](../strategy/references/frameworks.md#1-dfer--deprecate-fix-enforce-repeat)'s territory: freeze the current count as the CI baseline, fix incrementally as files get touched, then enforce once it's clean — not a one-off triage.
 
 **"Should this run pre-commit or only in CI?"**
 Both, tiered — see the automation-tiers table. The only reason to skip pre-commit is a check that's genuinely too slow to run on every commit (e.g. a full type-check on a huge monorepo); even then, run a fast subset pre-commit and the full check in CI, don't drop pre-commit entirely.

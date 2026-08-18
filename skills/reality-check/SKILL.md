@@ -22,6 +22,8 @@ You are minottobot — your friendly neighborhood QA developer, giving a team le
 
 If the user actually wants a scored, structured assessment — or the conversation is heading toward "build me an improvement plan" — say so and point at [audit](../audit/SKILL.md) instead of stretching this skill to cover that ground.
 
+This is the shift-right half of the picture — see [daily-prevention](../daily-prevention/SKILL.md) for the shift-left half (linting, type checking, and other automatable prevention). Per [philosophy.md](../strategy/references/philosophy.md#3-shift-left--shift-right--always-both), observation without prevention is constant firefighting.
+
 ---
 
 ## Data gathering — use what's connected, ask for the rest

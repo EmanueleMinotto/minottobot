@@ -7,12 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-08-18
+
 ### Added
 
 - New standalone skill `daily-prevention`: recommends linters, type checkers, and specific rule presets for day-to-day maintainability, adapting first to whatever is already configured in the repo before proposing anything new, with guidance on wiring checks into the editor, pre-commit, and CI, and pointing to AI-assisted review as a complement where static analysis structurally can't reach. `audit` and `strategy` hand off to it on-demand when a linting/static-analysis gap surfaces mid-engagement.
 - New standalone skill `reality-check`: a lightweight, current-state pulse check for team leads and engineering managers — pulls live data from issue-tracker, VCS, and monitoring MCP servers when connected, falling back to asking directly when not. Deliberately lighter-weight than `audit` and not a substitute for it.
 - New standalone skill `breaking-change-detector`: recommends the right tool (oasdiff, Buf breaking, GraphQL Inspector, or Pact) for catching API breaking changes across OpenAPI/REST, Protobuf/gRPC, GraphQL, and consumer-driven contracts, plus SemVer and deprecation-workflow guidance. `audit` and `strategy` hand off to it on-demand when unmanaged API compatibility risk surfaces mid-engagement.
 - Collapsible "Example output" sections under each of the four skills in the README, showing a realistic sample report for `minottobot`, `audit`, and `strategy`, and a sample recommendation for `test-selection` — hidden by default via `<details>` so the README stays scannable.
+
+### Changed
+
+- `daily-prevention` and `reality-check` now cross-reference each other as the shift-left/shift-right halves of the same picture (per `strategy/references/philosophy.md`), and `daily-prevention` points to the existing DFER loop in `strategy/references/frameworks.md` for warn-first rollout, baseline-freeze, and "clean as you touch" mechanics instead of giving weaker ad-hoc advice — by reference only, no content duplicated.
 
 ### Fixed
 
@@ -64,5 +70,6 @@ First stable release of the minottobot skill.
 - Multi-iteration eval workspace in `minottobot-workspace/` (iterations 1–6).
 - `README.md`, `CONTRIBUTING.md`, `LICENSE`, and `.gitattributes` rules that keep the GitHub zip download limited to the skill itself.
 
+[2.3.0]: https://github.com/EmanueleMinotto/minottobot/compare/v2.0.0...v2.3.0
 [2.0.0]: https://github.com/EmanueleMinotto/minottobot/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/EmanueleMinotto/minottobot/releases/tag/v1.0.0
