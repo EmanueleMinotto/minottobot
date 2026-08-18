@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Collapsible "Example output" sections under each of the four skills in the README, showing a realistic sample report for `minottobot`, `audit`, and `strategy`, and a sample recommendation for `test-selection` — hidden by default via `<details>` so the README stays scannable.
+
 ### Fixed
 
 - `.github/workflows/evals.yml` was flaking on borderline judge scores and contention-driven Ollama timeouts under `-n 5`. Lowered CI concurrency to `-n 2` and added `--reruns 2 --reruns-delay 10` (via a new direct `pytest-rerunfailures` dependency) so a scenario that fails once is regenerated and re-graded before it fails the build, per `CONTRIBUTING.md`'s documented eval philosophy.

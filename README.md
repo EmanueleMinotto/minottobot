@@ -20,9 +20,101 @@ Once installed, describe your team or project and the relevant skill activates a
 
 Runs [`audit`](skills/audit/SKILL.md) then automatically continues into [`strategy`](skills/strategy/SKILL.md), using the audit's output as the strategy's input. This is what activates on general requests like "audit our team" or "how do we improve our testing" — describe your team once, get the full audit + plan back in one pass.
 
+<details>
+<summary>Example output</summary>
+
+```markdown
+# Minottobot audit report — Acme Checkout squad — 2026-08-18
+
+## Repos in scope
+- checkout-web (React)
+- checkout-api (Node)
+
+## Executive summary
+- CI is split across Jenkins and GitHub Actions with no authoritative pipeline — deploys can bypass review.
+- Zero integration tests despite a 47-minute Jenkins build; regressions surface in production instead.
+- No named owner for checkout-api since the last reorg — three months of unresolved P1s.
+
+## Area scores (1 = critical · 5 = excellent)
+| Area                    | Score | One-line finding                              |
+|--------------------------|-------|-----------------------------------------------|
+| CI/CD                    | 2/5   | Jenkins + GitHub Actions, no authoritative one |
+| Testing                  | 2/5   | Unit only, 0 integration, 47-min build         |
+| Code review               | 3/5   | Required on main, skipped on hotfix branch     |
+| Monitoring                | 3/5   | Sentry present, no alerting on P1s             |
+| Developer Experience      | 3/5   | Local setup documented, no staging parity      |
+| Ownership & culture       | 2/5   | No named owner since reorg — 3mo unresolved P1s|
+
+## Top 3 blockers right now
+1. **No authoritative CI** — teams don't trust either pipeline enough to gate deploys on it.
+2. **Ownership gap on checkout-api** — nobody has authority to prioritize the fix backlog.
+3. **Zero integration coverage** — unit tests pass while checkout breaks in production.
+
+## Improvement plan
+### Short term (this sprint)
+- Designate GitHub Actions as the single source of truth; make Jenkins advisory-only.
+- Assign a named owner for checkout-api.
+
+### Medium term (this quarter)
+- Add integration tests around the checkout API's payment and cart endpoints.
+
+### Long term (this half)
+- Retire Jenkins once GitHub Actions has run in parallel for 4–8 weeks with no gaps.
+
+## Action items
+| ID | Description                          | Horizon | Owner | Status |
+|----|---------------------------------------|---------|-------|--------|
+| A1 | Make GitHub Actions authoritative      | short   |       | open   |
+| A2 | Assign checkout-api owner               | short   |       | open   |
+| A3 | Integration tests on payment/cart       | medium  |       | open   |
+```
+
+*(Full reports also include the Phase 0 baseline and evidence/red-flags sections, trimmed here for length.)*
+
+</details>
+
 ### `audit`
 
 Assesses the team across ten areas — CI/CD, environments, local development, code review, testing, automation, monitoring, technical standards, and ownership culture — and produces a scored audit report (repos in scope, Phase 0 baseline, six-area score table with evidence-based caps). It looks for red flags and anti-patterns, and stops there: no improvement plan, no action items. Use it directly when you only want the diagnosis, or want to feed the same audit output into `strategy` more than once.
+
+<details>
+<summary>Example output</summary>
+
+```markdown
+# Minottobot audit — Acme Checkout squad — 2026-08-18
+
+## Repos in scope
+- checkout-web (React)
+- checkout-api (Node)
+
+## Phase 0 baseline
+- Team size: 6 engineers
+- Total test count: 340 unit / 0 integration / 0 e2e
+- Average CI run time: 47 minutes
+- Deployment frequency: ~2/week
+- Change failure rate: not tracked
+- Days since last production incident: 4
+
+## Area scores (1 = critical · 5 = excellent)
+| Area                    | Score | One-line finding                              |
+|--------------------------|-------|-----------------------------------------------|
+| CI/CD                    | 2/5   | Jenkins + GitHub Actions, no authoritative one |
+| Testing                  | 2/5   | Unit only, 0 integration, 47-min build         |
+| Code review               | 3/5   | Required on main, skipped on hotfix branch     |
+| Monitoring                | 3/5   | Sentry present, no alerting on P1s             |
+| Developer Experience      | 3/5   | Local setup documented, no staging parity      |
+| Ownership & culture       | 2/5   | No named owner since reorg — 3mo unresolved P1s|
+
+## Evidence & red flags
+- checkout-web has CI on every PR; checkout-api's Jenkins pipeline can be skipped with `[skip ci]`.
+- 0 integration tests found despite payment logic spanning both repos.
+- Last 20 commits on checkout-api: no conventional format, 6 direct pushes to main.
+
+## Systems flagged for replacement evaluation
+- Jenkins — 47-minute build, maintained by no one specific, duplicated by GitHub Actions on checkout-web.
+```
+
+</details>
 
 ### `strategy`
 
@@ -34,9 +126,66 @@ Takes an audit output — from a fresh `audit` run, pasted by the user, or loade
 
 It reasons about trade-offs case by case, calibrates advice to team size and product context, and always evaluates options against a single golden rule: does this serve the user? Use it directly when you already have an audit output and only want the plan built from it.
 
+<details>
+<summary>Example output</summary>
+
+```markdown
+## Executive summary
+- CI is split across Jenkins and GitHub Actions with no authoritative pipeline — deploys can bypass review.
+- Zero integration tests despite a 47-minute Jenkins build; regressions surface in production instead.
+- No named owner for checkout-api since the last reorg — three months of unresolved P1s.
+
+## Top 3 blockers right now
+1. **No authoritative CI** — teams don't trust either pipeline enough to gate deploys on it.
+2. **Ownership gap on checkout-api** — nobody has authority to prioritize the fix backlog.
+3. **Zero integration coverage** — unit tests pass while checkout breaks in production.
+
+## Improvement plan
+### Short term (this sprint)
+- Designate GitHub Actions as the single source of truth; make Jenkins advisory-only.
+- Assign a named owner for checkout-api.
+
+### Medium term (this quarter)
+- Add integration tests around the checkout API's payment and cart endpoints.
+
+### Long term (this half)
+- Evaluate retiring Jenkins — migration requires porting pipelines, a 4–8 week parallel-run
+  period, and dedicated CI team capacity; do not start without explicit resourcing.
+
+## Action items
+| ID | Description                          | Horizon | Owner | Status |
+|----|---------------------------------------|---------|-------|--------|
+| A1 | Make GitHub Actions authoritative      | short   |       | open   |
+| A2 | Assign checkout-api owner               | short   |       | open   |
+| A3 | Integration tests on payment/cart       | medium  |       | open   |
+```
+
+*(Prepended with the "Repos in scope" and "Area scores" sections carried forward verbatim from the audit — trimmed here since they're shown in the `audit` example above.)*
+
+</details>
+
 ### `test-selection`
 
 Standalone — no audit required. Given a specific scenario ("what test should I write for this checkout flow?", "our E2E suite takes 45 minutes"), recommends the right test type (unit, integration, E2E, contract, visual regression, performance, mutation) using a decision matrix and heuristics. Both `audit` and `strategy` hand off to it on-demand when a testing gap surfaces mid-engagement.
+
+<details>
+<summary>Example output</summary>
+
+```markdown
+> **"What test should I write for our checkout's payment confirmation step?"**
+
+This spans two internal services (cart → payment) plus a third-party payment gateway — start from the test pyramid, not the scenario alone.
+
+- **Unit** — the discount/total calculation logic. Pure function, no external dependencies, fast feedback.
+- **Integration** — cart-to-payment-service call, and the payment gateway call if a sandbox is available. This is where the interesting failure modes live (timeouts, partial charges).
+- **E2E** — one test covering the full happy-path checkout journey. Don't add more than one or two here; it's a critical journey, not a place to re-test edge cases already covered below.
+
+Skip contract tests unless the payment gateway's API changes without notice — not the case here since it's third-party with a stable, versioned API.
+
+**Watch out:** if the gateway has no sandbox, fall back to a contract test against a mocked schema instead of hitting the real API from CI.
+```
+</details>
+
 
 ## Code inspection
 
