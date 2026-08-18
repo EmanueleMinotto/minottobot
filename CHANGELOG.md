@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.1] - 2026-08-18
+
+### Changed
+
+- `.github/workflows/evals.yml` now runs the full suite as a matrix job — one job per `evals/` sub-suite, each on its own runner with its own Ollama instance — instead of one job running every sub-suite sequentially with `pytest-xdist` contending for a single shared CPU-only runner. Pulled models are cached (`~/.ollama/models`, keyed on the model pair) across runs to avoid re-downloading them in every matrix job. A single named scenario via `workflow_dispatch` still runs as one non-matrix job against the whole `evals/` tree, since it doesn't benefit from the sub-suite split.
+
 ## [2.3.0] - 2026-08-18
 
 ### Added
