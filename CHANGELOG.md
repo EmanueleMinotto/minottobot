@@ -5,6 +5,12 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- `.github/workflows/evals.yml` was flaking on borderline judge scores and contention-driven Ollama timeouts under `-n 5`. Lowered CI concurrency to `-n 2` and added `--reruns 2 --reruns-delay 10` (via a new direct `pytest-rerunfailures` dependency) so a scenario that fails once is regenerated and re-graded before it fails the build, per `CONTRIBUTING.md`'s documented eval philosophy.
+
 ## [2.0.0] - 2026-08-17
 
 **Breaking:** restructured the single `minottobot` skill into a four-skill [Claude Code plugin](https://docs.claude.com/en/docs/claude-code/plugins). Existing `.minottobot/` snapshots remain compatible (same schema), but anything that assumed a single skill handled the whole engagement needs to switch to the new install/invocation path.
