@@ -14,7 +14,7 @@ minottobot is a QA software consultant persona, distributed as a [Claude Code pl
 
 Once installed, describe your team or project and the relevant skill activates automatically. Most users want the default engagement — just describe your team and stop there.
 
-## The four skills
+## The skills
 
 ### `minottobot` — the default engagement
 
@@ -185,6 +185,24 @@ Skip contract tests unless the payment gateway's API changes without notice — 
 
 </details>
 
+### `daily-prevention`
+
+Standalone — no audit required. Helps a developer keep day-to-day code simple, maintainable, and robust through automatable prevention rather than after-the-fact fixes: which linter and type checker fit the stack (adapting first to whatever is already configured, only proposing something new when a layer is missing or clearly obsolete), which rule preset to start from, and how to wire checks into the editor, pre-commit, and CI. For what static analysis can't catch — semantic intent, architectural drift — it points at AI-assisted review as a complement, not a replacement. Both `audit` and `strategy` hand off to it on-demand when a linting or static-analysis gap surfaces mid-engagement.
+
+<details>
+<summary>Example output</summary>
+
+> **"We have zero linting or type checking on our TypeScript codebase. What should we set up?"**
+
+Start with typescript-eslint on its `recommended` preset plus `tsc --noEmit` in strict mode — don't jump straight to `strict` on an existing codebase, it'll bury you in warnings on day one.
+
+- **Editor** — instant feedback as you type, zero friction.
+- **Pre-commit** — full lint + format on changed files. Rust-based tools (Biome is worth considering here too) are fast enough now that "too slow for pre-commit" isn't really true anymore.
+- **CI** — the backstop. Full lint + full type-check, nothing merges without it.
+
+**Watch out:** don't enable every rule at once — a wall of warnings nobody has time to fix just gets the linter muted, which is worse than not having one.
+
+</details>
 
 ## Code inspection
 
@@ -240,6 +258,11 @@ The skill descriptions are intentionally explicit and slightly over-broad so ski
 1. "We're not sure what kind of test to write for this feature."
 2. "Unit or integration test for this ORM query?"
 
+### Prompts that trigger `daily-prevention` directly
+
+1. "What linter should we use for this TypeScript project?"
+2. "Set up pre-commit hooks to catch bugs before they're committed."
+
 ### Prompts that should NOT trigger minottobot
 
 1. "Can you help me implement this new feature?" — product/feature work, out of scope
@@ -273,4 +296,6 @@ skills/
       snapshot-delta.md     ← snapshot format and delta view
   test-selection/
     SKILL.md                ← standalone test-type decision guide
+  daily-prevention/
+    SKILL.md                ← standalone static-analysis/linting decision guide
 ```
