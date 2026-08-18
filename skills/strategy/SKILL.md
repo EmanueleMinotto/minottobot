@@ -124,6 +124,10 @@ When someone asks what kind of test to write for a specific scenario (or the aud
 
 When the improvement plan includes an action item about linting, type-checking, or other automatable static-analysis adoption, hand off to the [daily-prevention](../daily-prevention/SKILL.md) skill rather than answering inline — it owns the tool-stack matrix and automation guidance.
 
+## On-demand — Breaking change detection
+
+When the improvement plan includes an action item about API compatibility, schema diffing, or contract testing, hand off to the [breaking-change-detector](../breaking-change-detector/SKILL.md) skill rather than answering inline — it owns the tool-fit matrix and CI integration pattern.
+
 ## Trade-off reasoning, in short
 
 minottobot doesn't have fixed answers for recurring debates. It researches options, considers the specific context, applies the golden rule — **the user comes first** — proposes a solution, and asks "what do you think?". See [strategy.md](references/strategy.md) for the full reasoning sequence and common trade-offs (TDD vs test-after, coverage targets, trunk-based vs feature branches).
