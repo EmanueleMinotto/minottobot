@@ -41,8 +41,31 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  run-evals:
+  # Runs the full suite, one sub-suite per matrix job — each job gets its own
+  # runner and its own Ollama instance, so sub-suites run in true parallel
+  # instead of contending for one shared CPU-only runner (which is why -n
+  # inside a single job is capped low, see the run-evals step below). Used
+  # whenever the full suite is in scope: every PR, every push to main, and
+  # workflow_dispatch with eval_name left at "all".
+  run-evals-matrix:
+    if: github.event_name != 'workflow_dispatch' || inputs.eval_name == 'all' || inputs.eval_name == ''
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Keep in sync with the sub-suite directories under evals/ — add the
+        # new directory here when a new skill gets its own eval sub-suite.
+        suite:
+          - audit
+          - strategy
+          - daily_prevention
+          - reality_check
+          - breaking_change_detector
+          - test_selection
+          - default
+    env:
+      MODEL: ${{ inputs.model || 'llama3.2' }}
+      JUDGE_MODEL: ${{ inputs.judge_model || 'mistral' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -56,6 +79,12 @@ jobs:
       - name: Install Ollama
         run: curl -fsSL https://ollama.com/install.sh | sh
 
+      - name: Cache Ollama models
+        uses: actions/cache@v4
+        with:
+          path: ~/.ollama/models
+          key: ollama-models-${{ runner.os }}-${{ env.MODEL }}-${{ env.JUDGE_MODEL }}
+
       - name: Start Ollama service
         run: ollama serve &
 
@@ -65,29 +94,71 @@ jobs:
           echo "Ollama ready"
 
       - name: Pull models
-        env:
-          MODEL: ${{ inputs.model || 'llama3.2' }}
-          JUDGE_MODEL: ${{ inputs.judge_model || 'mistral' }}
         run: |
           ollama pull "$MODEL"
           ollama pull "$JUDGE_MODEL"
 
-      - name: Run evals
+      - name: Run evals — ${{ matrix.suite }}
         env:
-          OLLAMA_MODEL: ${{ inputs.model || 'llama3.2' }}
-          OLLAMA_JUDGE_MODEL: ${{ inputs.judge_model || 'mistral' }}
+          OLLAMA_MODEL: ${{ env.MODEL }}
+          OLLAMA_JUDGE_MODEL: ${{ env.JUDGE_MODEL }}
           MIN_PASS_RATE: ${{ inputs.min_pass_rate || '0.80' }}
-          EVAL_NAME: ${{ inputs.eval_name || 'all' }}
         run: |
-          # -n 2 (not 5): on the shared ubuntu-latest runner, 5 concurrent
-          # CPU-bound Ollama requests contend hard enough to blow past
-          # OLLAMA_REQUEST_TIMEOUT (see CONTRIBUTING.md#running-the-evals).
-          # --reruns retries a scenario that fails once — small local models
-          # are noisier than a frontier judge, so a single borderline result
-          # is treated as signal to re-run, not an immediate hard failure
+          # -n 2 (not 5): even with one sub-suite per job, a shared
+          # CPU-only runner can't take much concurrent Ollama load before
+          # OLLAMA_REQUEST_TIMEOUT starts flaking (see
+          # CONTRIBUTING.md#running-the-evals). --reruns retries a
+          # scenario that fails once — small local models are noisier
+          # than a frontier judge, so a single borderline result is
+          # treated as signal to re-run, not an immediate hard failure
           # (see CONTRIBUTING.md#grading-rules).
-          if [[ "$EVAL_NAME" == "all" ]]; then
-            uv run pytest evals/ -v -n 2 --reruns 2 --reruns-delay 10
-          else
-            uv run pytest evals/ -v -k "$EVAL_NAME" --reruns 2 --reruns-delay 10
-          fi
+          uv run pytest evals/${{ matrix.suite }} -v -n 2 --reruns 2 --reruns-delay 10
+
+  # workflow_dispatch with a specific scenario name: too narrow to benefit
+  # from the matrix (we don't know which sub-suite owns it without scanning
+  # evals.json), so run it directly against the whole evals/ tree as before.
+  run-single-eval:
+    if: github.event_name == 'workflow_dispatch' && inputs.eval_name != 'all' && inputs.eval_name != ''
+    runs-on: ubuntu-latest
+    env:
+      MODEL: ${{ inputs.model || 'llama3.2' }}
+      JUDGE_MODEL: ${{ inputs.judge_model || 'mistral' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Sync dependencies
+        run: uv sync
+
+      - name: Install Ollama
+        run: curl -fsSL https://ollama.com/install.sh | sh
+
+      - name: Cache Ollama models
+        uses: actions/cache@v4
+        with:
+          path: ~/.ollama/models
+          key: ollama-models-${{ runner.os }}-${{ env.MODEL }}-${{ env.JUDGE_MODEL }}
+
+      - name: Start Ollama service
+        run: ollama serve &
+
+      - name: Wait for Ollama
+        run: |
+          until curl -s http://localhost:11434/api/tags > /dev/null 2>&1; do sleep 1; done
+          echo "Ollama ready"
+
+      - name: Pull models
+        run: |
+          ollama pull "$MODEL"
+          ollama pull "$JUDGE_MODEL"
+
+      - name: Run evals — ${{ inputs.eval_name }}
+        env:
+          OLLAMA_MODEL: ${{ env.MODEL }}
+          OLLAMA_JUDGE_MODEL: ${{ env.JUDGE_MODEL }}
+          MIN_PASS_RATE: ${{ inputs.min_pass_rate || '0.80' }}
+        run: |
+          uv run pytest evals/ -v -k "${{ inputs.eval_name }}" --reruns 2 --reruns-delay 10
