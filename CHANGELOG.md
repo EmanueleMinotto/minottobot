@@ -76,6 +76,7 @@ First stable release of the minottobot skill.
 - Multi-iteration eval workspace in `minottobot-workspace/` (iterations 1–6).
 - `README.md`, `CONTRIBUTING.md`, `LICENSE`, and `.gitattributes` rules that keep the GitHub zip download limited to the skill itself.
 
+[2.3.1]: https://github.com/EmanueleMinotto/minottobot/compare/v2.3.0...v2.3.1
 [2.3.0]: https://github.com/EmanueleMinotto/minottobot/compare/v2.0.0...v2.3.0
 [2.0.0]: https://github.com/EmanueleMinotto/minottobot/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/EmanueleMinotto/minottobot/releases/tag/v1.0.0
