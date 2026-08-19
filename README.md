@@ -2,7 +2,7 @@
 
 Your friendly neighborhood QA developer.
 
-minottobot is a QA software consultant persona, distributed as a [Claude Code plugin](https://docs.claude.com/en/docs/claude-code/plugins) with four skills. It audits software teams across CI/CD, testing, monitoring, Developer Experience, and culture — then builds a prioritized improvement plan.
+minottobot is a QA software consultant persona, distributed as a [Claude Code plugin](https://docs.claude.com/en/docs/claude-code/plugins) with eight skills. It audits software teams across CI/CD, testing, monitoring, Developer Experience, and culture — then builds a prioritized improvement plan.
 
 ## How to use
 
@@ -185,6 +185,30 @@ Skip contract tests unless the payment gateway's API changes without notice — 
 
 </details>
 
+### `test-review`
+
+Standalone — no audit required. Reviews test code already written, not what to write next: weak or tautological assertions, tests that cover too much and should be split, magic numbers where a named constant belongs, whether a test actually verifies the requirement it claims to (when that information is available), alignment with the repo/team's own conventions, and whether a test sits at the right pyramid level (e.g. an E2E test that should be integration or unit). Complements the built-in code-review skill by owning the test-specific half of that judgment. `audit` and `daily-prevention` hand off to it on-demand; `test-selection` cross-references it as the "is it any good" counterpart to "what should I write."
+
+<details>
+<summary>Example output</summary>
+
+> **"Review this test — does it actually cover what it says it does?"**
+>
+> ```ts
+> it('rejects expired tokens', async () => {
+>   const res = await request(app).post('/refresh').send({ token: validToken });
+>   expect(res.status).toBe(401);
+> });
+> ```
+
+- **Coverage** — the test never expires the token; it sends `validToken` and still asserts `401`. Either the assertion is wrong or the test doesn't test what its name claims — as written, it would pass even if expiry handling were deleted entirely.
+- **Best practice** — `401` is a magic number; use `HttpStatus.UNAUTHORIZED` (or this repo's existing constant) if one already exists elsewhere in the suite.
+- **Pyramid placement** — this is an HTTP-layer concern with no browser or full external dependency involved; if it's currently living in the E2E suite, it's a strong candidate to move to integration.
+
+**Watch out:** fixing the assertion without fixing the setup (never actually expiring `validToken`) would still leave a test that can't fail for the right reason.
+
+</details>
+
 ### `daily-prevention`
 
 Standalone — no audit required. Helps a developer keep day-to-day code simple, maintainable, and robust through automatable prevention rather than after-the-fact fixes: which linter and type checker fit the stack (adapting first to whatever is already configured, only proposing something new when a layer is missing or clearly obsolete), which rule preset to start from, and how to wire checks into the editor, pre-commit, and CI. For what static analysis can't catch — semantic intent, architectural drift — it points at AI-assisted review as a complement, not a replacement. Both `audit` and `strategy` hand off to it on-demand when a linting or static-analysis gap surfaces mid-engagement.
@@ -294,6 +318,11 @@ The skill descriptions are intentionally explicit and slightly over-broad so ski
 1. "We're not sure what kind of test to write for this feature."
 2. "Unit or integration test for this ORM query?"
 
+### Prompts that trigger `test-review` directly
+
+1. "Review this test — is it any good?"
+2. "Does this test actually verify what it claims to?"
+
 ### Prompts that trigger `daily-prevention` directly
 
 1. "What linter should we use for this TypeScript project?"
@@ -342,6 +371,8 @@ skills/
       snapshot-delta.md     ← snapshot format and delta view
   test-selection/
     SKILL.md                ← standalone test-type decision guide
+  test-review/
+    SKILL.md                ← standalone test-quality review guide
   daily-prevention/
     SKILL.md                ← standalone static-analysis/linting decision guide
   reality-check/

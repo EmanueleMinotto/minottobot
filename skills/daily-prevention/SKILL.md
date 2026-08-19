@@ -65,7 +65,7 @@ Rolling a new rule (or a new tool) onto an existing codebase without a big-bang 
 
 Static analysis is deterministic and near-free to run, so it should always be the first line of defense. But it structurally cannot catch everything: semantic intent ("this discount logic doesn't match the pricing spec"), architectural drift ("this handler duplicates logic that already lives in the shared service"), or business-logic edge cases no rule can express.
 
-For that class of issue, recommend an AI-assisted review skill or agent as a *complement*, not a replacement: a code-review skill run on every PR, or a targeted hook that asks a model to check one specific kind of judgment call the team keeps missing. Draw the line clearly — anything expressible as a deterministic rule belongs in the linter, because it's cheaper, faster, and never has an off day; AI earns its keep only where judgment is genuinely required.
+For that class of issue, recommend an AI-assisted review skill or agent as a *complement*, not a replacement: a code-review skill run on every PR, or a targeted hook that asks a model to check one specific kind of judgment call the team keeps missing. When the gap is specifically about test quality — weak assertions, magic numbers, tests at the wrong pyramid level — point at [test-review](../test-review/SKILL.md) rather than a generic recommendation. Draw the line clearly — anything expressible as a deterministic rule belongs in the linter, because it's cheaper, faster, and never has an off day; AI earns its keep only where judgment is genuinely required.
 
 ---
 
