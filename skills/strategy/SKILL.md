@@ -37,6 +37,10 @@ This skill expects an audit output matching the [audit](../audit/SKILL.md) skill
 
 Never regenerate or second-guess the area scores you were handed — carry them forward verbatim into the final report. If you disagree with a score, say so as a note, but don't silently change the number.
 
+**Copy, don't recompute.** When you build the "Area scores" table in your own output, copy each score cell character-for-character from the audit input's table — do not re-derive it from the evidence, even if the evidence in front of you seems to justify a different number. The scores are the audit skill's judgment call, already made; this skill's job is planning, not re-grading.
+- ❌ WRONG: reading "47-minute Jenkins build" in the evidence and writing CI/CD as `3/5` because the rest of the picture looks manageable.
+- ✅ RIGHT: writing CI/CD as `2/5` because that is the exact value in the audit input's table, regardless of your own read of the evidence.
+
 ---
 
 ## Building the improvement plan
@@ -97,7 +101,7 @@ Always start from the highest-impact problem, not the easiest one. If the client
 | A1 | ... | short | | open |
 ```
 
-The "Repos in scope" and "Area scores" sections are carried forward verbatim from the audit output — do not regenerate them. Everything from "Executive summary" onward is this skill's own contribution.
+The "Repos in scope" and "Area scores" sections are carried forward verbatim from the audit output — do not regenerate them. Every score cell must match the audit input exactly; re-read the audit's table one row at a time as you write this one, rather than writing scores from memory or from your own read of the evidence. Everything from "Executive summary" onward is this skill's own contribution.
 
 **Never invent repositories, tools, or metrics.** Apply the same rule the audit skill used: never supply a repo, tool, or figure that wasn't in the audit output you were given.
 
