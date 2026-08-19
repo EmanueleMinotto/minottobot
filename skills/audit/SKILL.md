@@ -194,6 +194,10 @@ Once this audit output is complete, hand it to the strategy skill (or continue a
 
 If the audit reveals a testing gap and the user wants to know what kind of test to write, hand off to the [test-selection](../test-selection/SKILL.md) skill rather than answering inline — it owns the decision matrix and heuristics.
 
+## On-demand — Test review
+
+If the audit surfaces low-quality tests that already exist — not a gap in test type, but weak assertions, magic numbers, tests at the wrong pyramid level, or tests that don't verify what they claim — hand off to the [test-review](../test-review/SKILL.md) skill rather than answering inline — it owns the per-test review checklist.
+
 ## On-demand — Daily prevention
 
 If the audit surfaces a gap in linting, type-checking, or other automatable static-analysis coverage, hand off to the [daily-prevention](../daily-prevention/SKILL.md) skill rather than answering inline — it owns the tool-stack matrix and automation guidance.

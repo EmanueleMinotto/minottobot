@@ -1,0 +1,65 @@
+{
+  "skill_name": "test-review",
+  "evals": [
+    {
+      "id": 1,
+      "name": "tautological-assertion",
+      "prompt": "Review this test:\n\n```js\nit('rejects expired tokens', async () => {\n  const res = await request(app).post('/refresh').send({ token: validToken });\n  expect(res.status).toBe(401);\n});\n```",
+      "expected_output": "A finding that the test never actually expires the token (it sends validToken) yet asserts 401, so the test can't fail for the reason its name claims.",
+      "assertions": [
+        "Output must point out that the test never expires the token (or equivalently, that it doesn't actually verify expired-token handling despite its name)",
+        "Output must explain that, as written, the test would still pass even if expired-token handling were broken or removed"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "magic-number-status-code",
+      "prompt": "Review this test for best practices:\n\n```python\ndef test_create_user_returns_created():\n    response = client.post('/users', json={'name': 'Ada'})\n    assert response.status_code == 201\n```",
+      "expected_output": "A recommendation to replace the bare 201 with a named constant (e.g. HTTPStatus.CREATED or the project's own status constant) rather than a raw numeric literal.",
+      "assertions": [
+        "Output must recommend using a named constant instead of the raw numeric status code 201",
+        "Output must not claim the test has no assertions or is otherwise non-functional"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "e2e-should-be-integration",
+      "prompt": "We have this Playwright E2E test that only calls one backend endpoint and checks the JSON response — it never touches the UI. Should it stay in the E2E suite?",
+      "expected_output": "A recommendation to move the test down to the integration level, since it only exercises one HTTP endpoint and gets none of the value a browser/full-stack E2E test would provide, while still paying E2E's slower, more expensive cost.",
+      "assertions": [
+        "Output must recommend moving the test to the integration level rather than keeping it in the E2E suite",
+        "Output must explain that the test doesn't need a browser or the full stack since it never touches the UI"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "requirement-info-unavailable",
+      "prompt": "Here's a test:\n\n```js\nit('handles the discount correctly', () => {\n  expect(applyDiscount(100, 'SAVE10')).toBe(90);\n});\n```\n\nDoes this test actually cover the requirement? I don't have the ticket or spec handy.",
+      "expected_output": "A statement that whether the test actually matches the requirement can't be verified without the spec/ticket, rather than a guess at what the requirement was, while still reviewing the other aspects of the test (naming, assertion clarity, etc.).",
+      "assertions": [
+        "Output must explicitly state that it cannot verify the test matches the requirement without the spec/ticket, rather than inventing or assuming what the requirement is",
+        "Output must still comment on at least one other aspect of the test (e.g. naming, assertion style, coverage) instead of stopping entirely"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "overmocked-unit-test",
+      "prompt": "Review this test:\n\n```js\nit('creates an order', async () => {\n  const db = mockDb();\n  const logger = mockLogger();\n  const httpClient = mockHttpClient();\n  const config = mockConfig();\n  const result = await createOrder({ db, logger, httpClient, config }, { item: 'widget' });\n  expect(db.insert).toHaveBeenCalled();\n});\n```",
+      "expected_output": "A finding that mocking the database, logger, HTTP client, and config all at once leaves little real behavior under test, plus a note that the assertion only checks that insert was called, not what was inserted or the actual outcome.",
+      "assertions": [
+        "Output must comment on the test mocking every one of its dependencies (database, logger, HTTP client, config)",
+        "Output must note that the assertion is weak — it only checks that insert was called, not what data was inserted or the resulting outcome"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "too-broad-should-split",
+      "prompt": "Review this test:\n\n```js\nit('user signup', async () => {\n  const res = await signup({ email: 'a@b.com', password: 'x' });\n  expect(res.status).toBe(201);\n  const login = await login({ email: 'a@b.com', password: 'x' });\n  expect(login.status).toBe(200);\n  const profile = await getProfile(login.token);\n  expect(profile.email).toBe('a@b.com');\n  await deleteAccount(login.token);\n  const afterDelete = await getProfile(login.token);\n  expect(afterDelete.status).toBe(401);\n});\n```",
+      "expected_output": "A recommendation to split this test into separate tests for signup, login, profile retrieval, and account deletion, since each covers an unrelated behavior that could fail independently, and a single failure here wouldn't say which behavior broke.",
+      "assertions": [
+        "Output must recommend splitting the test into multiple tests, one per distinct behavior (signup, login, profile, deletion)",
+        "Output must explain that a failure in this combined test wouldn't clearly indicate which behavior broke"
+      ]
+    }
+  ]
+}
