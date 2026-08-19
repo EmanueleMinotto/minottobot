@@ -26,6 +26,12 @@ Don't recommend replacing what works. If a tool is doing its job and the team kn
 
 ---
 
+## Critical user journeys always get E2E coverage
+
+A "critical user journey" (login, checkout, signup, and similarly high-stakes, multi-step flows) is not the same case as "multiple components talking together" — that's what integration tests cover for a single interaction. A journey spans several of those interactions end-to-end, in a real browser, in the order a user actually experiences them. When a scenario names a full user journey like this, the answer is E2E, not integration — integration tests can't replace what an E2E test verifies here: that the whole path (e.g. add-to-cart through payment to confirmation) actually works together.
+
+---
+
 ## Decision matrix
 
 | Scenario | Recommended test type |
@@ -178,7 +184,7 @@ The tests are testing the wrong thing. Add integration or E2E coverage at the le
 Unit tests on critical business logic first — they're the fastest to write and give immediate feedback. Then integration tests on the most-used endpoints. E2E last, covering only the most critical journeys.
 
 **"Our E2E suite takes 45 minutes."**
-That's a test pyramid problem, not an E2E problem. Identify what those tests are actually verifying and ask whether integration tests could cover the same ground at a fraction of the cost.
+Open with the diagnosis, in these terms: this is a test pyramid balance problem, not an E2E-specific one — the suite has too much coverage living at the E2E layer. The fix is not a faster E2E suite, it's a smaller one: go through the suite, find tests that are actually verifying a single component's behavior rather than a cross-system journey, and move that coverage down to integration or unit tests, where it runs in milliseconds instead of minutes. Do not recommend raising timeouts, adding parallelism, or throwing more infrastructure at it as the primary fix — that treats the symptom (slow) and leaves the cause (misplaced coverage) untouched.
 
 ---
 
