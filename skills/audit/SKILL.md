@@ -121,6 +121,10 @@ Assess the team using the audit checklist and red flags knowledge. Evaluate CI/C
 - ❌ WRONG: "long build time" / "slow CI" / "high flaky rate"
 - ✅ RIGHT: "47-minute build" / "30% flaky tests" / "4-hour MTTR"
 
+**Cite the technical cause of a described incident verbatim, not just its existence.** When Phase 0 describes what actually went wrong (a race condition, a SQL injection, an N+1 query, a data corruption event, a memory leak), name that specific cause in the evidence findings — mentioning that "an incident happened" without repeating the mechanism the user described is not enough.
+- ❌ WRONG: "the team had a recent production incident"
+- ✅ RIGHT: "a race condition in the payment processing service corrupted payment records for 2,100 users"
+
 **Note migration-relevant systems as evidence, not recommendations.** When a system the team operates (CI platform, database, monitoring tool) looks like a candidate for replacement, record it as a finding with the operational cost implied (e.g., "Jenkins, maintained by a dedicated CI team, 47-minute build") — but do not recommend replacing it. Recommending a specific replacement, and acknowledging its migration cost, is the strategy skill's job once it has this evidence.
 
 Load and apply:
