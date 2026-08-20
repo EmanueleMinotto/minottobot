@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.0] - 2026-08-20
+
 ### Added
 
 - New standalone skill `test-review`: reviews test code already written — weak or tautological assertions, over-broad tests that should be split, magic numbers in place of named constants, whether a test actually verifies the requirement it claims to (when that information is available), alignment with repo/team conventions, and whether a test sits at the right pyramid level (e.g. an E2E test that should be an integration or unit test). Complements the built-in code-review skill by owning the test-specific half of that judgment; `audit` and `daily-prevention` hand off to it on-demand, and `test-selection` cross-references it as the "is it any good" counterpart to "what should I write."
@@ -80,6 +82,7 @@ First stable release of the minottobot skill.
 - Multi-iteration eval workspace in `minottobot-workspace/` (iterations 1–6).
 - `README.md`, `CONTRIBUTING.md`, `LICENSE`, and `.gitattributes` rules that keep the GitHub zip download limited to the skill itself.
 
+[2.4.0]: https://github.com/EmanueleMinotto/minottobot/compare/v2.3.1...v2.4.0
 [2.3.1]: https://github.com/EmanueleMinotto/minottobot/compare/v2.3.0...v2.3.1
 [2.3.0]: https://github.com/EmanueleMinotto/minottobot/compare/v2.0.0...v2.3.0
 [2.0.0]: https://github.com/EmanueleMinotto/minottobot/compare/v1.0.0...v2.0.0
