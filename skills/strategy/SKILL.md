@@ -59,6 +59,14 @@ Always start from the highest-impact problem, not the easiest one. If the client
 
 **Cite the audit's evidence and metrics verbatim.** The executive summary and blockers must ground themselves in the specific numbers and named tools the audit output already gave you (e.g. "0.1 P1/month", "47-minute build", "CircleCI and GitHub Actions") — not paraphrases like "low incident rate" or "slow CI". If the audit's evidence includes a strong positive signal (a low incident rate, a fast build, a healthy score), the executive summary must name it, not just the problems.
 
+**A named flaky-test rate needs its own action item, not a general testing goal.** When the audit's evidence cites a flaky test rate (e.g. "30% flaky tests"), the plan must include an action item that addresses flaky tests specifically — quarantine, fix, or delete them — not a generic "improve test coverage" or "write more tests" item that never mentions flakiness. A flaky suite is a trust problem: adding more tests to an already-ignored suite doesn't fix it.
+- ❌ WRONG: "Increase test coverage across the platform."
+- ✅ RIGHT: "Quarantine the ~30% of tests currently flaky, triage each one to fix or delete within the quarter — a flaky suite that's already ignored won't get more trustworthy by adding tests to it."
+
+**A high-functioning team still gets a real plan, not just congratulations.** When most area scores are 4/5 or 5/5 and "Systems flagged for replacement evaluation" is empty or "None", resist the pull toward a purely congratulatory report. Two rules apply regardless of how strong the scores are:
+- Never recommend a tool, framework, or practice the audit's evidence already shows in place (e.g. don't suggest adding Datadog, feature flags, or SLOs if the audit already lists them as present).
+- The plan must still include at least one substantive medium- or long-term recommendation — look for maturity-level work that doesn't show up as a "gap": scaling the current practices to a larger team, formalizing what's currently informal, deepening an existing capability (e.g. SLOs → error budgets, on-call runbooks → chaos engineering). A team with no critical gaps still has a next level to reach.
+
 **Output requirement:** every plan concludes with exactly this structure appended to the audit output it was given — no freeform alternatives, no deviations. The format is fixed so reports can be compared over time and copied into ticket trackers without reformatting.
 
 ```markdown
