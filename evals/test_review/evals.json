@@ -60,6 +60,26 @@
         "Output must recommend splitting the test into multiple tests, one per distinct behavior (signup, login, profile, deletion)",
         "Output must explain that a failure in this combined test wouldn't clearly indicate which behavior broke"
       ]
+    },
+    {
+      "id": 7,
+      "name": "propose-deterministic-check",
+      "prompt": "Review these tests:\n\n```js\ntest('loads the dashboard', async ({ page }) => {\n  await page.goto('/dashboard');\n  await page.waitForTimeout(2000);\n  await expect(page.getByRole('heading')).toHaveText('Dashboard');\n});\n\ntest('loads the settings page', async ({ page }) => {\n  await page.goto('/settings');\n  await page.waitForTimeout(3000);\n  await expect(page.getByRole('heading')).toHaveText('Settings');\n});\n\ntest('loads the billing page', async ({ page }) => {\n  await page.goto('/billing');\n  await page.waitForTimeout(2000);\n  await expect(page.getByRole('heading')).toHaveText('Billing');\n});\n```",
+      "expected_output": "A finding that the fixed waits should be replaced by waiting on the actual condition, plus a proposal to enforce it deterministically with a lint rule (playwright/no-wait-for-timeout, or an equivalent restricted-syntax rule) so the recurring pattern is caught automatically rather than re-reviewed by hand.",
+      "assertions": [
+        "Output must flag the fixed waits (waitForTimeout / sleep) and recommend waiting on the actual condition instead",
+        "Output must propose a deterministic, automated check — a named lint rule such as playwright/no-wait-for-timeout or an equivalent restricted-syntax rule — to catch this pattern automatically in future, not only fix the three tests shown"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "lint-rule-with-existing-violations",
+      "prompt": "You flagged the bare `201` in our test as a magic number. We'd like to lint for that, but our test suite has around 400 raw status-code literals already. Should we just turn the rule on?",
+      "expected_output": "A recommendation to adopt the rule incrementally — freeze the current violations as a baseline, fix as files are touched, and enforce once clean — rather than enabling it outright, because a rule that produces hundreds of unfixed warnings trains the team to ignore the linter.",
+      "assertions": [
+        "Output must recommend adopting the rule incrementally (baseline the existing violations, fix as files are touched, enforce once clean) rather than enabling it outright as a hard failure",
+        "Output must explain that a rule producing hundreds of ignored warnings is worse than none, because it erodes trust in the linter's output"
+      ]
     }
   ]
 }
