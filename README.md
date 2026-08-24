@@ -187,7 +187,7 @@ Skip contract tests unless the payment gateway's API changes without notice — 
 
 ### `test-review`
 
-Standalone — no audit required. Reviews test code already written, not what to write next: weak or tautological assertions, tests that cover too much and should be split, magic numbers where a named constant belongs, whether a test actually verifies the requirement it claims to (when that information is available), alignment with the repo/team's own conventions, and whether a test sits at the right pyramid level (e.g. an E2E test that should be integration or unit). Complements the built-in code-review skill by owning the test-specific half of that judgment. `audit` and `daily-prevention` hand off to it on-demand; `test-selection` cross-references it as the "is it any good" counterpart to "what should I write."
+Standalone — no audit required. Reviews test code already written, not what to write next: weak or tautological assertions, tests that cover too much and should be split, magic numbers where a named constant belongs, whether a test actually verifies the requirement it claims to (when that information is available), alignment with the repo/team's own conventions, and whether a test sits at the right pyramid level (e.g. an E2E test that should be integration or unit). Whenever a finding is mechanically checkable, it also names the deterministic check — a specific lint rule, or a runner flag — that would catch that class of finding for free from then on, instead of leaving it to the next AI review. Complements the built-in code-review skill by owning the test-specific half of that judgment. `audit` and `daily-prevention` hand off to it on-demand; `test-selection` cross-references it as the "is it any good" counterpart to "what should I write."
 
 <details>
 <summary>Example output</summary>
@@ -204,6 +204,8 @@ Standalone — no audit required. Reviews test code already written, not what to
 - **Coverage** — the test never expires the token; it sends `validToken` and still asserts `401`. Either the assertion is wrong or the test doesn't test what its name claims — as written, it would pass even if expiry handling were deleted entirely.
 - **Best practice** — `401` is a magic number; use `HttpStatus.UNAUTHORIZED` (or this repo's existing constant) if one already exists elsewhere in the suite.
 - **Pyramid placement** — this is an HTTP-layer concern with no browser or full external dependency involved; if it's currently living in the E2E suite, it's a strong candidate to move to integration.
+
+- **Prevention** — the magic number is mechanically checkable: `@typescript-eslint/no-magic-numbers`, scoped to test files, catches it on every future PR for free. The other two findings are semantic — no rule expresses them, which is exactly where an AI review earns its keep.
 
 **Watch out:** fixing the assertion without fixing the setup (never actually expiring `validToken`) would still leave a test that can't fail for the right reason.
 

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `test-review` now proposes the deterministic check behind a finding whenever there is one: when it can name the exact rule (`jest/expect-expect`, `jest/no-conditional-in-test`, `no-magic-numbers`, `playwright/no-wait-for-timeout`, the `RSpec/*` and Ruff `PT` equivalents) and the pattern recurs, it says so alongside the fix, so that class of finding is caught for free on every future change instead of costing another AI review round. Findings carry an optional `Prevention` field for it. Guarded on three sides: never invent a rule ID (falling back to a quick web search for a plugin that would add it before giving up), don't propose a custom rule or codemod for a one-off, and propose a baseline-and-ratchet rollout — handed off to `daily-prevention` — rather than a flat "enable this" when the rule would light up hundreds of existing violations. Explicitly does not apply to the semantic checks (requirement matching, pyramid placement), where no rule expresses the judgment and an approximate one would give false confidence.
+
 ## [2.4.0] - 2026-08-20
 
 ### Added

@@ -74,6 +74,31 @@ Apply [test-selection](../test-selection/SKILL.md)'s decision matrix in reverse:
 
 When proposing a level change, name the level and point to [test-selection](../test-selection/SKILL.md) for why that level fits — don't restate its matrix inline.
 
+## Cross-cutting: can this be checked deterministically instead?
+
+Every finding above is one an AI had to produce by reading the test. Some of them never needed an AI: a linter rule or a runner flag would catch the same thing on every future occurrence, for free, forever. Per [daily-prevention](../daily-prevention/SKILL.md#where-linting-cant-reach--ai-in-the-loop), anything expressible as a deterministic rule belongs in the linter, because it's cheaper, faster, and never has an off day — AI review earns its keep only where judgment is genuinely required.
+
+So when a finding is mechanically checkable, propose the deterministic check alongside the fix — always, provided all three conditions hold. It's not a sixth check; it's a lens applied to the findings the five checks already produced.
+
+- **Nameable.** Give the exact rule ID (`jest/expect-expect`, not "a lint rule for missing assertions"), and match it against the plugins the repo actually has, per "First, adapt to what's already there". If none of those cover it, do a quick web search for a plugin that would add the rule (e.g. a dedicated ESLint/Rubocop/Ruff plugin) before giving up — a rule one dependency away is still worth naming, with that dependency named alongside it. If you still can't name a rule you're confident exists, say the finding is deterministically expressible and stop there — never invent a rule ID. A plausible-looking one that doesn't exist costs the reader more than saying nothing.
+- **Recurring.** One occurrence is a fix; a pattern across several tests — or one you'd expect to recur — is a rule. This is what separates enabling an off-the-shelf rule (near-free) from writing a custom one or a codemod (real cost to build and maintain): propose the second only for a pattern that keeps coming back, e.g. a repo-specific cap on how many collaborators one unit test is allowed to mock.
+- **Adoptable.** If the rule would light up hundreds of existing violations, propose it as a baseline-and-ratchet rollout, not a flat "turn this on" — an ignored linter is worse than none, and rolling it out is [daily-prevention](../daily-prevention/SKILL.md)'s territory, not this skill's. Name the rule and hand off; don't turn a test review into a linter-configuration session.
+
+Common mappings, for the checks where a rule usually exists:
+
+| Finding | Deterministic check |
+|---|---|
+| Missing assertion, test body that never asserts (check 1) | `jest/expect-expect`, `vitest/expect-expect`, `RSpec/NoExpectationExample`, Ruff `PT` ruleset |
+| Unrelated assertions crammed in one block (check 1) | `jest/max-expects`, `RSpec/MultipleExpectations` — blunt instruments: they cap a count, they don't judge relatedness |
+| Conditional logic in a test body (check 2) | `jest/no-conditional-in-test` |
+| Magic status/error code (check 2) | `no-magic-numbers` / `@typescript-eslint/no-magic-numbers`, scoped to test files |
+| Naive wait or bumped timeout (check 2) | `playwright/no-wait-for-timeout`; elsewhere a `no-restricted-syntax` entry for the project's own sleep helper |
+| Focused/skipped test left behind (check 2) | `jest/no-focused-tests`, `jest/no-disabled-tests` |
+| Name that doesn't follow the suite's pattern (check 2) | `jest/valid-title` with `mustMatch` |
+| Order-dependent or shared-state test (check 2) | not a lint rule — run the suite shuffled in CI (`jest --randomize`, Vitest `sequence.shuffle`, RSpec `--order random`) |
+
+Where the deterministic lens does **not** apply: check 3 (does the test match the requirement) and check 5 (pyramid placement) are semantic, and so is "would this test catch the bug it's named for". No rule expresses them, and proposing one that half-does would give false confidence in exactly the place this skill exists to cover. Don't stretch for a rule there — say nothing and let the finding stand on its own.
+
 ---
 
 ## Output format
@@ -84,6 +109,7 @@ For each test or file reviewed, report findings grouped by file, each finding as
 - **Category** — one of the five checks above.
 - **Problem** — what's wrong, concretely.
 - **Suggestion** — a specific fix, with a snippet when it clarifies more than prose would.
+- **Prevention** *(only when it applies)* — the deterministic check that would catch this class of finding from now on, per the cross-cutting section above. Omit the field entirely for a semantic finding rather than writing "n/a".
 
 Skip a category entirely for a file where nothing is wrong — don't manufacture a finding to fill out the list. When reviewing a diff with multiple test files, keep the file grouping so the output maps onto how the diff itself is organized.
 
@@ -100,6 +126,12 @@ Apply generic best practice and say so — it's a gap worth surfacing (and a nat
 **"The test is long but covers one genuinely critical end-to-end flow."**
 Don't split it just for length. Split only when the assertions inside it are about unrelated behaviors that could fail independently — length alone isn't the signal, unrelated failure reasons are.
 
+**"A rule exists for this, but the repo has hundreds of existing violations."**
+Still name it, as a baseline-and-ratchet rollout — freeze the current count, fix as files get touched, enforce once clean — and hand the rollout to [daily-prevention](../daily-prevention/SKILL.md). Proposing a flat "enable this rule" here would produce a wall of warnings nobody fixes, which trains the team to ignore the linter.
+
+**"No off-the-shelf rule exists, but a custom one could catch it."**
+Only propose it if the pattern actually recurs in what you reviewed, and say plainly that it has to be written and maintained. For a one-off, fix the test and move on — a custom rule nobody ends up writing is worse than no proposal, because it reads on the report like a solved problem.
+
 **"This magic number is a well-known convention in the ecosystem (e.g. HTTP 404)."**
 Still flag it if the codebase has (or should have) a named constant for it elsewhere and this test is the outlier — consistency with the rest of the codebase matters more than how well-known the number is in isolation.
 
@@ -112,6 +144,8 @@ The most common mistake: a green test that proves nothing — heavy mocking or a
 The second: reaching for E2E by default because "it tests everything," when the same regression would be caught just as reliably — and far faster — one or two levels down the pyramid. Every test sitting at the wrong level is also a tax on the whole suite's runtime, not just a style nit.
 
 The third: a magic number where a named constant already exists elsewhere in the codebase. It's a small thing individually, but it's the kind of drift that makes a suite unreadable one review at a time.
+
+The fourth: spending AI judgment on a finding a lint rule would have caught for free — the fix lands, the same pattern comes back in next month's PR, and someone pays to review it again. Fixing the instance without proposing the rule leaves the suite exactly as exposed as it was.
 
 ## Execution — only with explicit authorization
 
