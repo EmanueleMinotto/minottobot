@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `breaking-change-detector` now requires stating the SemVer/MAJOR consequence of a breaking change in those exact terms, not just implying it through a deprecation recommendation — the `openapi-field-removal` eval was intermittently failing because the model's answer covered deprecation and tooling but left the version-bump conclusion unstated.
+
 ## [2.4.1] - 2026-08-25
 
 ### Fixed
