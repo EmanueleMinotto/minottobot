@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.2] - 2026-08-25
+
 ### Fixed
 
 - `breaking-change-detector` now requires stating the SemVer/MAJOR consequence of a breaking change in those exact terms, not just implying it through a deprecation recommendation — the `openapi-field-removal` eval was intermittently failing because the model's answer covered deprecation and tooling but left the version-bump conclusion unstated.
@@ -92,6 +94,7 @@ First stable release of the minottobot skill.
 - Multi-iteration eval workspace in `minottobot-workspace/` (iterations 1–6).
 - `README.md`, `CONTRIBUTING.md`, `LICENSE`, and `.gitattributes` rules that keep the GitHub zip download limited to the skill itself.
 
+[2.4.2]: https://github.com/EmanueleMinotto/minottobot/compare/v2.4.1...v2.4.2
 [2.4.1]: https://github.com/EmanueleMinotto/minottobot/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/EmanueleMinotto/minottobot/compare/v2.3.1...v2.4.0
 [2.3.1]: https://github.com/EmanueleMinotto/minottobot/compare/v2.3.0...v2.3.1
