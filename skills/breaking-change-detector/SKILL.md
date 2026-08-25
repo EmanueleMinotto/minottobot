@@ -46,7 +46,7 @@ Versioning fatigue is real — bumping MAJOR reflexively for every schema touch 
 
 ## Deprecate before you remove
 
-1. Classify the change first: a field removal is breaking, and per SemVer discipline that means the eventual release is a MAJOR version bump — say so up front, before getting into tooling.
+1. Classify the change first, and say so in those exact terms: a field removal is breaking, and per SemVer discipline that means the eventual release is a MAJOR version bump. State "MAJOR" and "SemVer" explicitly, up front, before getting into tooling — recommending deprecation is not a substitute for naming the version-bump consequence, and a reader shouldn't have to infer it.
 2. Mark the field/endpoint/parameter deprecated in the schema/spec — most tools above (oasdiff, GraphQL Inspector) specifically detect and report deprecated-field removal, so this step is what makes the next diff meaningful.
 3. Communicate the deprecation and, if possible, measure actual usage before committing to a removal date — an unused field can go faster than one still seeing traffic.
 4. Remove only after the deprecation window has passed, and only once the diff tool confirms the removal is the only breaking change in that release (not bundled with something unrelated), and ship it as the MAJOR release that SemVer requires.
