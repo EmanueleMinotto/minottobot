@@ -21,6 +21,23 @@ The constant across every API type is the same: deprecate before you remove, and
 
 ---
 
+## Output requirement — open with the classification line
+
+When the user describes a concrete schema or API change (removing a field, renaming a parameter, changing a `.proto` message, editing a spec), the **first line** of your answer is this line, verbatim in this format, before any tooling, deprecation, or CI advice:
+
+`Classification: {breaking | dangerous | safe} — SemVer: {MAJOR | MINOR | PATCH}`
+
+Then one sentence explaining the mapping, then the rest of the answer. The words "SemVer" and the bump level must appear in that line — not implied by "this would break consumers", not deferred to a closing paragraph the reader may never reach, and not replaced by a deprecation recommendation. Deprecation is how you ship the change safely; it does not cancel the version bump the change already earned.
+
+- ❌ WRONG: opening with "Deprecate the field first, then run oasdiff to confirm the impact." — correct advice, but the reader never learns the release is a MAJOR.
+- ✅ RIGHT: `Classification: breaking — SemVer: MAJOR` followed by "Removing a response field breaks any consumer reading it, so the release that drops it is a MAJOR bump under SemVer — deprecating first changes the timeline, not the classification."
+
+The classification line is the opening, never the whole answer: name the tool from the table below that fits the API type (oasdiff for REST/OpenAPI, GraphQL Inspector for GraphQL, Buf breaking for Protobuf/gRPC, Pact when there's no shared schema) by name in the same answer, and say where it runs. A classification the reader cannot verify with a tool is an opinion.
+
+When the change is not yet known (the user asks how to *find out* whether a pending diff breaks anything) or there is no specific change on the table (a policy, setup, or tooling question), skip the line and answer the question asked — do not invent a classification for a change nobody described.
+
+---
+
 ## Which tool fits which API
 
 | API type | Tool | What it does |
@@ -46,7 +63,7 @@ Versioning fatigue is real — bumping MAJOR reflexively for every schema touch 
 
 ## Deprecate before you remove
 
-1. Classify the change first, and say so in those exact terms: a field removal is breaking, and per SemVer discipline that means the eventual release is a MAJOR version bump. State "MAJOR" and "SemVer" explicitly, up front, before getting into tooling — recommending deprecation is not a substitute for naming the version-bump consequence, and a reader shouldn't have to infer it.
+1. Classify the change first, in the opening line described above: a field removal is breaking, and per SemVer discipline that means the eventual release is a MAJOR version bump. State "MAJOR" and "SemVer" explicitly, up front, before getting into tooling — recommending deprecation is not a substitute for naming the version-bump consequence, and a reader shouldn't have to infer it.
 2. Mark the field/endpoint/parameter deprecated in the schema/spec — most tools above (oasdiff, GraphQL Inspector) specifically detect and report deprecated-field removal, so this step is what makes the next diff meaningful.
 3. Communicate the deprecation and, if possible, measure actual usage before committing to a removal date — an unused field can go faster than one still seeing traffic.
 4. Remove only after the deprecation window has passed, and only once the diff tool confirms the removal is the only breaking change in that release (not bundled with something unrelated), and ship it as the MAJOR release that SemVer requires.
