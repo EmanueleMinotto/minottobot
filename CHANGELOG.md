@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- README now documents installation for Cursor (`.cursor/skills/` or `~/.cursor/skills/`) and Codex (`~/.codex/skills/` or `.codex/skills/`), since the skills are plain `SKILL.md` directories and work in any agent supporting Agent Skills. Both are kept in collapsed `<details>` blocks so the Claude Code plugin install stays the default path.
+- minottobot is now installable as a plugin outside Claude Code, without copying skill files by hand. The repository root carries an [Agent Plugins 1.0.0](https://agent-plugins.org/) manifest (`plugin.json`), so Cursor and any other conforming client install it straight from the repo — for Cursor, either as a team marketplace imported from the repo, or as a symlinked local plugin that updates with a `git pull`. Codex gets its own manifest (`.codex-plugin/plugin.json`) and a self-hosted catalog (`.agents/plugins/marketplace.json`), so `codex plugin marketplace add EmanueleMinotto/minottobot` is enough to install and `codex plugin marketplace upgrade` to update. The Claude Code manifests are unchanged and `/plugin install minottobot` keeps working exactly as before. Copying `skills/*` into an agent's skills directory is still documented, but only as the fallback for agents with no plugin installer.
 
 ## [2.4.2] - 2026-08-25
 

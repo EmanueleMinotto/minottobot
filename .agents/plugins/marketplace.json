@@ -1,0 +1,16 @@
+{
+  "name": "minottobot",
+  "interface": {
+    "displayName": "minottobot"
+  },
+  "plugins": [
+    {
+      "name": "minottobot",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "minottobot",
+  "version": "2.4.2",
+  "description": "Use whenever the user asks about QA, testing strategy, CI/CD health, team processes, developer experience, code review practices, test coverage, flaky tests, monitoring, or any audit of an engineering team's quality practices.",
+  "author": {
+    "name": "Emanuele Minotto",
+    "url": "https://github.com/EmanueleMinotto"
+  },
+  "homepage": "https://github.com/EmanueleMinotto/minottobot",
+  "repository": "https://github.com/EmanueleMinotto/minottobot",
+  "license": "MIT",
+  "keywords": ["qa", "testing", "ci-cd", "developer-experience", "audit", "code-review"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "minottobot",
+    "shortDescription": "Your friendly neighborhood QA developer",
+    "longDescription": "Audits a software team across CI/CD, testing, code review, monitoring, Developer Experience, and ownership culture, then builds a prioritized improvement plan.",
+    "developerName": "Emanuele Minotto",
+    "category": "Developer Tools",
+    "websiteURL": "https://github.com/EmanueleMinotto/minottobot",
+    "defaultPrompt": [
+      "Audit our team's engineering practices.",
+      "What test should I write for this code path?"
+    ]
+  }
+}

@@ -41,6 +41,40 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # The plugin ships one manifest per ecosystem (Agent Plugins, Claude Code,
+  # Codex) and they all carry the same name and version — a release that
+  # bumps only one of them installs as the wrong version everywhere else.
+  # Cheap check, no Ollama, no matrix: runs on every PR and push.
+  manifest-consistency:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check manifests agree on name and version
+        run: |
+          manifests=(plugin.json .claude-plugin/plugin.json .codex-plugin/plugin.json)
+          for f in "${manifests[@]}" .claude-plugin/marketplace.json .agents/plugins/marketplace.json; do
+            jq empty "$f" || { echo "::error file=$f::invalid JSON"; exit 1; }
+          done
+
+          expected_name=$(jq -r .name plugin.json)
+          expected_version=$(jq -r .version plugin.json)
+          status=0
+          for f in "${manifests[@]}"; do
+            name=$(jq -r .name "$f")
+            version=$(jq -r .version "$f")
+            if [ "$name" != "$expected_name" ]; then
+              echo "::error file=$f::name is '$name', expected '$expected_name' (plugin.json)"
+              status=1
+            fi
+            if [ "$version" != "$expected_version" ]; then
+              echo "::error file=$f::version is '$version', expected '$expected_version' (plugin.json)"
+              status=1
+            fi
+          done
+          exit $status
+
   # Runs the full suite, one sub-suite per matrix job — each job gets its own
   # runner and its own Ollama instance, so sub-suites run in true parallel
   # instead of contending for one shared CPU-only runner (which is why -n

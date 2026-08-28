@@ -2,7 +2,9 @@
 
 Your friendly neighborhood QA developer.
 
-minottobot is a QA software consultant persona, distributed as a [Claude Code plugin](https://docs.claude.com/en/docs/claude-code/plugins) with eight skills. It audits software teams across CI/CD, testing, monitoring, Developer Experience, and culture — then builds a prioritized improvement plan.
+minottobot is a QA software consultant persona, packaged as a plugin with eight skills. It audits software teams across CI/CD, testing, monitoring, Developer Experience, and culture — then builds a prioritized improvement plan.
+
+The repository is an [Agent Plugins 1.0.0](https://agent-plugins.org/) plugin — root `plugin.json`, skills under `skills/` — and also ships the [Claude Code](https://docs.claude.com/en/docs/claude-code/plugins) and [Codex](https://developers.openai.com/plugins/build/plugins) manifests, so every client below installs it from the repo itself. No copying files around.
 
 ## How to use
 
@@ -12,49 +14,40 @@ minottobot is a QA software consultant persona, distributed as a [Claude Code pl
 /plugin install minottobot
 ```
 
-Once installed, describe your team or project and the relevant skill activates automatically. Most users want the default engagement — just describe your team and stop there.
+**Codex:**
+```
+codex plugin marketplace add EmanueleMinotto/minottobot
+```
 
-The skills are plain `SKILL.md` directories, so they also work in other agents that support Agent Skills.
+Then install `minottobot` from that marketplace. Update later with `codex plugin marketplace upgrade minottobot`.
+
+Once installed, describe your team or project and the relevant skill activates automatically. Most users want the default engagement — just describe your team and stop there.
 
 <details>
 <summary><strong>Cursor</strong></summary>
 
-Cursor loads skills from `.cursor/skills/` (project-level) or `~/.cursor/skills/` (global). Clone the repo and copy the skills across:
+The repo is an Agent Plugin, so Cursor installs it as a plugin rather than as loose skill files.
+
+**Teams and Enterprise** — Dashboard → **Plugins** → **Add Marketplace** → **Import from Repo**, pointing at `https://github.com/EmanueleMinotto/minottobot`. Enable **Auto Refresh** (requires the Cursor GitHub App) and installs track new releases automatically. Members then install it from **Customize**, at project or user scope.
+
+**Individual users** — clone once and symlink the clone into Cursor's local plugin directory:
 
 ```bash
-git clone https://github.com/EmanueleMinotto/minottobot.git /tmp/minottobot
-
-# project-level
-mkdir -p .cursor/skills
-cp -R /tmp/minottobot/skills/* .cursor/skills/
-
-# or global, for every project
-mkdir -p ~/.cursor/skills
-cp -R /tmp/minottobot/skills/* ~/.cursor/skills/
+git clone https://github.com/EmanueleMinotto/minottobot.git ~/src/minottobot
+mkdir -p ~/.cursor/plugins/local
+ln -s ~/src/minottobot ~/.cursor/plugins/local/minottobot
 ```
 
-Restart Cursor (or reload the window) and the skills become available to the agent. Update by re-running `git pull` in the clone and copying again.
+Reload the Cursor window and the plugin shows up in Customize. Because it's a symlink, `git pull` in the clone is the whole update procedure.
 
 </details>
 
 <details>
-<summary><strong>Codex</strong></summary>
+<summary><strong>Other agents</strong></summary>
 
-Codex loads skills from `~/.codex/skills/` (global) or `.codex/skills/` inside a project. Clone the repo and copy the skills across:
+Any client that implements [Agent Plugins 1.0.0](https://agent-plugins.org/) can install the repo directly — the root `plugin.json` and `skills/` layout is all the spec requires.
 
-```bash
-git clone https://github.com/EmanueleMinotto/minottobot.git /tmp/minottobot
-
-# global, for every project
-mkdir -p ~/.codex/skills
-cp -R /tmp/minottobot/skills/* ~/.codex/skills/
-
-# or project-level
-mkdir -p .codex/skills
-cp -R /tmp/minottobot/skills/* .codex/skills/
-```
-
-Start a new Codex session afterwards so the skills are picked up. Update by re-running `git pull` in the clone and copying again.
+For an agent that only understands plain [Agent Skills](https://agentskills.io/) directories and has no plugin installer, copying still works as a fallback: clone the repo and copy `skills/*` into whatever directory that agent reads skills from.
 
 </details>
 
@@ -397,9 +390,14 @@ The skill descriptions are intentionally explicit and slightly over-broad so ski
 ## Repository structure
 
 ```
+plugin.json                ← Agent Plugins 1.0.0 manifest (this repo root is the plugin)
 .claude-plugin/
-  plugin.json              ← plugin manifest (this repo root is the plugin)
+  plugin.json              ← Claude Code manifest
   marketplace.json         ← self-hosted catalog, so this repo can be added directly
+.codex-plugin/
+  plugin.json              ← Codex manifest
+.agents/plugins/
+  marketplace.json         ← self-hosted catalog for `codex plugin marketplace add`
 skills/
   minottobot/SKILL.md      ← default: orchestrates audit → strategy
   audit/
