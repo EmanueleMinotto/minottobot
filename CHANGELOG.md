@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `breaking-change-detector` now opens every answer about a concrete schema change with a fixed classification line — `Classification: {breaking | dangerous | safe} — SemVer: {MAJOR | MINOR | PATCH}` — above the tooling table, instead of leaving the SemVer consequence to a step halfway down "Deprecate before you remove". v2.4.2 required stating it in those exact terms but not *where*, so the `openapi-field-removal` eval kept failing intermittently on answers that covered deprecation and tooling first and reached the version bump late or not at all. The same section keeps the tool recommendation (oasdiff, GraphQL Inspector, Buf breaking, Pact) mandatory so the fixed opening does not crowd it out, and exempts policy, setup, and "how do I find out" questions where there is no specific change to classify.
+
 ### Added
 
 - README now documents installation for Cursor (`.cursor/skills/` or `~/.cursor/skills/`) and Codex (`~/.codex/skills/` or `.codex/skills/`), since the skills are plain `SKILL.md` directories and work in any agent supporting Agent Skills. Both are kept in collapsed `<details>` blocks so the Claude Code plugin install stays the default path.
