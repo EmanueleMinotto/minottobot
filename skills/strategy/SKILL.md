@@ -40,6 +40,7 @@ Never regenerate or second-guess the area scores you were handed — carry them 
 **Copy, don't recompute.** When you build the "Area scores" table in your own output, copy each score cell character-for-character from the audit input's table — do not re-derive it from the evidence, even if the evidence in front of you seems to justify a different number. The scores are the audit skill's judgment call, already made; this skill's job is planning, not re-grading.
 - ❌ WRONG: reading "47-minute Jenkins build" in the evidence and writing CI/CD as `3/5` because the rest of the picture looks manageable.
 - ✅ RIGHT: writing CI/CD as `2/5` because that is the exact value in the audit input's table, regardless of your own read of the evidence.
+- Every one of the six rows keeps a score — never leave a cell blank, never drop a row, and never soften `Ownership & culture` because your plan proposes to fix it. The score describes the state the audit found, not the state after the plan.
 
 ---
 
@@ -62,6 +63,10 @@ Always start from the highest-impact problem, not the easiest one. If the client
 **A named flaky-test rate needs its own action item, not a general testing goal.** When the audit's evidence cites a flaky test rate (e.g. "30% flaky tests"), the plan must include an action item that addresses flaky tests specifically — quarantine, fix, or delete them — not a generic "improve test coverage" or "write more tests" item that never mentions flakiness. A flaky suite is a trust problem: adding more tests to an already-ignored suite doesn't fix it.
 - ❌ WRONG: "Increase test coverage across the platform."
 - ✅ RIGHT: "Quarantine the ~30% of tests currently flaky, triage each one to fix or delete within the quarter — a flaky suite that's already ignored won't get more trustworthy by adding tests to it."
+
+**Organisational chaos does not excuse a vague short-term horizon.** When the audit reports ownership gaps — no product owner, leadership churn, staff on loan, two CI systems with no authoritative one — at least one short-term item must be something the engineering team can start on its own, this sprint, without a new VP, a new owner, a budget approval, or another team's cooperation. Write it with a named artefact and a named doer, not a coordination goal.
+- ❌ WRONG: "Align stakeholders on pipeline ownership" / "Establish clear ownership with leadership" — both wait on someone who isn't there.
+- ✅ RIGHT: "Run the ~800 existing tests once and publish the pass/fail count — nobody has run them in 2 months, so the current number is unknown." / "Pick CircleCI or GitHub Actions as the authoritative pipeline, disable the other, and note the choice in the repo README."
 
 **A high-functioning team still gets a real plan, not just congratulations.** When most area scores are 4/5 or 5/5 and "Systems flagged for replacement evaluation" is empty or "None", resist the pull toward a purely congratulatory report. Two rules apply regardless of how strong the scores are:
 - Never recommend a tool, framework, or practice the audit's evidence already shows in place (e.g. don't suggest adding Datadog, feature flags, or SLOs if the audit already lists them as present).

@@ -192,6 +192,8 @@ The table has exactly the six rows shown above, in that order. Do not add rows f
 | Signal in the data | Area | Cap |
 |---|---|---|
 | No CI, or CI that can be bypassed, or two CI systems with no authoritative one | CI/CD | 2/5 |
+| **CI that runs lint, build, or type checks only — no tests in the pipeline** | **CI/CD** | **2/5** |
+| **Deployment is manual (a person running a deploy or push command by hand), or there is no automated deploy pipeline** | **CI/CD** | **2/5** |
 | Tests not run recently, unknown pass rate, or a flaky rate the team ignores | Testing | 2/5 |
 | No tests at all | Testing | 1/5 |
 | Review skipped for "urgent" work, or no formal policy | Code review | 2/5 |
@@ -201,6 +203,8 @@ The table has exactly the six rows shown above, in that order. Do not add rows f
 | **Leadership churn — multiple managers/VPs within ~18 months** | **Ownership & culture** | **2/5** |
 | **Headcount on paper exceeds effective capacity (staff on loan)** | **Ownership & culture** | **2/5** |
 | **Incidents untracked, or a past outage still unresolved** | **Ownership & culture** | **2/5** |
+
+**A fast pipeline is not a good pipeline.** CI run time is evidence about the feedback loop, not about quality gating. A 2-minute pipeline that only runs a linter, and a green build that still needs a manual `git push` to deploy, both cap CI/CD at 2/5 — the pipeline catches nothing a reviewer wouldn't, and nothing about the release is automated. Never trade a cap away because the run is quick, the tool is modern (GitHub Actions, GitLab CI), or the team deploys often; frequency of manual deploys is a risk signal, not a strength. When a cap applies, the one-line finding must name what the pipeline does *not* do (e.g. "GitHub Actions runs ESLint only, no tests; deploys are manual").
 
 Ownership & culture is the area most often over-scored. A team can be collaborative, blameless, and genuinely invested in quality and still score 1–2/5 here, because this area measures *structural* ownership — who is accountable — not how the team feels. Never infer a good ownership score from the absence of complaints; score it from the presence of a named owner and stable leadership. When a cap applies, the one-line finding must name the specific signal that triggered it.
 
