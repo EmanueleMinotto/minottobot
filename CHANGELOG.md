@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- README now documents installation for Cursor (`.cursor/skills/` or `~/.cursor/skills/`) and Codex (`~/.codex/skills/` or `.codex/skills/`), since the skills are plain `SKILL.md` directories and work in any agent supporting Agent Skills. Both are kept in collapsed `<details>` blocks so the Claude Code plugin install stays the default path.
+
 ## [2.4.2] - 2026-08-25
 
 ### Fixed

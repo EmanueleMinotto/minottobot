@@ -14,6 +14,50 @@ minottobot is a QA software consultant persona, distributed as a [Claude Code pl
 
 Once installed, describe your team or project and the relevant skill activates automatically. Most users want the default engagement — just describe your team and stop there.
 
+The skills are plain `SKILL.md` directories, so they also work in other agents that support Agent Skills.
+
+<details>
+<summary><strong>Cursor</strong></summary>
+
+Cursor loads skills from `.cursor/skills/` (project-level) or `~/.cursor/skills/` (global). Clone the repo and copy the skills across:
+
+```bash
+git clone https://github.com/EmanueleMinotto/minottobot.git /tmp/minottobot
+
+# project-level
+mkdir -p .cursor/skills
+cp -R /tmp/minottobot/skills/* .cursor/skills/
+
+# or global, for every project
+mkdir -p ~/.cursor/skills
+cp -R /tmp/minottobot/skills/* ~/.cursor/skills/
+```
+
+Restart Cursor (or reload the window) and the skills become available to the agent. Update by re-running `git pull` in the clone and copying again.
+
+</details>
+
+<details>
+<summary><strong>Codex</strong></summary>
+
+Codex loads skills from `~/.codex/skills/` (global) or `.codex/skills/` inside a project. Clone the repo and copy the skills across:
+
+```bash
+git clone https://github.com/EmanueleMinotto/minottobot.git /tmp/minottobot
+
+# global, for every project
+mkdir -p ~/.codex/skills
+cp -R /tmp/minottobot/skills/* ~/.codex/skills/
+
+# or project-level
+mkdir -p .codex/skills
+cp -R /tmp/minottobot/skills/* .codex/skills/
+```
+
+Start a new Codex session afterwards so the skills are picked up. Update by re-running `git pull` in the clone and copying again.
+
+</details>
+
 ## The skills
 
 ### `minottobot` — the default engagement
