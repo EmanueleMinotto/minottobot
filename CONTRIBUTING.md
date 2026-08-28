@@ -31,7 +31,7 @@ Versioning rules for this plugin:
 - **MINOR** — new phases, new reference files, or new capabilities within an existing skill, or an entirely new skill added without changing any existing skill's contract.
 - **PATCH** — wording fixes, prompt tuning, and reference corrections that do not change the workflow.
 
-The version lives in [`.claude-plugin/plugin.json`](.claude-plugin/plugin.json) — bump it in the same commit as the changelog entry.
+The version lives in three manifests — [`plugin.json`](plugin.json), [`.claude-plugin/plugin.json`](.claude-plugin/plugin.json) and [`.codex-plugin/plugin.json`](.codex-plugin/plugin.json) — bump all three in the same commit as the changelog entry. The `manifest-consistency` job in CI fails the pull request if the `name` or `version` fields drift apart.
 
 ### Releasing
 
@@ -39,9 +39,19 @@ The version lives in [`.claude-plugin/plugin.json`](.claude-plugin/plugin.json) 
 2. Commit with `chore(release): vX.Y.Z`.
 3. Tag the commit: `git tag -a vX.Y.Z -m "vX.Y.Z"` and push with `git push --follow-tags`.
 
+## Plugin manifests
+
+The repository root is the plugin, and it carries one manifest per ecosystem so every client can install it straight from the repo:
+
+- [`plugin.json`](plugin.json) — [Agent Plugins 1.0.0](https://agent-plugins.org/), read by Cursor and any other conforming client. Its schema is `additionalProperties: false`: only the fields the spec defines are allowed, and anything client-specific belongs under `extensions`, keyed by reverse-domain namespace. Do not add `skills` or `interface` here.
+- [`.claude-plugin/plugin.json`](.claude-plugin/plugin.json) + [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) — [Claude Code](https://docs.claude.com/en/docs/claude-code/plugins), the self-hosted catalog behind `/plugin marketplace add EmanueleMinotto/minottobot`.
+- [`.codex-plugin/plugin.json`](.codex-plugin/plugin.json) + [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json) — [Codex](https://developers.openai.com/plugins/build/plugins), behind `codex plugin marketplace add EmanueleMinotto/minottobot`. Only `plugin.json` goes inside `.codex-plugin/`.
+
+All three point at the same `skills/` directory at the repository root — keep it there. Moving or nesting it breaks discovery in every client at once.
+
 ## Skills
 
-This repository is a [Claude Code plugin](https://docs.claude.com/en/docs/claude-code/plugins) (root = plugin, see [`.claude-plugin/plugin.json`](.claude-plugin/plugin.json) and [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json)) containing four skills under `skills/`, each following the [Agent Skills](https://agentskills.io/) format:
+The repository contains eight skills under `skills/`, each following the [Agent Skills](https://agentskills.io/) format:
 
 - Every skill lives in its own directory under `skills/<name>/`
 - The directory must contain a `SKILL.md` file with YAML frontmatter
