@@ -5,7 +5,8 @@ Three commands, all stdlib-only so the script runs wherever `python3` does:
 
     snapshot.py parse    <snapshot.md>                 -> JSON on stdout
     snapshot.py delta    <previous.md> <current.md>    -> markdown delta section
-    snapshot.py validate <report.md> [--cap AREA=N]    -> violations, exit 1 if any
+    snapshot.py validate <report.md> [--cap AREA=N] [--floor AREA=N]
+                                                      -> violations, exit 1 if any
 
 The script never *writes* a report — judgement (scores, findings, wording) stays
 with the model. It parses what the model wrote, computes what is pure
@@ -427,7 +428,12 @@ def _detect_kind(sections: dict[str, list[str]]) -> str:
     return "snapshot"
 
 
-def validate(path: Path, caps: dict[str, int], kind: str = "auto") -> tuple[str, list[str]]:
+def validate(
+    path: Path,
+    caps: dict[str, int],
+    kind: str = "auto",
+    floors: dict[str, int] | None = None,
+) -> tuple[str, list[str]]:
     """Check a report or snapshot against the fixed output contract."""
     try:
         text = path.read_text(encoding="utf-8")
@@ -488,6 +494,24 @@ def validate(path: Path, caps: dict[str, int], kind: str = "auto") -> tuple[str,
                 "triggered by the Phase 0 data"
             )
 
+    for area, floor in (floors or {}).items():
+        canonical = _normalize_area(area)
+        if canonical not in CANONICAL_AREAS:
+            violations.append(f"--floor names an unknown area: {area!r}")
+            continue
+        if canonical in {_normalize_area(name) for name in caps}:
+            violations.append(
+                f"{canonical}: declared with both a cap and a floor — "
+                "the same Phase 0 data cannot trigger both"
+            )
+            continue
+        actual = scores.get(canonical)
+        if actual is not None and actual < floor:
+            violations.append(
+                f"{canonical}: score {actual}/5 falls below the mandatory floor of {floor}/5 "
+                "earned by the Phase 0 data"
+            )
+
     for match in PLACEHOLDER_PATTERN.finditer(body):
         violations.append(f"unreplaced template placeholder: {match.group(0)}")
     if re.search(r"\[\s*score\s*\]", body):
@@ -501,17 +525,17 @@ def validate(path: Path, caps: dict[str, int], kind: str = "auto") -> tuple[str,
 # --------------------------------------------------------------------------
 
 
-def _parse_caps(raw: list[str]) -> dict[str, int]:
-    caps: dict[str, int] = {}
+def _parse_bounds(raw: list[str], flag: str = "--cap") -> dict[str, int]:
+    bounds: dict[str, int] = {}
     for item in raw or []:
         if "=" not in item:
-            raise ParseError(f"--cap expects AREA=N, got {item!r}")
+            raise ParseError(f"{flag} expects AREA=N, got {item!r}")
         area, _, value = item.rpartition("=")
         try:
-            caps[area.strip()] = int(value)
+            bounds[area.strip()] = int(value)
         except ValueError:
-            raise ParseError(f"--cap value is not an integer: {item!r}") from None
-    return caps
+            raise ParseError(f"{flag} value is not an integer: {item!r}") from None
+    return bounds
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -537,6 +561,13 @@ def main(argv: list[str] | None = None) -> int:
         help="mandatory score cap triggered by Phase 0 data, e.g. 'Ownership & culture=2'",
     )
     p_validate.add_argument(
+        "--floor",
+        action="append",
+        default=[],
+        metavar="AREA=N",
+        help="mandatory score floor earned by Phase 0 data, e.g. 'Monitoring=4'",
+    )
+    p_validate.add_argument(
         "--kind", choices=["auto", "audit", "report", "snapshot"], default="auto"
     )
 
@@ -560,7 +591,12 @@ def main(argv: list[str] | None = None) -> int:
             sys.stdout.write(build_delta(previous, current))
             return 0
 
-        kind, violations = validate(args.report, _parse_caps(args.cap), args.kind)
+        kind, violations = validate(
+            args.report,
+            _parse_bounds(args.cap, "--cap"),
+            args.kind,
+            _parse_bounds(args.floor, "--floor"),
+        )
         if not violations:
             print(f"OK — {args.report} is a valid '{kind}' output")
             return 0
