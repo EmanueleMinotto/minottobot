@@ -55,13 +55,32 @@ repos:
 **Action item ID rules:**
 - IDs are stable identifiers across sessions: `A1`, `A2`, `A3`, ...
 - Never reuse an ID that appeared in a previous session's snapshot.
-- New items in a returning engagement continue from the highest previous ID (e.g., if the last session had A1–A5, new items start at A6).
+- New items in a returning engagement continue from the highest previous ID (e.g., if the last session had A1–A5, new items start at A6). On a returning engagement the Audit skill already carried forward `next_action_id` — start there rather than recounting.
+
+After writing the snapshot file, check it if Bash and `python3` are available:
+
+```bash
+python3 "$CLAUDE_PLUGIN_ROOT/scripts/snapshot.py" validate .minottobot/audit-{date}.md
+```
+
+Do the same for the improvement plan itself, which the script recognises as a `report`. Exit 1 lists what to fix; exit 2 means the script could not run, so verify by hand instead of blocking.
 
 ---
 
 ## Delta view
 
 When the audit output handed off by the Audit skill originated from a returning engagement, append a delta section **after** the standard required report format. Do not replace or shorten any part of the standard report.
+
+**Generate it with the script, not by hand.** Once the new snapshot file is written, the delta is pure arithmetic over two files:
+
+```bash
+python3 "$CLAUDE_PLUGIN_ROOT/scripts/snapshot.py" delta \
+  .minottobot/audit-{previous date}.md .minottobot/audit-{date}.md
+```
+
+Append its output verbatim — it already applies every rule below. Two caveats: blockers are prose, so the script pairs them by text similarity and can misfile a blocker that was reworded beyond recognition; read the Blockers section it produced and correct it if a pairing is wrong. And if the script is unavailable, build the delta by hand to the same format.
+
+The format it emits, and the format to produce by hand if the script cannot run:
 
 ```markdown
 ## Delta since {previous date}
@@ -98,6 +117,7 @@ When the audit output handed off by the Audit skill originated from a returning 
 **Delta rules:**
 - Use `—` (not `0` or `+0`) when a score did not change.
 - Use `↑ +N` / `↓ -N` for score changes.
+- An action item present in the previous snapshot but absent from this one is `dropped from plan` — do not silently omit its row.
 - If a repo is new this session, note it as "added — no previous data to compare."
 - If a repo was in the previous audit but is absent this session, note it as "dropped from scope" and do not carry forward its findings.
 - The delta is appended to the report, never substituted for any part of it.

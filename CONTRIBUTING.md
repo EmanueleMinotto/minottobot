@@ -72,6 +72,35 @@ Instructions for the agent...
 
 `audit` and `strategy` split what was previously a single two-phase skill: `audit` produces a scored, evidence-based report and stops; `strategy` consumes that report and builds the improvement plan. Keep that boundary when editing either — don't let scoring logic drift into `strategy` or plan-building logic drift into `audit`. `test-selection` is fully standalone. `minottobot` is a thin orchestrator that points at `audit` then `strategy` in sequence — it should never grow its own copy of their instructions; if you need to change what the default engagement does, change `audit` or `strategy`, not `minottobot`.
 
+## The snapshot helper script
+
+`scripts/snapshot.py` handles the parts of an engagement that are mechanical rather than judgement calls: parsing a `.minottobot/` snapshot, computing the delta between two of them, and checking a finished report against the fixed output contract. `audit` and `strategy` both call it; it ships inside the plugin, so every client that installs the repo gets it.
+
+```bash
+python3 scripts/snapshot.py parse    .minottobot/audit-2026-04-27.md
+python3 scripts/snapshot.py delta    .minottobot/audit-2026-01-15.md .minottobot/audit-2026-04-27.md
+python3 scripts/snapshot.py validate report.md --cap "Ownership & culture=2"
+```
+
+Three constraints keep it viable, and none of them are negotiable:
+
+- **Stdlib only, Python 3.9+.** It has to run wherever the plugin is installed, which is not a machine you control — no PyYAML (the snapshot frontmatter is parsed by hand), no dependency on `uv sync` having been run. `requires-python = ">=3.11"` in `pyproject.toml` governs the eval dependencies, not this script; CI runs the unit suite on 3.9 to catch a stray f-string or match statement.
+- **It never writes a report.** Scores, findings, blockers, and wording stay with the model. The script reads what the model wrote, does the arithmetic, and reports violations. If it ever starts generating prose, the determinism argument for having it has been lost.
+- **It is optional at every call site.** Every skill instruction that invokes it also says what to do when it is unavailable. The skills must keep working in a chat client with no filesystem, which is the case `audit/SKILL.md` already handles for code reconnaissance.
+
+When the output contract in `skills/audit/SKILL.md` or `skills/strategy/references/snapshot-delta.md` changes, update the script and its tests in the same commit — a validator that enforces last month's format is worse than no validator. If the snapshot format itself changes shape, bump `format_version` and add it to `SUPPORTED_FORMAT_VERSIONS`; the script warns instead of guessing when it meets a version it does not know.
+
+### Unit tests
+
+`tests/` covers the script with ordinary pytest — no Ollama, no LLM, no variance. It runs in well under a second and is the right place for anything deterministic:
+
+```bash
+python -m pytest tests -v      # no dependencies beyond pytest
+uv run pytest tests -v
+```
+
+`tests/conftest.py` puts `scripts/` on the path, since it ships as a plain directory inside the plugin rather than as an importable package. The `unit-tests` job in CI runs this suite on Python 3.9 and 3.13, installing only pytest so an accidental third-party import fails the build.
+
 ## Evals
 
 The `evals/` directory contains a regression suite, built on [DeepEval](https://deepeval.com/) and run against a local Ollama instance, with one sub-suite per skill.

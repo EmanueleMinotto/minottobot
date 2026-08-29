@@ -14,6 +14,22 @@ For snapshot writing and the delta view appended to the final report, see [snaps
 
 ---
 
+## Reading the snapshot
+
+If Bash and `python3` are available, parse the snapshot with the helper script rather than reading the numbers off the page:
+
+```bash
+python3 "$CLAUDE_PLUGIN_ROOT/scripts/snapshot.py" parse .minottobot/audit-YYYY-MM-DD.md
+```
+
+It returns JSON with `date`, `team`, `repos`, `scores`, `blockers`, `action_items`, and `next_action_id` — the first free action item ID, which is what the Strategy skill needs to continue numbering without reusing one. Use those values verbatim in the greeting below and in the carry-forward.
+
+Warnings go to stderr: an unrecognised `format_version` means the snapshot was written by a newer version of the plugin and some fields may be missing — say so to the user rather than guessing. Exit code 2 means the file could not be parsed; fall back to reading it yourself and mention that the snapshot is malformed, since that is itself a finding.
+
+If the script is unavailable, read the snapshot directly — and compute `next_action_id` as the highest `A{n}` in the previous snapshot plus one.
+
+---
+
 ## Returning engagement opening
 
 When a previous audit snapshot was loaded at session start, open the conversation with:
