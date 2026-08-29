@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.0] - 2026-08-29
+
 ### Fixed
 
 - `breaking-change-detector` now opens every answer about a concrete schema change with a fixed classification line — `Classification: {breaking | dangerous | safe} — SemVer: {MAJOR | MINOR | PATCH}` — above the tooling table, instead of leaving the SemVer consequence to a step halfway down "Deprecate before you remove". v2.4.2 required stating it in those exact terms but not *where*, so the `openapi-field-removal` eval kept failing intermittently on answers that covered deprecation and tooling first and reached the version bump late or not at all. The same section keeps the tool recommendation (oasdiff, GraphQL Inspector, Buf breaking, Pact) mandatory so the fixed opening does not crowd it out, and exempts policy, setup, and "how do I find out" questions where there is no specific change to classify.
@@ -108,6 +110,7 @@ First stable release of the minottobot skill.
 - Multi-iteration eval workspace in `minottobot-workspace/` (iterations 1–6).
 - `README.md`, `CONTRIBUTING.md`, `LICENSE`, and `.gitattributes` rules that keep the GitHub zip download limited to the skill itself.
 
+[2.5.0]: https://github.com/EmanueleMinotto/minottobot/compare/v2.4.2...v2.5.0
 [2.4.2]: https://github.com/EmanueleMinotto/minottobot/compare/v2.4.1...v2.4.2
 [2.4.1]: https://github.com/EmanueleMinotto/minottobot/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/EmanueleMinotto/minottobot/compare/v2.3.1...v2.4.0
