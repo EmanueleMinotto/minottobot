@@ -41,6 +41,24 @@ Before anything else, check if a `.minottobot/` directory exists in the current 
 
 ---
 
+### The snapshot helper script
+
+The plugin ships `scripts/snapshot.py` — a stdlib-only Python 3 script that handles the mechanical parts of an engagement so they stop depending on careful reading: parsing a snapshot, computing the delta between two of them, and checking a finished report against the fixed output contract.
+
+```bash
+python3 "$CLAUDE_PLUGIN_ROOT/scripts/snapshot.py" parse    <snapshot.md>
+python3 "$CLAUDE_PLUGIN_ROOT/scripts/snapshot.py" delta    <previous.md> <current.md>
+python3 "$CLAUDE_PLUGIN_ROOT/scripts/snapshot.py" validate <report.md> [--cap "AREA=N"]
+```
+
+If `$CLAUDE_PLUGIN_ROOT` is not set, the script sits at `scripts/snapshot.py` relative to the plugin install directory (the parent of `skills/`).
+
+**The script never writes a report.** Scores, findings, and wording are judgement calls and stay yours. The script only reads what you wrote, does the arithmetic, and refuses output that breaks the format.
+
+**It is optional.** If Bash is unavailable, `python3` is missing, or the script exits with code 2 (parse error), fall back to doing the same work by hand as described in this file and in the references — never block the engagement on it. Exit code 1 means the script found real violations: fix them and re-run.
+
+---
+
 ### Code Reconnaissance — read before asking
 
 If file-reading tools are available (Glob, Grep, Read, Bash), inspect the codebase before Phase 0. This is what separates an audit from a facilitated discussion. Teams often describe a better reality than the code shows — not from dishonesty, but because they don't know what they don't know.
@@ -191,6 +209,15 @@ Ownership & culture is the area most often over-scored. A team can be collaborat
 **Address ownership ambiguity as a root cause.** When any of the ownership caps above applies, the audit output must state explicitly, in a full sentence in "Evidence & red flags", that ownership is unclear — and connect it to the downstream symptoms it explains: duplicated systems nobody retired, abandoned migrations, unresolved incidents, improvement work that never gets scheduled. Do not leave it as a score in a table.
 - ❌ WRONG: leaving the ownership gap implicit in the Phase 0 baseline or only reflected in the score.
 - ✅ RIGHT: "Ownership is unclear — three VPs of Engineering in 18 months and no assigned product owner — which explains why CircleCI and GitHub Actions have run in parallel with no authoritative pipeline and why the outage from 6 months ago is still unresolved."
+
+**Verify the output before handing it off.** If Bash and `python3` are available, write the audit output to a file and run the validator, declaring every cap the Phase 0 data triggered:
+
+```bash
+python3 "$CLAUDE_PLUGIN_ROOT/scripts/snapshot.py" validate audit.md \
+  --cap "Ownership & culture=2" --cap "CI/CD=2"
+```
+
+Pass one `--cap "AREA=N"` for each row of the cap table above whose signal is present in the data. The script then checks the arithmetic you already reasoned about — the six rows present and in order, every score written as `N/5`, no `[score]` placeholders left, no capped area scored above its cap. Fix anything it reports and re-run until it exits 0. Declaring the caps is still your judgement call; only the enforcement is mechanical.
 
 **Never invent repositories, tools, or metrics.** "Repos in scope" lists only repos the user named. If the user described a stack but named no repos, write one line per component using the wording the user gave (e.g. `Laravel monolith (PHP + MySQL)`), or `Not provided` — do not fabricate repository names. The same applies to numbers: never supply a figure the user did not give.
 

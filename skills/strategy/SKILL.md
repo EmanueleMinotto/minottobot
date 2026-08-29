@@ -109,6 +109,14 @@ Always start from the highest-impact problem, not the easiest one. If the client
 | A1 | ... | short | | open |
 ```
 
+If Bash and `python3` are available, write the finished plan to a file and check it with the helper script the plugin ships (see "The snapshot helper script" in the [audit](../audit/SKILL.md) skill for the full contract):
+
+```bash
+python3 "$CLAUDE_PLUGIN_ROOT/scripts/snapshot.py" validate report.md
+```
+
+It verifies the required sections are present, the six area rows appear in order, and every score is written as `N/5`. Exit 1 lists what to fix; exit 2 means the script could not run, so verify by hand and carry on — never block the plan on it.
+
 The "Repos in scope" and "Area scores" sections are carried forward verbatim from the audit output — do not regenerate them. Every score cell must match the audit input exactly; re-read the audit's table one row at a time as you write this one, rather than writing scores from memory or from your own read of the evidence. Everything from "Executive summary" onward is this skill's own contribution.
 
 **Never invent repositories, tools, or metrics.** Apply the same rule the audit skill used: never supply a repo, tool, or figure that wasn't in the audit output you were given.

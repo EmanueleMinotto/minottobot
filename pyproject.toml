@@ -12,4 +12,6 @@ dependencies = [
 ]
 
 [tool.pytest.ini_options]
-testpaths = ["evals"]
+# tests/ is the fast, LLM-free suite for scripts/snapshot.py; evals/ needs a
+# local Ollama. Run them separately in practice: `pytest tests`, `pytest evals`.
+testpaths = ["tests", "evals"]
