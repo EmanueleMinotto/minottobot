@@ -111,6 +111,9 @@ jobs:
   run-evals-matrix:
     if: github.event_name != 'workflow_dispatch' || inputs.eval_name == 'all' || inputs.eval_name == ''
     runs-on: ubuntu-latest
+    # The slowest sub-suite (default) takes ~55m on a CPU-only runner; 90m
+    # leaves headroom while still failing fast instead of at the 6h default.
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
@@ -147,12 +150,24 @@ jobs:
           key: ollama-models-${{ runner.os }}-${{ env.MODEL }}-${{ env.JUDGE_MODEL }}
 
       - name: Start Ollama service
-        run: ollama serve &
+        # nohup + a log file: a bare `ollama serve &` dies with the step's
+        # shell, and with no log there is nothing to read when it does.
+        run: nohup ollama serve > /tmp/ollama.log 2>&1 &
 
       - name: Wait for Ollama
+        # Bounded wait: an unbounded `until curl` loop against a server that
+        # never came up hangs the job until the 6h GitHub limit.
         run: |
-          until curl -s http://localhost:11434/api/tags > /dev/null 2>&1; do sleep 1; done
-          echo "Ollama ready"
+          for _ in $(seq 1 60); do
+            if curl -sf http://localhost:11434/api/tags > /dev/null; then
+              echo "Ollama ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Ollama did not come up within 120s"
+          cat /tmp/ollama.log
+          exit 1
 
       - name: Pull models
         run: |
@@ -181,6 +196,7 @@ jobs:
   run-single-eval:
     if: github.event_name == 'workflow_dispatch' && inputs.eval_name != 'all' && inputs.eval_name != ''
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     env:
       MODEL: ${{ inputs.model || 'llama3.2' }}
       JUDGE_MODEL: ${{ inputs.judge_model || 'mistral' }}
@@ -204,12 +220,24 @@ jobs:
           key: ollama-models-${{ runner.os }}-${{ env.MODEL }}-${{ env.JUDGE_MODEL }}
 
       - name: Start Ollama service
-        run: ollama serve &
+        # nohup + a log file: a bare `ollama serve &` dies with the step's
+        # shell, and with no log there is nothing to read when it does.
+        run: nohup ollama serve > /tmp/ollama.log 2>&1 &
 
       - name: Wait for Ollama
+        # Bounded wait: an unbounded `until curl` loop against a server that
+        # never came up hangs the job until the 6h GitHub limit.
         run: |
-          until curl -s http://localhost:11434/api/tags > /dev/null 2>&1; do sleep 1; done
-          echo "Ollama ready"
+          for _ in $(seq 1 60); do
+            if curl -sf http://localhost:11434/api/tags > /dev/null; then
+              echo "Ollama ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Ollama did not come up within 120s"
+          cat /tmp/ollama.log
+          exit 1
 
       - name: Pull models
         run: |
