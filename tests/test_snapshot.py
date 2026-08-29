@@ -407,6 +407,34 @@ def test_validate_rejects_a_cap_for_an_unknown_area(tmp_path):
     assert any("unknown area" in v for v in violations)
 
 
+def test_validate_enforces_a_mandatory_score_floor(tmp_path):
+    _, violations = snapshot.validate(
+        _write(tmp_path, VALID_AUDIT), {}, floors={"Code review": 4}
+    )
+    assert any("falls below the mandatory floor of 4/5" in v for v in violations)
+
+
+def test_validate_accepts_a_score_at_the_floor(tmp_path):
+    _, violations = snapshot.validate(
+        _write(tmp_path, VALID_AUDIT), {}, floors={"Code review": 3}
+    )
+    assert violations == []
+
+
+def test_validate_rejects_an_area_declared_with_both_a_cap_and_a_floor(tmp_path):
+    _, violations = snapshot.validate(
+        _write(tmp_path, VALID_AUDIT), {"CI/CD": 2}, floors={"CI/CD": 4}
+    )
+    assert any("both a cap and a floor" in v for v in violations)
+
+
+def test_validate_rejects_a_floor_for_an_unknown_area(tmp_path):
+    _, violations = snapshot.validate(
+        _write(tmp_path, VALID_AUDIT), {}, floors={"Deployments": 4}
+    )
+    assert any("unknown area" in v for v in violations)
+
+
 def test_validate_flags_unreplaced_template_placeholders(tmp_path):
     bad = VALID_AUDIT.replace("- checkout-web (React)", "- {repo name} ({primary tech})")
     _, violations = snapshot.validate(_write(tmp_path, bad), {})
@@ -436,6 +464,18 @@ def test_cli_validate_exits_1_on_violations(tmp_path, capsys):
 
 def test_cli_validate_exits_0_when_clean(tmp_path, capsys):
     assert snapshot.main(["validate", str(_write(tmp_path, VALID_AUDIT))]) == 0
+
+
+def test_cli_validate_accepts_floor_arguments(tmp_path, capsys):
+    path = _write(tmp_path, VALID_AUDIT)
+    assert snapshot.main(["validate", str(path), "--floor", "Code review=4"]) == 1
+    assert "mandatory floor" in capsys.readouterr().err
+
+
+def test_cli_exits_2_on_a_bad_floor_argument(tmp_path, capsys):
+    path = _write(tmp_path, VALID_AUDIT)
+    assert snapshot.main(["validate", str(path), "--floor", "Testing"]) == 2
+    assert "--floor expects AREA=N" in capsys.readouterr().err
 
 
 def test_cli_exits_2_on_a_bad_cap_argument(tmp_path, capsys):

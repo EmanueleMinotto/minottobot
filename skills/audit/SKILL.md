@@ -206,6 +206,21 @@ The table has exactly the six rows shown above, in that order. Do not add rows f
 
 **A fast pipeline is not a good pipeline.** CI run time is evidence about the feedback loop, not about quality gating. A 2-minute pipeline that only runs a linter, and a green build that still needs a manual `git push` to deploy, both cap CI/CD at 2/5 — the pipeline catches nothing a reviewer wouldn't, and nothing about the release is automated. Never trade a cap away because the run is quick, the tool is modern (GitHub Actions, GitLab CI), or the team deploys often; frequency of manual deploys is a risk signal, not a strength. When a cap applies, the one-line finding must name what the pipeline does *not* do (e.g. "GitHub Actions runs ESLint only, no tests; deploys are manual").
 
+**Score floors (MANDATORY).** The caps only fire when their exact signal is *present* in the Phase 0 data. Silence is not a cap, and 3/5 is not a safe default — an area with strong evidence behind it must be scored 4/5 or 5/5, with the same discipline used to cap a weak one. When any of these signals is present, the area score is at least the stated value:
+
+| Signal in the data | Area | Floor |
+|---|---|---|
+| CI required to pass before merge with no bypass, running a real test suite | CI/CD | 4/5 |
+| Automated deploys multiple times a day, behind feature flags or with automatic rollback | CI/CD | 4/5 |
+| A test suite in the thousands, spread across unit, integration, and E2E | Testing | 4/5 |
+| Review required on every PR, with substantive discussion and no "urgent" bypass | Code review | 4/5 |
+| Per-service SLOs, plus an on-call rotation with runbooks | Monitoring | 4/5 |
+| Under 1 P1 per month, or MTTR under an hour | Ownership & culture | 4/5 |
+
+A floor and a cap never apply to the same area from the same data — if you think both fire, re-read the Phase 0 text: one of the two signals is an assumption you added, not something the user wrote. A pipeline the user did not describe step by step is not a lint-only pipeline; "required to pass before merge" alongside a real test suite means the tests run in it. Absent QA headcount, absent process documents, and absent detail are not cap signals either.
+
+When a floor applies, the one-line finding must cite the number that earned it verbatim — `4.2 deploys/day`, `2,100 unit tests`, `0.1 P1/month`, `MTTR 12 minutes` — the same rule that governs a cap's finding. A team scoring 4/5 or 5/5 across most areas is a valid audit outcome: report it, name the metrics, and do not manufacture a gap to balance the table.
+
 Ownership & culture is the area most often over-scored. A team can be collaborative, blameless, and genuinely invested in quality and still score 1–2/5 here, because this area measures *structural* ownership — who is accountable — not how the team feels. Never infer a good ownership score from the absence of complaints; score it from the presence of a named owner and stable leadership. When a cap applies, the one-line finding must name the specific signal that triggered it.
 
 **Before writing the Ownership & culture score, re-check it against the cap table above.** Multiple ownership signals often apply at once (no product owner, leadership churn, staff on loan, untracked incidents) — each one alone caps the score at 2/5, and finding more than one does not make the picture better. If the Phase 0 data matches any row, the score cannot be 3/5 or higher, even if the team otherwise seems collaborative or functional. Check this last, after the rest of the table is drafted, and correct the cell if a higher number slipped in.
@@ -221,7 +236,14 @@ python3 "$CLAUDE_PLUGIN_ROOT/scripts/snapshot.py" validate audit.md \
   --cap "Ownership & culture=2" --cap "CI/CD=2"
 ```
 
-Pass one `--cap "AREA=N"` for each row of the cap table above whose signal is present in the data. The script then checks the arithmetic you already reasoned about — the six rows present and in order, every score written as `N/5`, no `[score]` placeholders left, no capped area scored above its cap. Fix anything it reports and re-run until it exits 0. Declaring the caps is still your judgement call; only the enforcement is mechanical.
+For a team where the floors apply instead, declare those:
+
+```bash
+python3 "$CLAUDE_PLUGIN_ROOT/scripts/snapshot.py" validate audit.md \
+  --floor "CI/CD=4" --floor "Testing=4" --floor "Monitoring=4"
+```
+
+Pass one `--cap "AREA=N"` for each row of the cap table above whose signal is present in the data, and one `--floor "AREA=N"` for each row of the floor table. An area declared with both is a violation — resolve it by re-reading the Phase 0 text before re-running. The script then checks the arithmetic you already reasoned about — the six rows present and in order, every score written as `N/5`, no `[score]` placeholders left, no capped area scored above its cap and no floored area below its floor. Fix anything it reports and re-run until it exits 0. Declaring the caps is still your judgement call; only the enforcement is mechanical.
 
 **Never invent repositories, tools, or metrics.** "Repos in scope" lists only repos the user named. If the user described a stack but named no repos, write one line per component using the wording the user gave (e.g. `Laravel monolith (PHP + MySQL)`), or `Not provided` — do not fabricate repository names. The same applies to numbers: never supply a figure the user did not give.
 
