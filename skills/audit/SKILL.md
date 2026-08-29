@@ -197,37 +197,33 @@ The table has exactly the six rows shown above, in that order. Do not add rows f
 | Tests not run recently, unknown pass rate, or a flaky rate the team ignores | Testing | 2/5 |
 | No tests at all | Testing | 1/5 |
 | Review skipped for "urgent" work, or no formal policy | Code review | 2/5 |
-| No monitoring, or monitoring added only after an incident | Monitoring | 2/5 |
+| No monitoring, or monitoring added during or after an incident the team is still recovering from | Monitoring | 2/5 |
 | No staging environment, or no local dev setup | Developer Experience | 2/5 |
 | **No assigned owner or product owner for the team** | **Ownership & culture** | **2/5** |
 | **Leadership churn — multiple managers/VPs within ~18 months** | **Ownership & culture** | **2/5** |
 | **Headcount on paper exceeds effective capacity (staff on loan)** | **Ownership & culture** | **2/5** |
 | **Incidents untracked, or a past outage still unresolved** | **Ownership & culture** | **2/5** |
 
-**A fast pipeline is not a good pipeline.** CI run time is evidence about the feedback loop, not about quality gating. A 2-minute pipeline that only runs a linter, and a green build that still needs a manual `git push` to deploy, both cap CI/CD at 2/5 — the pipeline catches nothing a reviewer wouldn't, and nothing about the release is automated. Never trade a cap away because the run is quick, the tool is modern (GitHub Actions, GitLab CI), or the team deploys often; frequency of manual deploys is a risk signal, not a strength. When a cap applies, the one-line finding must name what the pipeline does *not* do (e.g. "GitHub Actions runs ESLint only, no tests; deploys are manual").
+A cap fires only on a signal the Phase 0 data actually states. Silence is not a cap, an undescribed pipeline is not lint-only, and absent QA headcount is not an ownership gap. Run time, a modern tool, or frequent manual deploys never buy a cap back.
 
-**Score floors (MANDATORY).** The caps only fire when their exact signal is *present* in the Phase 0 data. Silence is not a cap, and 3/5 is not a safe default — an area with strong evidence behind it must be scored 4/5 or 5/5, with the same discipline used to cap a weak one. When any of these signals is present, the area score is at least the stated value:
+**Score floors (MANDATORY).** 3/5 is not a safe default. When one of these is present, the area score is at least the stated value:
 
 | Signal in the data | Area | Floor |
 |---|---|---|
-| CI required to pass before merge with no bypass, running a real test suite | CI/CD | 4/5 |
-| Automated deploys multiple times a day, behind feature flags or with automatic rollback | CI/CD | 4/5 |
-| A test suite in the thousands, spread across unit, integration, and E2E | Testing | 4/5 |
-| Review required on every PR, with substantive discussion and no "urgent" bypass | Code review | 4/5 |
-| Per-service SLOs, plus an on-call rotation with runbooks | Monitoring | 4/5 |
+| CI required to pass before merge, running a real test suite | CI/CD | 4/5 |
+| Automated deploys multiple times a day, behind flags or with automatic rollback | CI/CD | 4/5 |
+| A suite in the thousands across unit, integration, and E2E | Testing | 4/5 |
+| Review required on every PR, no bypass | Code review | 4/5 |
+| Per-service SLOs, plus on-call with runbooks | Monitoring | 4/5 |
 | Under 1 P1 per month, or MTTR under an hour | Ownership & culture | 4/5 |
 
-A floor and a cap never apply to the same area from the same data — if you think both fire, re-read the Phase 0 text: one of the two signals is an assumption you added, not something the user wrote. A pipeline the user did not describe step by step is not a lint-only pipeline; "required to pass before merge" alongside a real test suite means the tests run in it. Absent QA headcount, absent process documents, and absent detail are not cap signals either.
+A cap and a floor never apply to the same area: if both seem to fire, one is an assumption you added. A team scoring 4/5 or 5/5 across most areas is a valid outcome — do not manufacture a gap to balance the table.
 
-When a floor applies, the one-line finding must cite the number that earned it verbatim — `4.2 deploys/day`, `2,100 unit tests`, `0.1 P1/month`, `MTTR 12 minutes` — the same rule that governs a cap's finding. A team scoring 4/5 or 5/5 across most areas is a valid audit outcome: report it, name the metrics, and do not manufacture a gap to balance the table.
+**Score what the team had when it mattered, not what it bought afterwards.** Monitoring added during or after an incident, a first E2E suite written the week of an outage, a pipeline bolted on after a bad deploy — each is the cap signal, not evidence against it. A fast reaction is worth saying in the finding, not worth a higher score.
 
-Ownership & culture is the area most often over-scored. A team can be collaborative, blameless, and genuinely invested in quality and still score 1–2/5 here, because this area measures *structural* ownership — who is accountable — not how the team feels. Never infer a good ownership score from the absence of complaints; score it from the presence of a named owner and stable leadership. When a cap applies, the one-line finding must name the specific signal that triggered it.
+**Re-check Monitoring and Ownership & culture against the cap table before writing them** — they are the two most often over-scored. A tool present today says nothing about whether it was there when it was needed, and ownership measures who is *accountable*, not how the team feels; a collaborative, blameless team with no named owner still scores 1–2/5. Multiple ownership signals often apply at once, and finding more than one does not make the picture better.
 
-**Before writing the Ownership & culture score, re-check it against the cap table above.** Multiple ownership signals often apply at once (no product owner, leadership churn, staff on loan, untracked incidents) — each one alone caps the score at 2/5, and finding more than one does not make the picture better. If the Phase 0 data matches any row, the score cannot be 3/5 or higher, even if the team otherwise seems collaborative or functional. Check this last, after the rest of the table is drafted, and correct the cell if a higher number slipped in.
-
-**Address ownership ambiguity as a root cause.** When any of the ownership caps above applies, the audit output must state explicitly, in a full sentence in "Evidence & red flags", that ownership is unclear — and connect it to the downstream symptoms it explains: duplicated systems nobody retired, abandoned migrations, unresolved incidents, improvement work that never gets scheduled. Do not leave it as a score in a table.
-- ❌ WRONG: leaving the ownership gap implicit in the Phase 0 baseline or only reflected in the score.
-- ✅ RIGHT: "Ownership is unclear — three VPs of Engineering in 18 months and no assigned product owner — which explains why CircleCI and GitHub Actions have run in parallel with no authoritative pipeline and why the outage from 6 months ago is still unresolved."
+Every one-line finding must name the evidence behind its score — the cap signal, or the metric that earned the floor — in the user's own numbers.
 
 **Verify the output before handing it off.** If Bash and `python3` are available, write the audit output to a file and run the validator, declaring every cap the Phase 0 data triggered:
 
@@ -245,7 +241,11 @@ python3 "$CLAUDE_PLUGIN_ROOT/scripts/snapshot.py" validate audit.md \
 
 Pass one `--cap "AREA=N"` for each row of the cap table above whose signal is present in the data, and one `--floor "AREA=N"` for each row of the floor table. An area declared with both is a violation — resolve it by re-reading the Phase 0 text before re-running. The script then checks the arithmetic you already reasoned about — the six rows present and in order, every score written as `N/5`, no `[score]` placeholders left, no capped area scored above its cap and no floored area below its floor. Fix anything it reports and re-run until it exits 0. Declaring the caps is still your judgement call; only the enforcement is mechanical.
 
-**Never invent repositories, tools, or metrics.** "Repos in scope" lists only repos the user named. If the user described a stack but named no repos, write one line per component using the wording the user gave (e.g. `Laravel monolith (PHP + MySQL)`), or `Not provided` — do not fabricate repository names. The same applies to numbers: never supply a figure the user did not give.
+**Everything above is how you reach six numbers — the output is the template, nothing else.** The report has only the `##` headings of the template, in that order, and the six canonical rows: no extra or renamed row, no section the template lacks (recommendations and next steps belong to strategy), and never the words "cap", "floor", or "signal".
+
+**Address ownership ambiguity as a root cause.** When an ownership cap applies, say so in a full sentence in "Evidence & red flags" — not just as a number in the table — and connect it to the symptoms it explains: duplicated systems nobody retired, abandoned migrations, unresolved incidents, improvement work that never gets scheduled.
+
+**Never invent repositories, tools, or metrics, and never borrow them from this document.** Every number and tool name in your report must come from the user's Phase 0 data — the examples and rule tables here describe other teams. "Repos in scope" lists only repos the user named; if the user described a stack but named none, write one line per component in the user's own wording (e.g. `Laravel monolith (PHP + MySQL)`), or `Not provided`.
 
 Once this audit output is complete, hand it to the strategy skill (or continue automatically if you're running the combined [minottobot](../minottobot/SKILL.md) skill). Do not build an improvement plan, executive summary, or action items here — that would duplicate strategy's job and drift out of sync with it.
 
@@ -286,3 +286,7 @@ If the audit reveals unmanaged API compatibility risk (no schema diffing, no dep
 - Humble and concise — state findings without over-explaining
 - Friendly, with occasional pop culture references
 - You're the helpful colleague, not the auditor with a clipboard
+
+## Where the audit stops
+
+The audit ends with the output contract above and nothing after it — no improvement plan, no recommendations, no next steps, no action items, no closing offer to make changes. Naming what to fix is the strategy skill's job; doing it here breaks the handoff.
