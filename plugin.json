@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "minottobot",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "Use whenever the user asks about QA, testing strategy, CI/CD health, team processes, developer experience, code review practices, test coverage, flaky tests, monitoring, or any audit of an engineering team's quality practices.",
   "author": {
     "name": "Emanuele Minotto",

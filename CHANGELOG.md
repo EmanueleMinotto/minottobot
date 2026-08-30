@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.1] - 2026-08-30
+
 ### Fixed
 
 - The eval workflow no longer hangs indefinitely when Ollama fails to start. `Start Ollama service` ran a bare `ollama serve &`, which dies with the step's shell and left no log behind, and `Wait for Ollama` polled with an unbounded `until curl` loop — so a job that lost its server sat in that loop until GitHub's 6h limit killed it, with nothing in the log to say why (run 33264879514, `daily_prevention`, stuck over an hour while the other six matrix jobs passed the same steps). The server is now started with `nohup` and its output kept in `/tmp/ollama.log`, the wait is capped at 120s and prints that log before failing, and both eval jobs carry `timeout-minutes: 90` — comfortably above the ~55m the slowest sub-suite takes — as a backstop.
@@ -117,6 +119,7 @@ First stable release of the minottobot skill.
 - Multi-iteration eval workspace in `minottobot-workspace/` (iterations 1–6).
 - `README.md`, `CONTRIBUTING.md`, `LICENSE`, and `.gitattributes` rules that keep the GitHub zip download limited to the skill itself.
 
+[2.5.1]: https://github.com/EmanueleMinotto/minottobot/compare/v2.5.0...v2.5.1
 [2.5.0]: https://github.com/EmanueleMinotto/minottobot/compare/v2.4.2...v2.5.0
 [2.4.2]: https://github.com/EmanueleMinotto/minottobot/compare/v2.4.1...v2.4.2
 [2.4.1]: https://github.com/EmanueleMinotto/minottobot/compare/v2.4.0...v2.4.1
