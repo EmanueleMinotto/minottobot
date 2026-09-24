@@ -4,7 +4,7 @@ Your friendly neighborhood QA developer.
 
 minottobot is a QA software consultant persona, packaged as a plugin with eight skills. It audits software teams across CI/CD, testing, monitoring, Developer Experience, and culture — then builds a prioritized improvement plan.
 
-The repository is an [Agent Plugins 1.0.0](https://agent-plugins.org/) plugin — root `plugin.json`, skills under `skills/` — and also ships the [Claude Code](https://docs.claude.com/en/docs/claude-code/plugins) and [Codex](https://developers.openai.com/plugins/build/plugins) manifests, so every client below installs it from the repo itself. No copying files around.
+The repository is an [Agent Plugins 1.0.0](https://agent-plugins.org/) plugin — root `plugin.json`, skills under `skills/` — and also ships the [Claude Code](https://docs.claude.com/en/docs/claude-code/plugins) and [Codex](https://developers.openai.com/plugins/build/plugins) manifests, so every client below installs it from the repo itself. [OpenCode](https://opencode.ai/docs/skills/) needs no manifest: it discovers the same `skills/` through its Agent Skills directories (see below). No copying files around.
 
 ## How to use
 
@@ -20,6 +20,18 @@ codex plugin marketplace add EmanueleMinotto/minottobot
 ```
 
 Then install `minottobot` from that marketplace. Update later with `codex plugin marketplace upgrade minottobot`.
+
+**OpenCode:**
+
+```bash
+git clone https://github.com/EmanueleMinotto/minottobot.git ~/src/minottobot
+mkdir -p ~/.config/opencode/skills
+for d in ~/src/minottobot/skills/*/; do ln -sfn "$d" ~/.config/opencode/skills/$(basename "$d"); done
+```
+
+This registers all eight skills globally — OpenCode discovers `~/.config/opencode/skills/*/SKILL.md` automatically on startup. For project scope only, link into `<project>/.opencode/skills/` instead. Because they are symlinks, `git pull` in the clone is the whole update procedure. If your setup does not follow symlinks, copy instead of linking (`cp -r ~/src/minottobot/skills/* ~/.config/opencode/skills/`).
+
+One OpenCode difference to know: `$CLAUDE_PLUGIN_ROOT` is not defined there, so wherever a skill invokes `scripts/snapshot.py`, substitute the checkout path — `python3 ~/src/minottobot/scripts/snapshot.py ...`.
 
 Once installed, describe your team or project and the relevant skill activates automatically. Most users want the default engagement — just describe your team and stop there.
 
@@ -424,3 +436,5 @@ skills/
   breaking-change-detector/
     SKILL.md                ← standalone API breaking-change decision guide
 ```
+
+OpenCode needs no manifest file: it reads the same `skills/` directory via symlinks or copies into its Agent Skills directories (see install above), so there is nothing OpenCode-specific to keep in sync — `skills/` stays the single source of truth.

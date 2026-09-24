@@ -22,6 +22,8 @@ If Bash and `python3` are available, parse the snapshot with the helper script r
 python3 "$CLAUDE_PLUGIN_ROOT/scripts/snapshot.py" parse .minottobot/audit-YYYY-MM-DD.md
 ```
 
+(On OpenCode and other clients without `$CLAUDE_PLUGIN_ROOT`, substitute the path to your minottobot checkout — see "The snapshot helper script" in [SKILL.md](../SKILL.md).)
+
 It returns JSON with `date`, `team`, `repos`, `scores`, `blockers`, `action_items`, and `next_action_id` — the first free action item ID, which is what the Strategy skill needs to continue numbering without reusing one. Use those values verbatim in the greeting below and in the carry-forward.
 
 Warnings go to stderr: an unrecognised `format_version` means the snapshot was written by a newer version of the plugin and some fields may be missing — say so to the user rather than guessing. Exit code 2 means the file could not be parsed; fall back to reading it yourself and mention that the snapshot is malformed, since that is itself a finding.
