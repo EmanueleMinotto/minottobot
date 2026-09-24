@@ -63,6 +63,8 @@ After writing the snapshot file, check it if Bash and `python3` are available:
 python3 "$CLAUDE_PLUGIN_ROOT/scripts/snapshot.py" validate .minottobot/audit-{date}.md
 ```
 
+(On OpenCode and other clients without `$CLAUDE_PLUGIN_ROOT`, substitute the path to your minottobot checkout — see "The snapshot helper script" in the [audit](../../audit/SKILL.md) skill.)
+
 Do the same for the improvement plan itself, which the script recognises as a `report`. Exit 1 lists what to fix; exit 2 means the script could not run, so verify by hand instead of blocking.
 
 ---

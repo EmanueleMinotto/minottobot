@@ -51,7 +51,10 @@ python3 "$CLAUDE_PLUGIN_ROOT/scripts/snapshot.py" delta    <previous.md> <curren
 python3 "$CLAUDE_PLUGIN_ROOT/scripts/snapshot.py" validate <report.md> [--cap "AREA=N"]
 ```
 
-If `$CLAUDE_PLUGIN_ROOT` is not set, the script sits at `scripts/snapshot.py` relative to the plugin install directory (the parent of `skills/`).
+If `$CLAUDE_PLUGIN_ROOT` is not set, substitute the path to your minottobot checkout.
+OpenCode and other clients do not define that variable — use
+`python3 <minottobot>/scripts/snapshot.py ...` with the checkout path instead.
+Either way, the script sits at `scripts/snapshot.py` relative to the plugin install directory (the parent of `skills/`).
 
 **The script never writes a report.** Scores, findings, and wording are judgement calls and stay yours. The script only reads what you wrote, does the arithmetic, and refuses output that breaks the format.
 
@@ -63,7 +66,7 @@ If `$CLAUDE_PLUGIN_ROOT` is not set, the script sits at `scripts/snapshot.py` re
 
 If file-reading tools are available (Glob, Grep, Read, Bash), inspect the codebase before Phase 0. This is what separates an audit from a facilitated discussion. Teams often describe a better reality than the code shows — not from dishonesty, but because they don't know what they don't know.
 
-**If file-reading tools are not available** (e.g., Claude.ai chat, API without filesystem access): skip reconnaissance entirely. Proceed directly to Phase 0 and base the audit solely on the team's answers. Add the following note to the final report, immediately after "Repos in scope":
+**If file-reading tools are not available** (e.g. a web chat client or API without filesystem access): skip reconnaissance entirely. Proceed directly to Phase 0 and base the audit solely on the team's answers. Add the following note to the final report, immediately after "Repos in scope":
 
 ```
 > ⚠️ **No code access** — this audit is based on team-reported data only. Findings could not be verified against the codebase.
