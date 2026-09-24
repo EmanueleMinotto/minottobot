@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.0] - 2026-09-24
+
 ### Added
 
 - OpenCode support: the same `skills/` directory now loads in OpenCode via its Agent Skills discovery — symlink or copy each skill into `~/.config/opencode/skills/` (global) or `<project>/.opencode/skills/` (project scope), as documented in the new README section. No manifest or skill-format change was needed: all eight skill names already match their directories and all descriptions are within OpenCode's 1024-character limit, and per-skill symlinks preserve the `../<skill>/SKILL.md` cross-references. The `$CLAUDE_PLUGIN_ROOT` invocations of `scripts/snapshot.py` now spell out the checkout-path substitute for clients that don't define that variable. No skill workflow or output contract changed.
@@ -123,6 +125,7 @@ First stable release of the minottobot skill.
 - Multi-iteration eval workspace in `minottobot-workspace/` (iterations 1–6).
 - `README.md`, `CONTRIBUTING.md`, `LICENSE`, and `.gitattributes` rules that keep the GitHub zip download limited to the skill itself.
 
+[2.6.0]: https://github.com/EmanueleMinotto/minottobot/compare/v2.5.1...v2.6.0
 [2.5.1]: https://github.com/EmanueleMinotto/minottobot/compare/v2.5.0...v2.5.1
 [2.5.0]: https://github.com/EmanueleMinotto/minottobot/compare/v2.4.2...v2.5.0
 [2.4.2]: https://github.com/EmanueleMinotto/minottobot/compare/v2.4.1...v2.4.2
